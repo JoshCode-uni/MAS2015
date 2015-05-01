@@ -1,5 +1,5 @@
 environment {
-	env = "../../ut-environment.jar".
+	env = "ut-environment.jar".
 	init = [ 	
 		visualizer = "rmi://127.0.0.1:1099",
 		botServer = "ut://127.0.0.1:3000",
@@ -10,7 +10,7 @@ environment {
 				 	["name", "Bot 1"],
 					["skill", 5],
 					["skin", "BotA"], 
-					%["team", "red"],
+					["team", "red"],
 					["logLevel", "WARNING"]
 				]
 			]
