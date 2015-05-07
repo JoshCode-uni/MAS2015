@@ -127,11 +127,23 @@ event module {
 		forall bel( path(OldStartId, OldEndId, OldLength, [OldLocation]),  percept(path(StartId, EndId, Length, [Location])) )
 			do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 			
+		% Insert the current state of the flag.
+		forall bel( percept(flagState(Team, FlagState)) ) do insert( flagState(Team, FlagState) ).
+		% Update the current state of the flag (send on change with negation).
+		forall bel( flagState(Team, FlagState),  percept(not(flagState(Team, FlagState))) )
+			do delete( flagState(Team, FlagState) ).
+			
 		% Insert information about an item the bot sees.
 		forall bel( percept(item(UnrealID, Label, ItemType, Position)) ) do insert( item(UnrealID, Label, ItemType, Position) ).
 		% Update information about an item the bot sees (send on change with negation).
 		forall bel( item(OldUnrealID, OldLabel, OldItemType, OldPosition),  percept(not(item(OldUnrealID, OldLabel, OldItemType, OldPosition))) )
 			do delete( item(OldUnrealID, OldLabel, OldItemType, OldPosition) ).
+			
+		% Insert when flag becomes visible to bot.
+		forall bel( percept(flag(Team, HolderUnrealID, Position)) ) do insert( flag(Team, HolderUnrealID, Position) ).
+		% Update information about the visibility of the flag to bot (send on change with negation).
+		forall bel( flag(Team, HolderUnrealID, Position),  percept(not(flag(Team, HolderUnrealID, Position))) )
+			do delete( flag(Team, HolderUnrealID, Position) ).	
 		
 		% Insert information about other bots that the bot sees.
 		forall bel( percept(bot(UnrealID, Name, Team, Position, Weapon, FireMode)) ) do insert( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).
@@ -140,10 +152,16 @@ event module {
 			do delete( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).	
 			
 		% Insert all the items that can be picked up.
-		forall bel( percept(pickup(UnrealID))) do insert( pickup(UnrealID) ).
+		forall bel( percept(pickup(UnrealID)) ) do insert( pickup(UnrealID) ).
 		% Update the items that the bot can pick up (send on change with negation).
 		forall bel( pickup(UnrealID),  percept(not(pickup(UnrealID))) )
 			do delete( pickup(UnrealID) ).
+			
+		% Insert slow volume that the bot sees
+		forall bel( percept(slowVolume(UnrealID)) ) do insert( slowVolume(UnrealID) ).
+		% Update information about slow volume (send on change with negation).
+		forall bel( slowVolume(UnrealID),  percept(not(slowVolume(UnrealID))) )
+			do delete( slowVolume(UnrealID) ).			
 
 		% If the current goal has been reached, pick a new goal.			
 		if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
