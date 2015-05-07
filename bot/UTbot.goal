@@ -27,7 +27,7 @@ init module {
 		% 'Send once' percepts, insert in the believe base.
 		if bel (percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team)).
 		forall bel (percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID)).
-		if bel (percept(base(Team, UnrealID))) then insert (base(Team, UnrealID)).
+		forall bel (percept(base(Team, UnrealID))) do insert (base(Team, UnrealID)).
 		
 		% Insert all the pickups in the believe base.
 		forall bel (percept(pickup(UnrealID, armor, ItemType))) do insert (pickup(UnrealID, armor, ItemType)).
@@ -39,6 +39,46 @@ init module {
 		% Make a best effort attempt to navigate to a certain location on the map.
 		navigate(Destination) {
 			pre{ not(navigation(navigating, _)) }
+			post{ true }
+		}
+		% Stop
+		stop {
+			pre{ true }
+			post{ true }
+		}
+		% Shoot a target
+		shoot(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Prefer a weapon
+		prefer([Weapon]) {
+			pre{ true }
+			post{ true }
+		}
+		% Look at target
+		look(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Respawn
+		respawn {
+			pre{ true }
+			post{ true }
+		}
+		% Find a path
+		path(From, To) {
+			pre{ true }
+			post{ true }
+		}
+		% Let the bot continue with what he was doing
+		skip {
+			pre{ true }
+			post{ true }
+		}
+		% Deploy
+		deploy {
+			pre{ true }
 			post{ true }
 		}
 	}
