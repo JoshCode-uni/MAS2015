@@ -23,6 +23,17 @@ init module {
 		if bel( percept(orientation(Location, _, _)) ) then insert( target(Location) ).
 		% Take a random navpoint as our target; note that it might not be reachable though.
 		if bel( percept(navPoint(UnrealID, _, _))) then insert( target(UnrealID) ).
+		
+		% 'Send once' percepts, insert in the believe base.
+		if bel (percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team)).
+		forall bel (percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID)).
+		if bel (percept(base(Team, UnrealID))) then insert (base(Team, UnrealID)).
+		
+		% Insert all the pickups in the believe base.
+		forall bel (percept(pickup(UnrealID, armor, ItemType))) do insert (pickup(UnrealID, armor, ItemType)).
+		forall bel (percept(pickup(UnrealID, weapon, ItemType))) do insert (pickup(UnrealID, weapon, ItemType)).
+		forall bel (percept(pickup(UnrealID, health, ItemType))) do insert (pickup(UnrealID, health, ItemType)).
+		forall bel (percept(pickup(UnrealID, other, ItemType))) do insert (pickup(UnrealID, other, ItemType)).	
 	}
 	actionspec{
 		% Make a best effort attempt to navigate to a certain location on the map.
