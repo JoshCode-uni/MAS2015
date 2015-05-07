@@ -9,6 +9,14 @@ init module {
 	beliefs{
 		% Initially, we are going nowhere.
 		navigation(none, none).
+		
+		% The bot spawns with 100 health and 0 armour.
+		status(100,0).
+		
+		% We start with no armor, no powerups and a basic weapon.
+		armor(none, none, none, none).
+		powerup(none, none).
+		currentWeapon(enforcer, primary).
 	}
 	program{
 		% Save our initial location as our starting point.
