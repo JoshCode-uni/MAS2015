@@ -190,5 +190,20 @@ event module {
 		% GOAL MANAGEMENT
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+	
+			%% If I see a big health pack and health is 180 or less, make pack new goal.
+			if  bel( item(_,health,super_health,Destination), status(Health,_), Health@=<180, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I see a health pack and health is lower then 100, make pack new goal.
+			if  bel( item(_,health,_,Destination), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I see a weapon that is not in inventory, make weapon new goal. (Expansion: pickup better weapons only)
+			if  bel( percept(item(_,weapon,Type,Destination)),not(percept(weapon(Type,_,_))), not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
+			if  bel( percept(item(_,ammo,Weapon,Destination)), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5) then adopt( at(Destination) ).
+			
+			%% If I see armor 
+			if  bel( item(_,armor,Type,Destination),armor(Helmet), not(at(Destination))) then adopt( at(Destination) ).
 	}
 }
