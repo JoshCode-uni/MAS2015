@@ -84,6 +84,10 @@ init module {
 
 main module {
 	program{
+		% When the bot is stuck or there is no path, this should be taken care of.
+		if bel (percept(navigation(stuck, Destination))) then respawn.
+		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
 	}
