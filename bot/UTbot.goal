@@ -26,14 +26,12 @@ init module {
 		
 		% 'Send once' percepts, insert in the believe base.
 		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
-		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealID) ).
+		
+		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
 		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
 		
 		% Insert all the pickups in the believe base.
-		forall bel( percept(pickup(UnrealID, armor, ItemType))) do insert (pickup(UnrealID, armor, ItemType) ).
-		forall bel( percept(pickup(UnrealID, weapon, ItemType))) do insert (pickup(UnrealID, weapon, ItemType) ).
-		forall bel( percept(pickup(UnrealID, health, ItemType))) do insert (pickup(UnrealID, health, ItemType) ).
-		forall bel( percept(pickup(UnrealID, other, ItemType))) do insert (pickup(UnrealID, other, ItemType) ).	
+		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
 	}
 	actionspec{
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -92,78 +90,92 @@ main module {
 }
 
 event module {
-	program {	
-		% Update the navigation state of the bot ('send on change' percept).
-		forall bel( navigation(OldStatus, OldDest),  percept(navigation(Status, Destination)) )
-			do delete( navigation(OldStatus, OldDest) ) + insert( navigation(Status, Destination) ).
+	program {
+		% MAILBOX MANAGEMENT (RECEIVE)
 		
-		% Update the orientation of the bot (send on change).
-		forall bel( orientation(OldLocation, OldRotation, OldVelocity),  percept(orientation(Location, Rotation, Velocity)) )
-			do delete( orientation(OldLocation, OldRotation, OldVelocity) ) + insert( orientation(Location, Rotation, Velocity) ).	
-			
-		% Update the status of the bot (send on change).
-		forall bel( status(OldHealth, OldArmour),  percept(status(Health, Armour, _, _)) )
-			do delete( status(OldHealth, OldArmour) ) + insert( status(Health, Armour) ).
+		% PERCEPT HANDLING
+			%% PERCEPTS ABOUT SELF
+				%%% Update the navigation state of the bot ('send on change' percept).
+				forall bel( navigation(OldStatus, OldDest),  percept(navigation(Status, Destination)) )
+					do delete( navigation(OldStatus, OldDest) ) + insert( navigation(Status, Destination) ).
 					
-		% Update the current weapon that the bot is holding (send on change).
-		forall bel( currentWeapon(OldWeaponType, OldFireMode),  percept(currentWeapon(WeaponType, FireMode)) )
-			do delete( currentWeapon(OldWeaponType, OldFireMode) ) + insert( currentWeapon(WeaponType, FireMode) ).
-	
-		% Insert information about the weapon inventory.
-		forall bel( percept(weapon(WeaponType, Ammo, AltAmmo)) ) do insert( weapon(WeaponType, Ammo, AltAmmo) ).
-		% Update the weapon inventory of the bot (send on change with negation).
-		forall bel( weapon(OldWeaponType, OldAmmo, OldAltAmmo), percept(not(weapon(OldWeaponType, OldAmmo, OldAltAmmo))) )
-			do delete( weapon(OldWeaponType, OldAmmo, OldAltAmmo) ).
+				%%% Update the orientation of the bot ('send on change' percept).
+				forall bel( orientation(OldLocation, OldRotation, OldVelocity),  percept(orientation(Location, Rotation, Velocity)) )
+					do delete( orientation(OldLocation, OldRotation, OldVelocity) ) + insert( orientation(Location, Rotation, Velocity) ).	
+					
+				%%% Update the status of the bot ('send on change' percept).
+				forall bel( status(OldHealth, OldArmour),  percept(status(Health, Armour, _, _)) )
+					do delete( status(OldHealth, OldArmour) ) + insert( status(Health, Armour) ).
+							
+				%%% Update the current weapon that the bot is holding ('send on change' percept).
+				forall bel( currentWeapon(OldWeaponType, OldFireMode),  percept(currentWeapon(WeaponType, FireMode)) )
+					do delete( currentWeapon(OldWeaponType, OldFireMode) ) + insert( currentWeapon(WeaponType, FireMode) ).
+				
+				%%% Insert information about the weapon inventory ('send on change with negation' percept).
+				forall bel( percept(weapon(WeaponType, Ammo, AltAmmo)) )
+					do insert( weapon(WeaponType, Ammo, AltAmmo) ).
+				%%% Update information about the weapon inventory ('send on change with negation' percept).
+				forall bel( weapon(OldWeaponType, OldAmmo, OldAltAmmo), percept(not(weapon(OldWeaponType, OldAmmo, OldAltAmmo))) )
+					do delete( weapon(OldWeaponType, OldAmmo, OldAltAmmo) ).
+					
+				%%% Update the powerup that the bot has ('send on change' percept).
+				forall bel( powerup(OldType, OldDuration),  percept(powerup(Type, Duration)) )
+					do delete( powerup(OldType, OldDuration) ) + insert( powerup(Type, Duration) ).
+					
+				%%% Update the armor that the bot is wearing ('send on change' percept).
+				forall bel( armor(OldHelmet, OldVest, OldThighpad, OldShieldbelt),  percept(armor(Helmet, Vest, Thighpad, Shieldbelt)) )
+					do delete( armor(OldHelmet, OldVest, OldThighpad, OldShieldbelt) ) + insert( armor(Helmet, Vest, Thighpad, Shieldbelt) ).
+				
+				%%% Update the score of the bot ('send on change' percept)
+				forall bel( score(OldKills, OldDeaths, OldSuicides) ) do delete( score(OldKills, OldDeaths, OldSuicides) ).
+				forall bel( percept(score(Kills, Deaths, Suicides)) ) do insert( score(Kills, Deaths, Suicides) ).
 			
-		% Update the powerup that the bot has (send on change).
-		forall bel( powerup(OldType, OldDuration),  percept(powerup(Type, Duration)) )
-			do delete( powerup(OldType, OldDuration) ) + insert( powerup(Type, Duration) ).
+			%% PERCEPTS ABOUT THE MAP
+				%%% Insert the current state of the flags ('send on change with negation' percept).
+				forall bel( percept(flagState(Team, FlagState)) ) do insert( flagState(Team, FlagState) ).
+				%%% Update the current state of the flags ('send on change with negation' percept).
+				forall bel( flagState(Team, FlagState),  percept(not(flagState(Team, FlagState))) )
+					do delete( flagState(Team, FlagState) ).
 			
-		% Update the armor that the bot is wearing (send on change).
-		forall bel( armor(OldHelmet, OldVest, OldThighpad, OldShieldbelt),  percept(armor(Helmet, Vest, Thighpad, Shieldbelt)) )
-			do delete( armor(OldHelmet, OldVest, OldThighpad, OldShieldbelt) ) + insert( armor(Helmet, Vest, Thighpad, Shieldbelt) ).
+			%% PERCEPTS ABOUT VISION
+				%%% Insert information about an item the bot sees ('send on change with negation' percept).
+				forall bel( percept(item(UnrealID, Label, ItemType, Position)) ) do insert( item(UnrealID, Label, ItemType, Position) ).
+				%%% Update information about an item the bot sees ('send on change with negation' percept).
+				forall bel( item(OldUnrealID, OldLabel, OldItemType, OldPosition),  percept(not(item(OldUnrealID, OldLabel, OldItemType, OldPosition))) )
+					do delete( item(OldUnrealID, OldLabel, OldItemType, OldPosition) ).
+				
+				%%% Insert information about the visibility of the flag to bot ('send on change with negation' percept).
+				forall bel( percept(flag(Team, HolderUnrealID, Position)) ) do insert( flag(Team, HolderUnrealID, Position) ).
+				%%% Update information about the visibility of the flag to bot ('send on change with negation' percept).
+				forall bel( flag(Team, HolderUnrealID, Position),  percept(not(flag(Team, HolderUnrealID, Position))) )
+					do delete( flag(Team, HolderUnrealID, Position) ).
+				
+				%%% Insert information about other bots that the bot sees ('send on change with negation' percept).
+				forall bel( percept(bot(UnrealID, Name, Team, Position, Weapon, FireMode)) ) do insert( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).
+				%%% Update information about other bots that the bot sees ('send on change with negation' percept).
+				forall bel( bot(UnrealID, Name, Team, Position, Weapon, FireMode),  percept(not(bot(UnrealID, Name, Team, Position, Weapon, FireMode))) )
+					do delete( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).	
+				
+				%%% Insert the items that the bot can pick up ('send on change with negation' percept).
+				forall bel( percept(pickup(UnrealID)) ) do insert( pickup(UnrealID) ).
+				%%% Update the items that the bot can pick up ('send on change with negation' percept).
+				forall bel( pickup(UnrealID),  percept(not(pickup(UnrealID))) )
+					do delete( pickup(UnrealID) ).
+				
+				%%% Insert information about slow volume fields ('send on change with negation' percept).
+				forall bel( percept(slowVolume(UnrealID)) ) do insert( slowVolume(UnrealID) ).
+				%%% Update information about slow volume fields ('send on change with negation' percept).
+				forall bel( slowVolume(UnrealID),  percept(not(slowVolume(UnrealID))) )
+					do delete( slowVolume(UnrealID) ).
 			
-		% Update the path that the bot took (send on change).
-		forall bel( path(OldStartId, OldEndId, OldLength, [OldLocation]),  percept(path(StartId, EndId, Length, [Location])) )
-			do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
-			
-		% Insert the current state of the flag.
-		forall bel( percept(flagState(Team, FlagState)) ) do insert( flagState(Team, FlagState) ).
-		% Update the current state of the flag (send on change with negation).
-		forall bel( flagState(Team, FlagState),  percept(not(flagState(Team, FlagState))) )
-			do delete( flagState(Team, FlagState) ).
-			
-		% Insert information about an item the bot sees.
-		forall bel( percept(item(UnrealID, Label, ItemType, Position)) ) do insert( item(UnrealID, Label, ItemType, Position) ).
-		% Update information about an item the bot sees (send on change with negation).
-		forall bel( item(OldUnrealID, OldLabel, OldItemType, OldPosition),  percept(not(item(OldUnrealID, OldLabel, OldItemType, OldPosition))) )
-			do delete( item(OldUnrealID, OldLabel, OldItemType, OldPosition) ).
-			
-		% Insert when flag becomes visible to bot.
-		forall bel( percept(flag(Team, HolderUnrealID, Position)) ) do insert( flag(Team, HolderUnrealID, Position) ).
-		% Update information about the visibility of the flag to bot (send on change with negation).
-		forall bel( flag(Team, HolderUnrealID, Position),  percept(not(flag(Team, HolderUnrealID, Position))) )
-			do delete( flag(Team, HolderUnrealID, Position) ).	
-		
-		% Insert information about other bots that the bot sees.
-		forall bel( percept(bot(UnrealID, Name, Team, Position, Weapon, FireMode)) ) do insert( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).
-		% Update information about other bots that the bot sees (send on change with negation).
-		forall bel( bot(UnrealID, Name, Team, Position, Weapon, FireMode),  percept(not(bot(UnrealID, Name, Team, Position, Weapon, FireMode))) )
-			do delete( bot(UnrealID, Name, Team, Position, Weapon, FireMode) ).	
-			
-		% Insert all the items that can be picked up.
-		forall bel( percept(pickup(UnrealID)) ) do insert( pickup(UnrealID) ).
-		% Update the items that the bot can pick up (send on change with negation).
-		forall bel( pickup(UnrealID),  percept(not(pickup(UnrealID))) )
-			do delete( pickup(UnrealID) ).
-			
-		% Insert slow volume that the bot sees
-		forall bel( percept(slowVolume(UnrealID)) ) do insert( slowVolume(UnrealID) ).
-		% Update information about slow volume (send on change with negation).
-		forall bel( slowVolume(UnrealID),  percept(not(slowVolume(UnrealID))) )
-			do delete( slowVolume(UnrealID) ).			
+			%% PERCEPTS ABOUT BOT ACTIONS
+				%%% Update path percept caused by the path action ('send on change' percept). We don't need to remove paths because the map doesn't change
+				forall bel( percept(path(StartID, EndID, Length, LocationList)) ) do insert( path(StartID, EndID, Length, LocationList) ).
+				%forall bel( path(OldStartId, OldEndId, OldLength, [OldLocation]),  percept(path(StartId, EndId, Length, [Location])) )
+				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
-		% If the current goal has been reached, pick a new goal.			
-		if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+		% GOAL MANAGEMENT
+			%% If the current goal has been reached, pick a new goal.			
+			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 	}
 }
