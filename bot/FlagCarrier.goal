@@ -6,8 +6,14 @@ init module {
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 			
-		% We are at a certain location if the IDs match
+		% Bring the flag to our base. We are at a certain location if the IDs match.
+		bringFlag(UnrealID) :- navigation(reached, UnrealID).
+			
+		% Get the flag from component. We are at a certain location if the IDs match.
 		getFlag(HolderUnrealID) :- navigation(reached, HolderUnrealID).
+		
+		% Go to a destination. We are at a certain location if the IDs match.
+		goTo(UnrealID) :- navigation(reached, UnrealID).
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -91,11 +97,23 @@ main module {
 		if bel (percept(navigation(stuck, Destination))) then respawn.
 		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
 		
-		% Go get the flag
+		% Go somewhere the bot needs to be: priority 1.
+		if a-goal (goTo(UnrealID)) then navigate(UnrealID).
+	
+		% Bring flag to our base: priority 2.
+		if a-goal (bringFlag(HolderUnrealID)) then navigate(HolderUnrealID).
+		
+		% Go get the flag: priority 3.
 		if a-goal (getFlag(HolderUnrealID)) then navigate(HolderUnrealID).
 		
-		% Try to go to our destination if we want to be there.
+		% Try to go to our destination if we want to be there: priority 4.
 		if goal( at(Destination) ) then navigate(Destination).
+		
+		% If the bot sees no other bot, then he should look forward.
+		if bel( not(percept(bot(UnrealID, _, _, _, _, _))) ) then look(none).
+				
+		% If the bot sees another bot, then stop and try to shoot him.
+		if bel( percept(bot(UnrealID, _, blue, _, _, _)) ) then look(UnrealID) + shoot(UnrealID).
 	}
 }
 
@@ -185,8 +203,14 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
-			% If bot knows place of the flag, go get it.
-			if bel( flag(blue, HolderUnrealID, Position)) then adopt( getFlag(HolderUnrealID)).
+			% Adopt goals to get a weapon in the map, if the bot has not got any of these goals already.
+			% if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, _), pickup(UnrealID, weapon, ItemType) ) then adopt(goTo(UnrealID)).
+		
+			% If bot knows place of the flag, adopt goal to go get it.
+			if bel( base(blue, UnrealID), flagState(blue, home) ) then adopt( getFlag(UnrealID)).
+			
+			% If bot believes he holds the flag, adopt goal to bring the flag to his team's base.
+			if bel( flag(blue, HolderUnrealID, Position), flagState(blue, held), self(HolderUnrealID, NickName, Team), base(red, UnrealID) ) then adopt( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
