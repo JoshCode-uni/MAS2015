@@ -39,9 +39,9 @@ environment {
 }
 
 agentfiles {
-	"FlagCarrier.goal" [name=bot] .
-	"FlagProtecter.goal" [name=bot] .
-	"Roamer.goal" [name=bot] .
+	"FlagCarrier.goal" [name=FlagCarrier] .
+	"FlagProtecter.goal" [name=FlagProtecter] .
+	"Roamer.goal" [name=Roamer] .
 }
 
 launchpolicy {
@@ -49,4 +49,3 @@ launchpolicy {
     when [type=bot,max=1]@env do launch *:FlagProtecter.
     when [type=bot,max=2]@env do launch *:Roamer.
 }
-
