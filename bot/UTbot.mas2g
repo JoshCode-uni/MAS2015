@@ -7,7 +7,28 @@ environment {
 		logLevel = "WARNING", 
 		bots = [
 				[
-				 	["name", "Bot 1"],
+				 	["name", "FlagCarrier"],
+					["skill", 5],
+					["skin", "BotA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "FlagProtecter"],
+					["skill", 5],
+					["skin", "BotA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "RoamerA"],
+					["skill", 5],
+					["skin", "BotA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "RoamerB"],
 					["skill", 5],
 					["skin", "BotA"], 
 					["team", "red"],
@@ -18,10 +39,14 @@ environment {
 }
 
 agentfiles {
-	"UTbot.goal" [name=bot] .
+	"FlagCarrier.goal" [name=bot] .
+	"FlagProtecter.goal" [name=bot] .
+	"Roamer.goal" [name=bot] .
 }
 
 launchpolicy {
-    when [type=bot,max=1]@env do launch *:bot.
+    when [type=bot,max=1]@env do launch *:FlagCarrier.
+    when [type=bot,max=1]@env do launch *:FlagProtecter.
+    when [type=bot,max=2]@env do launch *:Roamer.
 }
 
