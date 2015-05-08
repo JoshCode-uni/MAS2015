@@ -7,30 +7,30 @@ environment {
 		logLevel = "WARNING", 
 		bots = [
 				[
-				 	["name", "FlagCarrier"],
+				 	["name", "Flag - Shepard"],
 					["skill", 5],
-					["skin", "BotA"], 
+					["skin", "MercMaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "FlagProtecter"],
+				 	["name", "Def - EDI"],
 					["skill", 5],
-					["skin", "BotA"], 
+					["skin", "NightFemaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "RoamerA"],
+				 	["name", "Roam - Garrus"],
 					["skill", 5],
-					["skin", "BotA"], 
+					["skin", "JuggMaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "RoamerB"],
+				 	["name", "Roam - Liara"],
 					["skill", 5],
-					["skin", "BotA"], 
+					["skin", "AlienFemaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				]
