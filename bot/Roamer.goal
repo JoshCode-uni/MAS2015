@@ -2,8 +2,8 @@
 % [ ] Protecting the Flag Carrier
 % [ ] 
 % [ ] 
-% [ ] 
-% [ ] Armour Strategy
+% [W] Powerup Strategy(very basic)
+% [W] Armour Strategy (Testing needed)
 % [ ] Health Strategy
 % [ ] Weapon Strategy
 
@@ -14,6 +14,11 @@ init module {
 		% if the coordinates are approximately equal.
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
+		% WantArmor is true if we do not have that armor.
+		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor is 'armor_helmet',Helmet == 0); 
+															(Armor is 'armor_vest',Vest == 0); 
+															(Armor is 'armor_shield_belt',Belt == 0); 
+															(Armor is 'armor_thighpads',Pants == 0)).
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -203,7 +208,13 @@ event module {
 			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
 			if  bel( percept(item(_,ammo,Weapon,Destination)), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5) then adopt( at(Destination) ).
 			
-			%% If I see armor 
-			if  bel( item(_,armor,Type,Destination),armor(Helmet), not(at(Destination))) then adopt( at(Destination) ).
+			%% If I see armor and wantArmor(Type), then make armor goal.
+			if  bel( item(_,armor,Type,Destination),wantArmor(Type), not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I see pickup and I am not under effect of one, make pickup new goal. 
+			if  bel( item(_,other,_,Destination), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I have no goals, go to random location. (Placeholder, needs to do something produtive once supercharged)
+			if not( goal( at(_) ) ), bel( target(Destination), not(at(Destination))) then adopt( at(Destination)).
 	}
 }
