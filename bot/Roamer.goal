@@ -4,7 +4,7 @@
 % [W] Flag handling (if somehow roamer has flag we don't want to get in a stalemate)
 % [W] Powerup Strategy(very basic)
 % [x] Armour Strategy (seems to work, pls review)
-% [ ] Health Strategy
+% [W] Health Strategy (Joshua, in modules)
 % [ ] Weapon Strategy
 
 init module {
