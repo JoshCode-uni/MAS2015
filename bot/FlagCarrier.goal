@@ -99,8 +99,8 @@ init module {
 main module {
 	program{
 		% When the bot is stuck or there is no path, this should be taken care of.
-		if bel (percept(navigation(stuck, Destination))) then respawn.
-		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		if bel (navigation(stuck, Destination)) then respawn.
+		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
 		
 		% Go somewhere the bot needs to be: priority 1.
 		if a-goal (goTo(UnrealID)) then navigate(UnrealID).
@@ -115,10 +115,10 @@ main module {
 		if goal( at(Destination) ) then navigate(Destination).
 		
 		% If the bot sees no other bot, then he should look forward.
-		if bel( not(percept(bot(UnrealID, _, _, _, _, _))) ) then look(none).
+		if bel( not(bot(UnrealID, _, _, _, _, _)) ) then look(none).
 				
 		% If the bot sees another bot, then stop and try to shoot him.
-		if bel( percept(bot(UnrealID, _, blue, _, _, _)) ) then look(UnrealID) + shoot(UnrealID).
+		if bel( bot(UnrealID, _, blue, _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 	}
 }
 

@@ -19,10 +19,10 @@ init module {
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 			
 		% WantArmor is true if we do not have that armor.
-		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor is 'armor_helmet',Helmet == 0); 
-															(Armor is 'armor_vest',Vest == 0); 
-															(Armor is 'armor_shield_belt',Belt == 0); 
-															(Armor is 'armor_thighpads',Pants == 0)).
+		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet',Helmet == 0); 
+															(Armor = 'armor_vest',Vest == 0); 
+															(Armor = 'armor_shield_belt',Belt == 0); 
+															(Armor = 'armor_thighpads',Pants == 0)).
 															
 	}
 	beliefs{
@@ -107,8 +107,8 @@ init module {
 main module [exit=nogoals] {
 	program {
 		% When the bot is stuck or there is no path, this should be taken care of.
-		if bel (percept(navigation(stuck, Destination))) then respawn.
-		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		if bel (navigation(stuck, Destination)) then respawn.
+		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
 		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
