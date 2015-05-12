@@ -189,15 +189,15 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
+			%% If the current goal has been reached, pick a new goal.			
+			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
 		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
 			if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
 		
 			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( base(red, UnrealID), not(at(Destination))) then adopt( goto(UnrealID)).
+			if not( goal( at(_) ) ), bel( base(red, UnrealID)) then adopt( goto(UnrealID)).
 			
-			%% If the current goal has been reached, pick a new goal.			
-			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
 			%% If I have flag, bring back to base.
 			%if bel( flag(blue, HolderUnrealID, Position), 
