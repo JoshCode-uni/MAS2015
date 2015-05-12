@@ -1,0 +1,7 @@
+report/report.main.pdf
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.aux
+*.tex.aux
