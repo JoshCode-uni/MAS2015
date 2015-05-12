@@ -10,6 +10,8 @@ init module {
 		% if the coordinates are approximately equal.
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
+		% Go to a destination. We are at a certain location if the IDs match.
+		goTo(UnrealID) :- navigation(reached, UnrealID).
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -92,6 +94,9 @@ main module {
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (percept(navigation(stuck, Destination))) then respawn.
 		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+				
+		% If the bot sees another bot, then stop and try to shoot him.
+		if bel( bot(UnrealID, _, blue, _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
@@ -184,18 +189,19 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
+			
+		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
+			if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
+		
+			%% If I have no goals, go to friendly base. (Need to patrol or something)
+			if not( goal( at(_) ) ), bel( base(red, UnrealID), not(at(Destination))) then adopt( goto(UnrealID)).
+			
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
-			%% If I see a weapon that is available, and I have an enforcer, make weapon new goal.
-			if  bel( percept(item(_,weapon,Type,Destination)),(weapon(Enforcer,_,_)), not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( base(red, UnrealID), not(at(Destination))) then adopt( at(Destination)).
-			
 			%% If I have flag, bring back to base.
-			if bel( flag(blue, HolderUnrealID, Position), 
-					flagState(blue, held), self(HolderUnrealID, _, _), 
-					base(red, Destination) ) then adopt( bringFlag(Destination) ).
+			%if bel( flag(blue, HolderUnrealID, Position), 
+			%		flagState(blue, held), self(HolderUnrealID, _, _), 
+			%		base(red, Destination) ) then adopt( bringFlag(Destination) ).
 	}
 }
