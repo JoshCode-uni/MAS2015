@@ -1,0 +1,17 @@
+module getWeapon [exit=nogoals] {
+	
+	goals {
+		done.
+	}
+	
+	program {
+		
+	}
+}
+
+event module {
+	
+	program {
+		
+	}
+}

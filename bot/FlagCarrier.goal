@@ -16,8 +16,7 @@ init module {
 		bringFlag(UnrealID) :- navigation(reached, UnrealID).
 		
 		% Get the flag from component. We are at a certain location if the IDs match.
-		getFlag(HolderUnrealID) :- navigation(reached, HolderUnrealID).
-		
+		getFlag(UnrealID) :- navigation(reached, UnrealID).
 	}
 	
 	beliefs{
@@ -102,8 +101,8 @@ init module {
 main module {
 	program{
 		% When the bot is stuck or there is no path, this should be taken care of.
-		if bel (percept(navigation(stuck, Destination))) then respawn.
-		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		if bel (navigation(stuck, Destination)) then respawn.
+		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
 		
 		% Go somewhere the bot needs to be: priority 1.
 		if a-goal (goTo(UnrealID)) then navigate(UnrealID).
@@ -111,7 +110,7 @@ main module {
 		% Bring flag to our base: priority 2.
 		if a-goal (bringFlag(UnrealID)) then navigate(UnrealID).
 		% Go pick up our flag: priority 3.
-		if a-goal (pickUpFlag(UnrealID)) then navigate(HolderUnrealID).
+		if a-goal (pickUpFlag(UnrealID)) then navigate(UnrealID).
 		% Go get the flag: priority 4.
 		if a-goal (getFlag(UnrealID)) then navigate(UnrealID).
 		
@@ -120,10 +119,9 @@ main module {
 		
 		%%%%
 		% If the bot believes his team's flag has taken, he should not try to get the other team's flag. 
-		%if bel( flagState(red, held), flag(red, HolderUnrealID, Position), base(red, UnrealID)) then drop(getFlag(UnrealID)).
+		% if bel( flagState(red, held), flag(red, HolderUnrealID, Position), base(red, UnrealID)) then drop(getFlag(UnrealID)).
 		
 		%%%%%
-				
 	}
 }
 
@@ -229,7 +227,6 @@ event module {
 			if bel( base(blue, UnrealID), flagState(blue, home) ) then adopt( getFlag(UnrealID)).
 				
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
-			if bel( flag(red, HolderUnrealID, Position), flagState(red, held), self(HolderUnrealID, NickName, Team), base(red, UnrealID) ) then adopt( bringFlag(UnrealID) ).
 			if bel( flag(blue, HolderUnrealID, Position), flagState(blue, held), self(HolderUnrealID, NickName, Team), base(red, UnrealID) ) then adopt( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
