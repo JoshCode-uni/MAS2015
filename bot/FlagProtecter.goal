@@ -1,3 +1,8 @@
+%TODO get the closest weapon that doesn't suck
+%TODO get to the friendly flag
+%TODO stay alert
+%TODO shoot enemies
+
 init module {
 	knowledge{
 		% We are at a certain location if the IDs match, or ...
@@ -181,5 +186,16 @@ event module {
 		% GOAL MANAGEMENT
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+			
+			%% If I see a weapon that is available, and I have an enforcer, make weapon new goal.
+			if  bel( percept(item(_,weapon,Type,Destination)),(weapon(Enforcer,_,_)), not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I have no goals, go to friendly base. (Need to patrol or something)
+			if not( goal( at(_) ) ), bel( base(red, UnrealID), not(at(Destination))) then adopt( at(Destination)).
+			
+			%% If I have flag, bring back to base.
+			if bel( flag(blue, HolderUnrealID, Position), 
+					flagState(blue, held), self(HolderUnrealID, _, _), 
+					base(red, Destination) ) then adopt( bringFlag(Destination) ).
 	}
 }
