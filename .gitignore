@@ -5,3 +5,6 @@ report/report.main.pdf
 *.synctex.gz
 *.aux
 *.tex.aux
+
+*/desktop.ini
+*/thumbs.db
