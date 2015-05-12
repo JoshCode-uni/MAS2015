@@ -1,0 +1,32 @@
+\documentclass[10pt, a4paper, twoside, openright]{report}
+
+\usepackage{fancyhdr}
+\usepackage{emptypage}
+\usepackage[dutch]{babel}
+\usepackage[pdfpagelayout=TwoPageRight]{hyperref}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\usepackage{enumitem}
+\usepackage{pdfpages}
+
+%For digital release
+%\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=11mm]{geometry}
+%For print release
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+
+\begin{document}
+
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\input{./title.tex}
+
+\tableofcontents
+\thispagestyle{empty}
+
+\input{./contents/report/report.tex}
+\input{./contents/appendix/appendix.tex}
+
+\end{document}
