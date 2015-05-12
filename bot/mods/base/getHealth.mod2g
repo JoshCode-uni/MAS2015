@@ -1,0 +1,19 @@
+module getHealth [exit=nogoals] {
+	
+	goals {
+		done.
+	}
+	
+	program {
+		if bel(true) then insert( heal ).
+	}
+	
+}
+
+event module getHealth {
+	
+	program {
+		
+	}	
+	
+}

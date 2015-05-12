@@ -1,0 +1,51 @@
+environment {
+	env = "ut-environment.jar".
+	init = [ 	
+		visualizer = "rmi://127.0.0.1:1099",
+		botServer = "ut://127.0.0.1:3000",
+		controlServer = "ut://127.0.0.1:3001",
+		logLevel = "WARNING", 
+		bots = [
+				[
+				 	["name", "Flag - Shepard"],
+					["skill", 5],
+					["skin", "MercMaleA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "Def - EDI"],
+					["skill", 5],
+					["skin", "NightFemaleA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "Roam - Garrus"],
+					["skill", 5],
+					["skin", "JuggMaleA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "Roam - Liara"],
+					["skill", 5],
+					["skin", "AlienFemaleA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
+				]
+			]
+	].
+}
+
+agentfiles {
+	"FlagCarrier.goal" [name=FlagCarrier] .
+	"FlagProtecter.goal" [name=FlagProtecter] .
+	"Roamer.goal" [name=Roamer] .
+}
+
+launchpolicy {
+    when [type=bot,max=1]@env do launch *:FlagCarrier.
+    when [type=bot,max=1]@env do launch *:FlagProtecter.
+    when [type=bot,max=2]@env do launch *:Roamer.
+}
