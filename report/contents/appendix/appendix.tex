@@ -3,19 +3,28 @@
 
 \chapter*{Appendix A: Ontology}
 \addcontentsline{toc}{chapter}{Appendix A: Ontology}
-\begin{tabular}{ l | r }
-  armor(w,x,y,z) & 2 \\
-  at(x) & 2 \\
-  bringFlag(x) & 2 \\
-  currentWeapon(x) & 2 \\
-  getFlag(x) & 2 \\
-  goTo(x) & 2 \\
-  location(x,y,z) & 2 \\
-  navigation(x,y) & 5 \\
-  powerup(x,y) & 8 \\
-  prefer(x) & 2 \\
-  shoot(x) & 2 \\
-  status(x,y) & 2 \\
+\begin{tabular}{ l | p{12cm}}
+  armor(w, x, y, z) & Shows which types of armor the bot currently possesses (w is helmet, x is vest, y is pants, z is belt). \\
+  at(x) & is true if the bot is at x. \\
+  bringFlag(x) & x is an UnrealID to which the flag should be brought. \\
+  currentWeapon(x, y) & x is the current weapon the robot has equiped, y is the current firing mode. \\
+  flag(x, y, z) & x is the team that currently possesses the flag, y is the HolderUnrealID of the flag and z is the position of the flag. \\
+  flagState(x, y) & x is the team, y is the current status regarding the flag. \\
+  getFlag(x) & x is an HolderUnrealID from which the flag should be gotten. \\
+  goTo(x) & x is an UnrealID to which the robot should go. \\
+  item(w, x, y, z) & w is the UnrealID of the item, x is its label, y the ItemType and z is the position. \\
+  location(x, y, z) & x, y and z are the coordinates of this location. \\
+  look(x) & x is UnrealID to which the bot is looking. \\
+  navigation(x, y) & y shows the location to which we try to navigate, x shows the current status (stuck, noPath, reached). \\
+  navigation(x, y, z) & x is the current location of the both, y is the current rotation and z is the current velocity of the bot. \\
+  path(w, x, y, z) & shows a path is available from w to x with length y. z is a list of locations. \\
+  pickup(x) & x is the UnrealID of the item we just picked up. \\
+  powerup(x, y) & x shows which powerups the bot currently has equipped, y is the remaining time. \\
+  prefer(x) & a list of weapons, sorted on preference (most preferred weapon first). \\
+  score(x, y, z) & the current score, x is the number of kills, y is the number of deaths and z is the number of suicides. \\
+  shoot(x) & x is the TargetLabel on which the bot will (try to) fire. \\
+  status(x, y) & x is the health of the bot, y is the amount of armor it still possesses. \\
+  wantArmor(x) & shows which armor the bot still wants (x is an armor identifier). \\
 \end{tabular}
 	
 	
