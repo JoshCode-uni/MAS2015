@@ -24,6 +24,14 @@ init module {
 															(Armor = 'armor_shield_belt',Belt == 0); 
 															(Armor = 'armor_thighpads',Pants == 0)).
 															
+		% true if list contains X.
+		listCon([H|T], X) :- H = X;
+							listCon(T, X).
+		
+		% get weapon inventory in list form.
+		wepList(List) :- weapon(X,_,_),
+							listCon(List, X).
+															
 	}
 	beliefs{
 		% Initially, we are going nowhere.
