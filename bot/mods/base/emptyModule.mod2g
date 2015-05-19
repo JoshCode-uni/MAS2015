@@ -1,0 +1,7 @@
+module emptyModule{
+	
+	program{
+		if bel(true) then insert( woLoLo ).
+	}
+	
+}

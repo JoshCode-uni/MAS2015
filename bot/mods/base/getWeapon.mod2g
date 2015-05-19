@@ -30,4 +30,5 @@ event module getWeapon {
 				forall bel( percept(weapon(WeaponType, Ammo, AltAmmo)) )
 					do insert( weapon(WeaponType, Ammo, AltAmmo) ).
 	}
+	
 }

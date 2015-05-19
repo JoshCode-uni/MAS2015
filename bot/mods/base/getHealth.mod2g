@@ -1,4 +1,4 @@
-module getHealth [exit=nogoals] {
+main module [exit=nogoals] {
 	
 	goals {
 		done.
@@ -10,10 +10,10 @@ module getHealth [exit=nogoals] {
 	
 }
 
-event module getHealth {
+event module {
 	
 	program {
-		
+		if bel(percept(self)) then insert (iAmATeapot).
 	}	
 	
 }

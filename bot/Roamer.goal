@@ -4,10 +4,10 @@
 % [W] Flag handling (if somehow roamer has flag we don't want to get in a stalemate)
 % [W] Powerup Strategy(very basic)
 % [x] Armour Strategy (seems to work, pls review)
-% [W] Health Strategy (Joshua, in modules)
+% [W] Health Strategy (Joshua, in modules, on hold)
 % [ ] Weapon Strategy
 
-#import "mods/base/getHealth.mod2g".
+#import "mods/base/emptyModule.mod2g".
 
 init module {
 	knowledge{
@@ -19,10 +19,10 @@ init module {
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 			
 		% WantArmor is true if we do not have that armor.
-		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet',Helmet == 0); 
-															(Armor = 'armor_vest',Vest == 0); 
-															(Armor = 'armor_shield_belt',Belt == 0); 
-															(Armor = 'armor_thighpads',Pants == 0)).
+		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Helmet == 0); 
+															(Armor = 'armor_vest', Vest == 0); 
+															(Armor = 'armor_shield_belt', Belt == 0); 
+															(Armor = 'armor_thighpads', Pants == 0)).
 															
 		% true if list contains X.
 		listCon([H|T], X) :- H = X;
@@ -114,6 +114,7 @@ init module {
 
 main module [exit=nogoals] {
 	program {
+		if bel(true) then emptyModule.
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (navigation(stuck, Destination)) then respawn.
 		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
