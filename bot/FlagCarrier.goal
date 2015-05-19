@@ -21,12 +21,10 @@ init module {
 		% Calculte a path from starting point to end point
 		calculatePath(StartID, EndId) :- path(StartID, EndID, Length, LocationList).
 		
-		% Prefer these weapons when close to enemy.
-		prefer(X) :- X = [link_gun, flak_cannon, stinger_minigun].	
-		% Prefer these weapons when fairly close to enemy.
-		prefer(Y) :- Y = [flak_cannon, stinger_minigun, shock_rifle].
-		% Prefer these weapons when far away from enemy.
-		prefer(Z) :- Z = [stinger_minigun, shock_rifle].
+		% Prefer these weapons given the range to enemy.
+		preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
+											  (Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
+											  (Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
 	}
 	
 	beliefs{
@@ -40,9 +38,6 @@ init module {
 		armor(none, none, none, none).
 		powerup(none, none).
 		currentWeapon(enforcer, primary).
-		
-		% Prefer the shock rifle.
-		% prefer([]).
 	}
 	program{
 		% Save our initial location as our starting point.
@@ -76,7 +71,7 @@ init module {
 			post{ true }
 		}
 		% Prefer a weapon
-		prefer([Weapon]) {
+		prefer(Weapon) {
 			pre{ true }
 			post{ true }
 		}
@@ -212,38 +207,50 @@ event module {
 					do delete( slowVolume(UnrealID) ).
 			
 			%% PERCEPTS ABOUT BOT ACTIONS
+				%%% Update path for the same start and end ID's.
+				forall bel( path(StartID, EndID, OldLength, OldLocationList), percept(path(StartID, EndID, Length, LocationList)) ) do delete (path(StartID, EndID, OldLength, OldLocationList)).
 				%%% Update path percept caused by the path action ('send on change' percept). We don't need to remove paths because the map doesn't change
 				forall bel( percept(path(StartID, EndID, Length, LocationList)) ) do insert( path(StartID, EndID, Length, LocationList) ).
 				%forall bel( path(OldStartId, OldEndId, OldLength, [OldLocation]),  percept(path(StartId, EndId, Length, [Location])) )
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%% NO PERCEPTS BELOW THIS LINE %%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+		
 		% GOAL MANAGEMENT
 			% If the bot sees no other bot, then he should look forward.
-			if bel( not(percept(bot(UnrealID, _, _, _, _, _))) ) then look(none).
+			if bel( not(bot(UnrealID, _, _, _, _, _)) ) then look(none).
 			% If the bot sees another bot, then stop and try to shoot him.
-			if bel( percept(bot(UnrealID, _, blue, _, _, _)) ) then look(UnrealID) + shoot(UnrealID).
+			if bel( bot(UnrealID, _, blue, _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
-			if bel( percept(bot(enemyFlagCarrier, _, _, _, _, _)) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
+			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
 			
 			% Adopt goal to calculate a path to enemy
-			if bel( percept (bot(UnrealID, _, blue, Position, _, _)), orientation(Location, Rotation, Velocity)) then adopt ( calculatePath(Location, Position)).
-			% Switch weapons when closer to or further away from away.
-			%if bel( percept (bot(UnrealID, _, blue, Position, _, _)), orientation(Location, Rotation, Velocity), path(Location, Position, Length, LocationList), Length < 5 ) then prefer(X).
-			%if bel( percept (bot(UnrealID, _, blue, Position, _, _)), orientation(Location, Rotation, Velocity), path(Location, Position, Length, LocationList), Length < 20 ) then prefer(Y).
-			%if bel( percept (bot(UnrealID, _, blue, Position, _, _)), orientation(Location, Rotation, Velocity), path(Location, Position, Length, LocationList), Length > 20 ) then prefer(Z).
+			if bel( orientation(Location, Rotation, Velocity), bot(UnrealID, _, blue, Position, _, _) ) then adopt ( calculatePath(Location, Position) ).
+			% Switch weapons when closer to or further away from enemies.
+			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
+			 		orientation(Location, Rotation, Velocity), Length < 5, preferedWeapons(WeaponList, "short") )
+				then prefer(WeaponList).
+			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
+					orientation(Location, Rotation, Velocity), Length >= 5, Length < 20, preferedWeapons(WeaponList, "mid") ) 
+				then prefer(WeaponList).
+			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
+					orientation(Location, Rotation, Velocity), Length >= 20, preferedWeapons(WeaponList, "long") ) 
+				then prefer(WeaponList).
 		
 	% Go get weapons to test EQUIPMENT strategy!
-	%if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
+	if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
 		
 			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, _), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
+		%	if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, _), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
 			
 			% Adopt goal to pick up our flag when it is dropped.
-			if bel( flagState(red, dropped), flag(red, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
+		%	if bel( flagState(red, dropped), flag(red, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if bel( base(blue, UnrealID), flagState(blue, home) ) then adopt( getFlag(UnrealID)).	
+		%	if bel( base(blue, UnrealID), flagState(blue, home) ) then adopt( getFlag(UnrealID)).	
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
-			if bel( flag(blue, HolderUnrealID, Position), flagState(blue, held), self(HolderUnrealID, NickName, Team), base(red, UnrealID) ) then adopt( bringFlag(UnrealID) ).
+		%	if bel( flag(blue, HolderUnrealID, Position), flagState(blue, held), self(HolderUnrealID, NickName, Team), base(red, UnrealID) ) then adopt( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
