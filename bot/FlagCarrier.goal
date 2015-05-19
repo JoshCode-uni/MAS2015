@@ -114,17 +114,17 @@ main module {
 		if bel( navigation(stuck, Destination) ) then respawn.
 		if bel( navigation(noPath, Destination) ) then drop( at(Destination) ).
 		
-		% Priority 0: calculate path
-		if a-goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		% Calculate path: priority 1.
+		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		
-		% Go somewhere the bot needs to be: priority 1.
+		% Go somewhere the bot needs to be: priority 2.
 		if a-goal( goTo(UnrealID) ) then navigate(UnrealID).
 		
-		% Bring flag to our base: priority 2.
+		% Bring flag to our base: priority 3.
 		if a-goal( bringFlag(UnrealID) ) then navigate(UnrealID).
-		% Go pick up our flag: priority 3.
+		% Go pick up our flag: priority 4.
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
-		% Go get the flag: priority 4.
+		% Go get the flag: priority 5.
 		if a-goal( getFlag(UnrealID) ) then navigate(UnrealID).
 		
 		% Try to go to our destination if we want to be there: priority 5.
