@@ -230,13 +230,13 @@ event module {
 			if bel( orientation(Location, Rotation, Velocity), bot(UnrealID, _, blue, Position, _, _) ) then adopt ( calculatePath(Location, Position) ).
 			% Switch weapons when closer to or further away from enemies.
 			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
-			 		orientation(Location, Rotation, Velocity), Length < 5, preferedWeapons(WeaponList, "short") )
+			 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
 				then prefer(WeaponList).
 			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
-					orientation(Location, Rotation, Velocity), Length >= 5, Length < 20, preferedWeapons(WeaponList, "mid") ) 
+					orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
 				then prefer(WeaponList).
 			if bel( path(Location, Position, Length, LocationList), bot(UnrealID, _, blue, Position, _, _),
-					orientation(Location, Rotation, Velocity), Length >= 20, preferedWeapons(WeaponList, "long") ) 
+					orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
 				then prefer(WeaponList).
 		
 	% Go get weapons to test EQUIPMENT strategy!
