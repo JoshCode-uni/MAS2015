@@ -8,6 +8,7 @@
 % [ ] Weapon Strategy
 
 #import "mods/base/emptyModule.mod2g".
+#import "mods/base/getArmour.mod2g".
 
 init module {
 	knowledge{
@@ -114,7 +115,7 @@ init module {
 
 main module [exit=nogoals] {
 	program {
-		if bel(true) then emptyModule.
+		if bel(true) then getArmour.
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (navigation(stuck, Destination)) then respawn.
 		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
@@ -226,7 +227,7 @@ event module {
 			if  bel( percept(item(_,ammo,Weapon,Destination)), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5) then adopt( at(Destination) ).
 			
 			%% If I see armor and wantArmor(Type), then make armor goal.
-			if  bel( item(_,armor,Type,Destination),wantArmor(Type), not(at(Destination))) then adopt( at(Destination) ).
+			if  bel( item(_,armor,Type,Destination),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
 			
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
 			if  bel( item(_,other,_,Destination), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
