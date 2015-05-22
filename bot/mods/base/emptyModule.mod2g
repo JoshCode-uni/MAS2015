@@ -5,3 +5,11 @@ module emptyModule{
 	}
 	
 }
+
+event module {
+	
+	program {
+		if bel(percept(self)) then insert (iExistThusIThink).
+	}
+	
+}
