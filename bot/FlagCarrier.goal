@@ -109,7 +109,7 @@ main module {
 		if bel( navigation(stuck, Destination) ) then respawn.
 		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
 		if bel( navigation(noPath, Destination) ), goal( goTo(Destination) ) then drop( goTo(Destination) ).
-		if bel( navigation(noPath, Destination) ), goal( getFlag(Destination) ) then drop( getFlag(Destination) ).
+		if bel( navigation(noPath, Destination) ), goal( pickUpFlag(Destination) ) then drop( pickUpFlag(Destination) ).
 		
 		% Calculate path: priority 1.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
