@@ -11,7 +11,7 @@ init module {
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 		% Go to a destination. We are at a certain location if the IDs match.
-		goTo(UnrealID) :- navigation(reached, UnrealID).
+		%goTo(UnrealID) :- navigation(reached, UnrealID).
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -190,16 +190,16 @@ event module {
 
 		% GOAL MANAGEMENT
 			%% If the current goal has been reached, pick a new goal.			
-			%if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
 		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( goTo(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(goTo(UnrealID)).
+			if not( goal( at(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(at(UnrealID)).
 		
 		% Adopt goal to get a weapon if no ammo
 			if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
 		
 			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( goTo(UnrealID)).
+			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( at(UnrealID)).
 			
 			
 			%% If I have flag, bring back to base.
