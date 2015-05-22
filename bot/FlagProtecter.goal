@@ -93,10 +93,10 @@ main module {
 	program{
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (percept(navigation(stuck, Destination))) then respawn.
-		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
 				
 		% If the bot sees another bot, then stop and try to shoot him.
-		if bel( bot(UnrealID, _, blue, _, _, _) ) then look(UnrealID) + shoot(UnrealID).
+		if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
@@ -199,7 +199,7 @@ event module {
 			if not( goal( goTo(_) ) ), bel((weapon(_, _, 0)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
 		
 			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( base(red, UnrealID)) then adopt( goTo(UnrealID)).
+			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( goTo(UnrealID)).
 			
 			
 			%% If I have flag, bring back to base.
