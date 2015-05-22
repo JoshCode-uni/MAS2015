@@ -193,7 +193,7 @@ event module {
 			%if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
 		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
+			if not( goal( goTo(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(goTo(UnrealID)).
 		
 		% Adopt goal to get a weapon if no ammo
 			if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
