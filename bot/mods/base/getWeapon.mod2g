@@ -2,22 +2,18 @@ module getWeapon [exit=nogoals] {
 	%%% Go to getWeapon module when belief there is a weapon you don't have. %%%
 	
 	knowledge{
-	% true if list contains X.
-	listCon([H|T], X) :- H = X;
-						listCon(T, X).
-		
 	% get weapon inventory in list form.
 	wepList(List) :- weapon(X,_,_),
-					not(listCon(List, X)),
+					not(member(X, List)),
 					wepList([X|List]).	
 					
 	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
 	%Input requirement: insert hardList to start. List is output.
 	priorities(List, Hlist) :- Hlist = [HH|TH],
 								wepList(Inv),
-								((not(listCon(Inv, HH)), 
+								((not(member(HH,Inv)), 
 									priorities([HH|List], TH));
-								(listCon(Inv, HH), 
+								(member(HH, Inv), 
 									priorities(List, TH))).
 	priorities(X, []).
 	
@@ -27,7 +23,7 @@ module getWeapon [exit=nogoals] {
 	% gives true if want weapon.
 	wantWep(Weapon) :- hardList(HARD),
 						priorities(List, HARD),
-						listCon(List, Weapon).
+						member(Weapon, List).
 	}
 	
 	goals {
