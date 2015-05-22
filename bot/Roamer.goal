@@ -115,7 +115,7 @@ init module {
 
 main module [exit=nogoals] {
 	program {
-		if bel(true) then getArmour.
+		%if bel(true) then getArmour.
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (navigation(stuck, Destination)) then respawn.
 		if bel (navigation(noPath, Destination)) then drop(at(Destination)).

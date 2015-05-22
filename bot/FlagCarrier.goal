@@ -107,7 +107,7 @@ main module {
 	program{
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel( navigation(stuck, Destination) ) then respawn.
-		if bel( navigation(noPath, Destination) ) then drop( at(Destination) ).
+		if bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
 		% Calculate path: priority 1.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
@@ -239,18 +239,18 @@ event module {
 					orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
 				then prefer(WeaponList).
 		
-	% Go get weapons to test EQUIPMENT strategy!
-	if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
+		% Go get weapons to test EQUIPMENT strategy!
+		%if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
 		
 			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-		%	if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, _), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
+			if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, _), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
 			
 			% Adopt goal to pick up our flag when it is dropped.
-		%	if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
+			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-		%	if bel( self(_, _, Team), base(not(Team), UnrealID), flagState(not(Team), home) ) then adopt( getFlag(UnrealID)).	
+			if bel( self(_, _, Team), base(not(Team), UnrealID), flagState(not(Team), home) ) then adopt( getFlag(UnrealID)).	
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
-		%	if bel( self(_, _, Team), flag(not(Team), HolderUnrealID, Position), flagState(not(Team), held), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then adopt( bringFlag(UnrealID) ).
+			if bel( self(_, _, Team), flag(not(Team), HolderUnrealID, Position), flagState(not(Team), held), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then adopt( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
