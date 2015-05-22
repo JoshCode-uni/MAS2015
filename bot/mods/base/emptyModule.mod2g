@@ -1,0 +1,15 @@
+module emptyModule{
+	
+	program{
+		if bel(true) then insert( woLoLo ).
+	}
+	
+}
+
+event module {
+	
+	program {
+		if bel(percept(self)) then insert (iExistThusIThink).
+	}
+	
+}

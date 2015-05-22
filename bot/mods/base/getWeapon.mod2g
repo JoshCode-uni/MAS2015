@@ -1,5 +1,19 @@
 module getWeapon [exit=nogoals] {
 	
+	knowledge{
+	% true if list contains X.
+	listCon([H|T], X) :- H = X;
+						listCon(T, X).
+		
+	% get weapon inventory in list form.
+	wepList(List) :- weapon(X,_,_),
+					not(listCon(List, X)),
+					wepList([X|List]).	
+					
+	% weapon priority list.
+	priorities(list) :- list = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].
+	}
+	
 	goals {
 		done.
 	}
@@ -9,9 +23,12 @@ module getWeapon [exit=nogoals] {
 	}
 }
 
-event module {
+event module getWeapon {
 	
 	program {
-		
+		%%% Insert information about the weapon inventory ('send on change with negation' percept).
+				forall bel( percept(weapon(WeaponType, Ammo, AltAmmo)) )
+					do insert( weapon(WeaponType, Ammo, AltAmmo) ).
 	}
+	
 }
