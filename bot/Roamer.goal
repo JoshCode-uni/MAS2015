@@ -213,7 +213,7 @@ event module {
 			if  bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
 			
 			%% If I see a weapon that is not in inventory, make weapon new goal. (Expansion: pickup better weapons only)
-			if  bel( pickup(Destination,weapon,Type),not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
+			if  bel( pickup(Destination,weapon,Type),not(weapon(Type,_,_)), not(at(Destination)) ), not(goal(at(_))) then adopt( at(Destination) ).
 			
 			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
 			if  bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
