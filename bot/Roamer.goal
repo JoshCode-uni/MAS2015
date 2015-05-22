@@ -110,6 +110,11 @@ init module {
 
 main module [exit=nogoals] {
 	program {
+		%TEST%
+		
+		if bel( navigation(stuck, Destination) ) then respawn.
+		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
+		
 		%if bel(true) then getArmour.
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (navigation(stuck, Destination)) then respawn.
@@ -207,28 +212,28 @@ event module {
 
 		% GOAL MANAGEMENT
 			%% If I see a big health pack and health is 180 or less, make pack new goal.
-			if  bel( pickup(Destination,health,super_health), status(Health,_), Health@=<180, not(at(Destination))) then adopt( at(Destination) ).
+			if  not( goal( at(_) ) ), bel( pickup(Destination,health,super_health), status(Health,_), Health@=<180, not(at(Destination))) then adopt( at(Destination) ).
 			
 			%% If I see a health pack and health is lower then 100, make pack new goal.
-			if  bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
 			
 			%% If I see a weapon that is not in inventory, make weapon new goal. (Expansion: pickup better weapons only)
-			if  bel( pickup(Destination,weapon,Type),not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,weapon,Type),not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
 			
 			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
-			if  bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
 			
 			%% If I see armor and wantArmor(Type), then make armor goal.
-			if  bel( pickup(Destination,armor,Type),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,armor,Type),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
 			
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
-			if  bel( pickup(Destination,other,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,other,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
 			
 			%% If I have no goals, go to enemy base. (Placeholder, needs to do something productive once supercharged)
-			if not( goal( at(_) ) ), bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), not(at(Destination))) then adopt( at(Destination)).
+			if not( goal( at(_) ) ), bel( self(_, _, Team), status(Health,_), Health@=<180, base(OtherTeam, UnrealID), not(Team = OtherTeam), not(at(Destination))) then adopt( at(Destination)).
 			
 			%% If I have flag, bring back to base.
-			if bel( flag(blue, HolderUnrealID, Position), 
+			if not( goal( at(_) ) ), bel( flag(blue, HolderUnrealID, Position), 
 					flagState(blue, held), self(HolderUnrealID, _, _), 
 					base(red, Destination) ) then adopt( bringFlag(Destination) ).
 	}
