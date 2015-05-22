@@ -190,13 +190,13 @@ event module {
 
 		% GOAL MANAGEMENT
 			%% If the current goal has been reached, pick a new goal.			
-			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+			%if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			
 		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
 			if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
 		
 		% Adopt goal to get a weapon if no ammo
-			if not( goal( goTo(_) ) ), bel((weapon(_, _, 0)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
+			if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
 		
 			%% If I have no goals, go to friendly base. (Need to patrol or something)
 			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( goTo(UnrealID)).
