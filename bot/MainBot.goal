@@ -1,0 +1,33 @@
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/Roamer.mod2g".
+
+init module {
+	#import "mods/knowledge.pro".
+	beliefs {
+	}
+	program {
+	}
+	actionspec {
+		skip {
+			pre{ true }
+			post{ true }
+		}
+	}
+}
+
+main module {
+	
+	program{
+
+	}
+	
+}
+
+event module {
+	
+	program {
+		% All common percepts here
+	}
+		
+}
