@@ -47,7 +47,7 @@ init module {
 		currentWeapon(enforcer, primary).
 	}
 	goals {
-		killMeNow.
+		prozac.
 	}
 	program{
 		% 'Send once' percepts, insert in the believe base.
@@ -211,30 +211,36 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
-			%% If I see a big health pack and health is 180 or less, make pack new goal.
-			if  not( goal( at(_) ) ), bel( pickup(Destination,health,super_health), status(Health,_), Health@=<180, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see a health pack and health is lower then 100, make pack new goal.
-			if not( goal( at(_) ) ), bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see a weapon that is not in inventory, make weapon new goal. (Expansion: pickup better weapons only)
-			if not( goal( at(_) ) ), bel( pickup(Destination,weapon,Type),not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
-			
-			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
-			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
-			
-			%% If I see armor and wantArmor(Type), then make armor goal.
-			if not( goal( at(_) ) ), bel( pickup(Destination,armor,Type),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
-			
-			%% If I see pickup and I am not under effect of one, make pickup new goal. 
-			if not( goal( at(_) ) ), bel( pickup(Destination,other,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I have no goals, go to enemy base. (Placeholder, needs to do something productive once supercharged)
-			if not( goal( at(_) ) ), bel( self(_, _, Team), status(Health,_), Health@=<180, base(OtherTeam, UnrealID), not(Team = OtherTeam), not(at(Destination))) then adopt( at(Destination)).
+		
+			%% See goals %%
 			
 			%% If I have flag, bring back to base.
 			if not( goal( at(_) ) ), bel( flag(blue, HolderUnrealID, Position), 
 					flagState(blue, held), self(HolderUnrealID, _, _), 
-					base(red, Destination) ) then adopt( bringFlag(Destination) ).
+					base(red, Destination) ) then adopt( at(Destination) ).
+			
+			%% If see armor and wantArmor(Type), then make armor goal.
+			if not( goal( at(_) ) ), bel( item(Destination,armor,_,_),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
+					
+			%% If I see pickup and I am not under effect of one, make pickup new goal. 
+			if not( goal( at(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% Want goals %%
+			
+			%% If current weapon enforcer, get other weapon.
+			if not( goal( at(_) ) ), bel( pickup(Destination,weapon,Type), currentWeapon(enforcer,_), not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
+			
+			%% If I have a weapon and ammo count is 5 or lower, make ammo new goal. (pickup is used because this both avoids running dry in combat and adds movement in combat which can be beneficial)
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
+			
+			%% If health is lower then 100, make pack new goal.
+			if not( goal( at(_) ) ), bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I have no goals, go to enemy base. (Placeholder)
+			if not( goal( at(_) ) ), bel( self(_, _, Team), status(Health,_), base(OtherTeam, Destination), not(Team = OtherTeam), not(at(Destination))) then adopt( at(Destination)).
+			
+			
+			
+			
 	}
 }
