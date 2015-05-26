@@ -260,6 +260,10 @@ event module {
 			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) then adopt( getFlag(UnrealID)).	
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
 			if bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then adopt( bringFlag(UnrealID) ).
+			
+			% Do not go back to our base when we do not have the flag anymore.
+			if goal( bringFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, home), not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
+			if goal( bringFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, dropped), not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
