@@ -117,7 +117,7 @@ main module {
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		
 		% Go somewhere the bot needs to be: priority 2.
-		if a-goal( goTo(UnrealID) ) then navigate(UnrealID).
+		%if a-goal( goTo(UnrealID) ) then navigate(UnrealID).
 		
 		% Bring flag to our base: priority 3.
 		if a-goal( bringFlag(UnrealID) ) then navigate(UnrealID).
@@ -125,6 +125,8 @@ main module {
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
 		% Go get the flag: priority 5.
 		if a-goal( getFlag(UnrealID) ) then navigate(UnrealID).
+		
+		if a-goal( goTo(UnrealID) ) then navigate(UnrealID).
 		
 		% Try to go to our destination if we want to be there: priority 5.
 		if goal( at(Destination) ) then navigate(Destination).
@@ -246,12 +248,9 @@ event module {
 		% Go get weapons to test EQUIPMENT strategy!
 		%if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
 		
-			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
+			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.	
 			%if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, primary), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
-			
-			if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, primary), item(UnrealID, weapon, ItemType, Position) ) then adopt( goTo(UnrealID) ).
-			
-			%if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
+			if not( goal( goTo(_) ) ), bel( pickup(Destination, weapon, Type), currentWeapon(enforcer,_), not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( goTo(Destination) ).
 			
 			% Adopt goal to pick up our flag when it is dropped.
 			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
