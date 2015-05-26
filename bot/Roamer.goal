@@ -4,10 +4,11 @@
 % [W] Flag handling (if somehow roamer has flag we don't want to get in a stalemate)
 % [W] Powerup Strategy(very basic)
 % [x] Armour Strategy (seems to work, pls review)
-% [W] Health Strategy (Joshua, in modules)
+% [W] Health Strategy (Joshua, in modules, on hold)
 % [ ] Weapon Strategy
 
-#import "mods/base/getHealth.mod2g".
+#import "mods/base/emptyModule.mod2g".
+#import "mods/base/getArmour.mod2g".
 
 init module {
 	knowledge{
@@ -19,13 +20,21 @@ init module {
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 			
 		% WantArmor is true if we do not have that armor.
-		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet',Helmet == 0); 
-															(Armor = 'armor_vest',Vest == 0); 
-															(Armor = 'armor_shield_belt',Belt == 0); 
-															(Armor = 'armor_thighpads',Pants == 0)).
+		wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Helmet == 0); 
+															(Armor = 'armor_vest', Vest == 0); 
+															(Armor = 'armor_shield_belt', Belt == 0); 
+															(Armor = 'armor_thighpads', Pants == 0)).
+															
+		% true if list contains X.
+		listCon([H|T], X) :- H = X;
+							listCon(T, X).
+		
+		% get weapon inventory in list form.
+		wepList(List) :- weapon(X,_,_),
+							listCon(List, X).
 															
 	}
-	beliefs{
+	beliefs {
 		% Initially, we are going nowhere.
 		navigation(none, none).
 		
@@ -38,14 +47,9 @@ init module {
 		currentWeapon(enforcer, primary).
 	}
 	goals {
-		killMeNow.
+		prozac.
 	}
 	program{
-		% Save our initial location as our starting point.
-		if bel( percept(orientation(Location, _, _)) ) then insert( target(Location) ).
-		% Take a random navpoint as our target; note that it might not be reachable though.
-		if bel( percept(navPoint(UnrealID, _, _))) then insert( target(UnrealID) ).
-		
 		% 'Send once' percepts, insert in the believe base.
 		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
 		
@@ -106,9 +110,15 @@ init module {
 
 main module [exit=nogoals] {
 	program {
+		%TEST%
+		
+		if bel( navigation(stuck, Destination) ) then respawn.
+		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
+		
+		%if bel(true) then getArmour.
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (navigation(stuck, Destination)) then respawn.
-		if bel (navigation(noPath, Destination)) then drop(at(Destination)).
+		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
 		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
@@ -201,33 +211,36 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
-			%% If the current goal has been reached, pick a new goal.			
-			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
-	
-			%% If I see a big health pack and health is 180 or less, make pack new goal.
-			if  bel( item(_,health,super_health,Destination), status(Health,_), Health@=<180, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see a health pack and health is lower then 100, make pack new goal.
-			if  bel( item(_,health,_,Destination), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see a weapon that is not in inventory, make weapon new goal. (Expansion: pickup better weapons only)
-			if  bel( percept(item(_,weapon,Type,Destination)),not(weapon(Type,_,_)), not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see ammo for a weapon I have and ammo count is 5 or lower, make ammo new goal.
-			if  bel( percept(item(_,ammo,Weapon,Destination)), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5) then adopt( at(Destination) ).
-			
-			%% If I see armor and wantArmor(Type), then make armor goal.
-			if  bel( item(_,armor,Type,Destination),wantArmor(Type), not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I see pickup and I am not under effect of one, make pickup new goal. 
-			if  bel( item(_,other,_,Destination), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
-			
-			%% If I have no goals, go to enemy base. (Placeholder, needs to do something productive once supercharged)
-			if not( goal( at(_) ) ), bel( base(blue, UnrealID), not(at(Destination))) then adopt( at(Destination)).
+		
+			%% See goals %%
 			
 			%% If I have flag, bring back to base.
-			if bel( flag(blue, HolderUnrealID, Position), 
+			if not( goal( at(_) ) ), bel( flag(blue, HolderUnrealID, Position), 
 					flagState(blue, held), self(HolderUnrealID, _, _), 
-					base(red, Destination) ) then adopt( bringFlag(Destination) ).
+					base(red, Destination) ) then adopt( at(Destination) ).
+			
+			%% If see armor and wantArmor(Type), then make armor goal.
+			if not( goal( at(_) ) ), bel( item(Destination,armor,_,_),wantArmor(Type), not(at(Destination))) then adopt( getArmour(Destination) ).
+					
+			%% If I see pickup and I am not under effect of one, make pickup new goal. 
+			if not( goal( at(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% Want goals %%
+			
+			%% If current weapon enforcer, get other weapon.
+			if not( goal( at(_) ) ), bel( pickup(Destination,weapon,Type), currentWeapon(enforcer,_), not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( at(Destination) ).
+			
+			%% If I have a weapon and ammo count is 5 or lower, make ammo new goal. (pickup is used because this both avoids running dry in combat and adds movement in combat which can be beneficial)
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,Weapon), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
+			
+			%% If health is lower then 100, make pack new goal.
+			if not( goal( at(_) ) ), bel( pickup(Destination,health,_), status(Health,_), Health@<100, not(at(Destination))) then adopt( at(Destination) ).
+			
+			%% If I have no goals, go to enemy base. (Placeholder)
+			if not( goal( at(_) ) ), bel( self(_, _, Team), status(Health,_), base(OtherTeam, Destination), not(Team = OtherTeam), not(at(Destination))) then adopt( at(Destination)).
+			
+			
+			
+			
 	}
 }
