@@ -1,12 +1,34 @@
 #import "mods/bot/Carrier.mod2g".
 #import "mods/bot/Defender.mod2g".
 #import "mods/bot/Roamer.mod2g".
+#import "mods/base/getPercepts.mod2g".
 
 init module {
 	#import "mods/knowledge.pro".
 	beliefs {
+		% Initially, we are going nowhere.
+		navigation(none, none).
+		
+		% The bot spawns with 100 health and 0 armour.
+		status(100,0).
+		
+		% We start with no armor, no powerups and a basic weapon.
+		armor(none, none, none, none).
+		powerup(none, none).
+		currentWeapon(enforcer, primary).
 	}
-	program {
+	program{
+		% 'Send once' percepts, insert in the believe base.
+		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
+		
+		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
+		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
+		
+		% Insert all the pickups in the believe base.
+		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
+	}
+	goals {
+		prozac.
 	}
 	actionspec {
 		skip {
@@ -18,8 +40,8 @@ init module {
 
 main module {
 	
-	program{
-
+	program {
+		
 	}
 	
 }
@@ -27,7 +49,9 @@ main module {
 event module {
 	
 	program {
-		% All common percepts here
+		if bel(true) then getPercepts.
+		
+		% GOAL MANAGEMENT
 	}
 		
 }
