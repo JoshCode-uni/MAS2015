@@ -42,6 +42,7 @@ init module {
 		
 		% Insert target to get weapons.
 		forall bel( percept(pickup(UnrealID, weapon, ItemType)) ) do insert( target(UnrealID) ).
+		forall bel( percept(pickup(UnrealID, other, ItemType)) ) do insert( target(UnrealID) ).
 	}
 	actionspec{
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -195,10 +196,7 @@ event module {
 			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
 			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
 			% If the bot sees another bot, then stop and try to shoot him.
-			if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + shoot(UnrealID).
-			
-			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( at(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(at(UnrealID)).
+			if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + stop + shoot(UnrealID).
 		
 			% Adopt goal to get a weapon if no ammo.
 			%if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
