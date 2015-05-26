@@ -11,7 +11,7 @@ init module {
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 		% Go to a destination. We are at a certain location if the IDs match.
-		goTo(UnrealID) :- navigation(reached, UnrealID).
+		%goTo(UnrealID) :- navigation(reached, UnrealID).
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -93,10 +93,10 @@ main module {
 	program{
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (percept(navigation(stuck, Destination))) then respawn.
-		if bel (percept(navigation(noPath, Destination))) then drop(at(Destination)).
+		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
 				
 		% If the bot sees another bot, then stop and try to shoot him.
-		if bel( bot(UnrealID, _, blue, _, _, _) ) then look(UnrealID) + shoot(UnrealID).
+		if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 		
 		% Try to go to our destination if we want to be there.
 		if goal( at(Destination) ) then navigate(Destination).
@@ -189,19 +189,19 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
-			%% If the current goal has been reached, pick a new goal.			
-			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+			
 			
 		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
+			if not( goal( at(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(at(UnrealID)).
 		
 		% Adopt goal to get a weapon if no ammo
-			if not( goal( goTo(_) ) ), bel((weapon(_, _, 0)), pickup(UnrealID, weapon, shock_rifle) ) then adopt(goTo(UnrealID)).
+			if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
 		
 			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( base(red, UnrealID)) then adopt( goTo(UnrealID)).
+			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( at(UnrealID)).
 			
-			
+			%% If the current goal has been reached, pick a new goal.			
+			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
 			%% If I have flag, bring back to base.
 			%if bel( flag(blue, HolderUnrealID, Position), 
 			%		flagState(blue, held), self(HolderUnrealID, _, _), 
