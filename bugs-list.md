@@ -3,8 +3,9 @@
 ## Carrier ##
 ##### <span style="color:orange;">[Critical]</span> - Always looks at the last location it saw a bot #####
 Once the FlagCarrier has seen a bot, it won't ever reset it's look().
-##### <span style="color:orange;">[Critical]</span> - Stuck/terminated? #####
-FlagCarrier broke once during demo.
+
+##### <span style="color:orange;">[Critical]</span> - Stuck in a corner #####
+FlagCarrier broke once during demo on Searchlight. It resolved itself after dying
 
 ##### <span style="color:orange;">[Major]</span> - Roams the map after capture #####
 If our flag is gone, the Carrier goes to our base and then goes all over the map
