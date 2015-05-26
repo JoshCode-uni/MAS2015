@@ -251,6 +251,7 @@ event module {
 			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.	
 			%if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, primary), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
 			if not( goal( goTo(_) ) ), bel( pickup(Destination, weapon, Type), currentWeapon(enforcer,_), not(weapon(Type,_,_)), not(at(Destination)) ) then adopt( goTo(Destination) ).
+			if bel( status(Health, Armour), Health < 100, pickup(UnrealID, health, ItemType) ) then adopt( goTo(UnrealID) ).
 			
 			% Adopt goal to pick up our flag when it is dropped.
 			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
