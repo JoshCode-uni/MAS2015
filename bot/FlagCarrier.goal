@@ -233,15 +233,16 @@ event module {
 			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
 			
 			% Adopt goal to calculate a path to enemy
-			if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, not(Team), Position, _, _) ) then adopt ( calculatePath(Location, Position) ).
+			if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
+			 then adopt ( calculatePath(Location, Position) ).
 			% Switch weapons when closer to or further away from enemies.
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 			 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
 				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 					orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
 				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 					orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
 				then prefer(WeaponList).
 		
