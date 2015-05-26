@@ -196,7 +196,7 @@ event module {
 			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
 			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
 			% If the bot sees another bot, then stop and try to shoot him.
-			if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + stop + shoot(UnrealID).
+			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + stop + shoot(UnrealID).
 		
 			% Adopt goal to get a weapon if no ammo.
 			%if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
