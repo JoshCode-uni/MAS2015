@@ -97,9 +97,6 @@ main module {
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (percept(navigation(stuck, Destination))) then respawn.
 		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
-				
-		% If the bot sees another bot, then stop and try to shoot him.
-		if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 		
 		% Try to go to our destination if we want to be there. First priority.
 		if goal( goTo(Destination) ) then navigate(Destination).
@@ -195,7 +192,10 @@ event module {
 				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 
 		% GOAL MANAGEMENT
-			
+			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
+			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
+			% If the bot sees another bot, then stop and try to shoot him.
+			if bel( self(_,_,Team), bot(UnrealID, _, not(Team), _, _, _) ) then look(UnrealID) + shoot(UnrealID).
 			
 			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
 			if not( goal( at(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(at(UnrealID)).
