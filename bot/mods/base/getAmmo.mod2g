@@ -1,0 +1,25 @@
+module getAmmo{
+	
+	program{
+		if bel(true) then insert( woLoLo ).
+	}
+	
+}
+
+event module {
+	
+	program {
+		
+			%% If I have a weapon and ammo count is 5 or lower, make ammo new goal. (pickup is used because this both avoids running dry in combat and adds movement in combat which can be beneficial)
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,shock_rifle), not(at(Destination)), weapon(shock_rifle,Ammo,_), Ammo@=<10 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,bio_rifle), not(at(Destination)), weapon(bio_rifle,Ammo,_), Ammo@=<20 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,link_gun), not(at(Destination)), weapon(link_gun,Ammo,_), Ammo@=<40 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,stinger_minigun), not(at(Destination)), weapon(stinger_minigun,Ammo,_), Ammo@=<40 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,flak_cannon), not(at(Destination)), weapon(flak_cannon,Ammo,_), Ammo@=<8 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,rocket_launcher), not(at(Destination)), weapon(rocket_launcher,Ammo,_), Ammo@=<6 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,sniper_rifle), not(at(Destination)), weapon(sniper_rifle,Ammo,_), Ammo@=<8 ) then adopt( at(Destination) ).
+			if not( goal( at(_) ) ), bel( pickup(Destination,ammo,avril), not(at(Destination)), weapon(avril,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
+			
+	}
+	
+}
