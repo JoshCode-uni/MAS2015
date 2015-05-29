@@ -1,8 +1,14 @@
 \chapter{Program of requirements}
+
+\section{Prioritising Requirements}
 Using the MoSCoW method, where the M stands for Must, the S for Should, the C for Could and the W for Won't, we decided to put all the minimum requirements under the M. All the other functionalities, which are use to better our bots, are placed under the S. Everything that was taken into consideration, but eventually denied, because it was to hard to implement, was placed under the C. The rest are placed under the W.\\
 
+\section{Functionalities}
+
+\subsection{Minimum Functionality}
 The minimum functionality is basically to grab the enemy flag and return it. And eventually you should win the game of Capture the Flag. This taken to account, we decided to make it our number one priority. We also knew that by only implementing this, we would definitely lose. Maybe in the beginning, when there is only one level 1 epic bot, we would have a chance at beating them. To make successful bots we should have additional functionalities.\\ 
 
+\subsection{Advanced Functionality}
 To extend our bots, we have divided the bots into groups:
 \begin{description}
 	\item[Flag Carrier] One bot with the task to capture the enemy flag and return it
@@ -11,12 +17,13 @@ To extend our bots, we have divided the bots into groups:
 \end{description}
 We chose this design, because of various reasons. One of them is when every bot has the same task, to capture the enemy flag, they would get in each others way. Also this would be very inefficient because no one would defend their own flag. The bots should also have the ability to pickup weapons, armor and health. This will give a large boost, and the chances of winning will increase. Another thing which is important, is to return the our own flag if it is dropped by the enemy. Otherwise the bots can not score any points. There also should be strategy's to pickup things. You do not want to grab health when your life is full for example. At last the bot should switch weapons based on the distance between him and the opponent. If they are close to each other, he should switch to a weapon with a high close-range damage vice versa.\\
 
+\subsection{Extended Functionality}
 Functionalities that we could have are:
 \begin{itemize}
 	\item Another agent, one who has an overview of the game and tells the other bots what to do
-	\item 
-	\item 
+	\item When the one of Roamers or the Flag capturer grabs a flag, he will be followed by the other, who will defend him against enemy bots.
+	\item An agent, who has only one task, to control the respawn of the bots. Sometimes, the bots get stuck, and they are idle for some time. The agent should handle this, wasting no time.
 \end{itemize}
-The idea to make a controlling agent is a good one. This would make the implementation more accessible, but on the other hand, the program would run very slow. The controlling agent has to send a lot of messages to the other agents, and this would cost a lot of time. There would be a significant delay in executing tasks, which would decrease our chance at winning the game.\\
+The idea to make a controlling agent is a good one. This would make the implementation more accessible, but on the other hand, the program would run very slow. The controlling agent has to send a lot of messages to the other agents, and this would cost a lot of time. There would be a significant delay in executing tasks, which would decrease our chance at winning the game. So we will not have this functionality.\\
 
 
