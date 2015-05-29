@@ -9,7 +9,6 @@
 
 #import "mods/base/emptyModule.mod2g".
 #import "mods/base/getArmour.mod2g".
-#import "mods/base/roamerPercept.mod2g".
 
 init module {
 	knowledge{

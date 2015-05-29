@@ -40,18 +40,16 @@ environment {
 
 agentfiles {
 	"MainBot.goal" [name=A] .
-%	"MainBot.goal" [name=B] .
-%	"MainBot.goal" [name=C] .
-%	"MainBot.goal" [name=D] .
-%	"Overlord.goal" [name=OL] .
-	"Roamer.goal" [name=Roam].
+	"MainBot.goal" [name=B] .
+	"MainBot.goal" [name=C] .
+	"MainBot.goal" [name=D] .
+	"Overlord.goal" [name=OL] .
 }
 
 launchpolicy {
-	when [type=bot,max=1]@env do launch *:Roam.
-%	when [max=1]@env do launch *:OL.
+	when [max=1]@env do launch *:OL.
 	when [type=bot,max=1]@env do launch *:A.
-%	when [type=bot,max=1]@env do launch *:B.
-%	when [type=bot,max=1]@env do launch *:C.
-%	when [type=bot,max=1]@env do launch *:D.
+	when [type=bot,max=1]@env do launch *:B.
+	when [type=bot,max=1]@env do launch *:C.
+	when [type=bot,max=1]@env do launch *:D.
 }

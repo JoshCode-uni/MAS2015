@@ -1,10 +1,10 @@
-%#import "mods/bot/Carrier.mod2g".
-%#import "mods/bot/Defender.mod2g".
-%#import "mods/bot/Roamer.mod2g".
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/Roamer.mod2g".
 #import "mods/base/getPercepts.mod2g".
 
 init module {
-%	#import "mods/knowledge.pro".
+	#import "mods/knowledge.pro".
 	beliefs {
 		% Initially, we are going nowhere.
 		% navigation(Status, Dest)
