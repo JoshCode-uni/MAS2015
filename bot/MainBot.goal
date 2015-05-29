@@ -1,13 +1,15 @@
-#import "mods/bot/Carrier.mod2g".
-#import "mods/bot/Defender.mod2g".
-#import "mods/bot/Roamer.mod2g".
+%#import "mods/bot/Carrier.mod2g".
+%#import "mods/bot/Defender.mod2g".
+%#import "mods/bot/Roamer.mod2g".
 #import "mods/base/getPercepts.mod2g".
 
 init module {
-	#import "mods/knowledge.pro".
+%	#import "mods/knowledge.pro".
 	beliefs {
 		% Initially, we are going nowhere.
+		% navigation(Status, Dest)
 		navigation(none, none).
+		orientation(none, none, none).
 		
 		% The bot spawns with 100 health and 0 armour.
 		status(100,0).
@@ -16,6 +18,7 @@ init module {
 		armor(none, none, none, none).
 		powerup(none, none).
 		currentWeapon(enforcer, primary).
+		
 	}
 	program{
 		% 'Send once' percepts, insert in the believe base.
@@ -31,7 +34,48 @@ init module {
 		prozac.
 	}
 	actionspec {
+		% Make a best effort attempt to navigate to a certain location on the map.
+		navigate(Destination) {
+			pre{ not(navigation(navigating, _)) }
+			post{ true }
+		}
+		% Stop
+		stop {
+			pre{ true }
+			post{ true }
+		}
+		% Shoot a target
+		shoot(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Prefer a weapon
+		prefer([Weapon]) {
+			pre{ true }
+			post{ true }
+		}
+		% Look at target
+		look(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Respawn
+		respawn {
+			pre{ true }
+			post{ true }
+		}
+		% Find a path
+		path(From, To) {
+			pre{ true }
+			post{ true }
+		}
+		% Let the bot continue with what he was doing
 		skip {
+			pre{ true }
+			post{ true }
+		}
+		% Deploy
+		deploy {
 			pre{ true }
 			post{ true }
 		}
