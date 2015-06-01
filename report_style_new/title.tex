@@ -1,0 +1,87 @@
+\begin{titlepage}
+
+\begin{center}
+
+%% Insert the TU Delft logo at the bottom of the page.
+\begin{tikzpicture}[remember picture,overlay]
+    \node at (current page.south)[anchor=south,inner sep=0pt]{
+        \includegraphics{cover/logo}
+    };
+\end{tikzpicture}
+
+%% Print the title in cyan.
+{\makeatletter
+\tudtitlefamily\color{\@titlecolor}\fontsize{64}{94}\selectfont\@title
+%\largetitlestyle\color{tudelft-cyan}\Huge\@title
+\makeatother}
+
+%% Print the optional subtitle in black.
+{\makeatletter
+\ifx\@subtitle\undefined\else
+    \bigskip
+   {\tudsffamily\color{\@titlecolor}\fontsize{22}{32}\selectfont\@subtitle}    
+    %\titlefont\titleshape\LARGE\@subtitle
+\fi
+\makeatother}
+
+\bigskip
+
+by
+%door
+
+\bigskip
+
+%% Print the name of the author.
+{\makeatletter
+%\largetitlefont\Large\bfseries\@author
+\tudtitlefamily\color{\@authorcolor}\fontsize{16}{16}\selectfont\@author
+\makeatother}
+
+\bigskip
+\bigskip
+
+\includegraphics[width=200]{./contents/graphics/MAS-Effect.pdf}
+
+\bigskip
+\bigskip
+\bigskip
+
+\begin{tabular}{C{7cm} C{7cm}}
+	\textsc{Youp Mickers} \newline
+		\textsc{\# 4246713} \newline
+		\texttt{y.o.u.p.mickers@student.tudelft.nl}	&
+	\textsc{Joshua Slik} \newline
+		\textsc{\# 4393007} \newline
+		\texttt{joshcode@protonmail.com}
+\end{tabular}
+\\[2mm]
+\begin{tabular}{C{7cm} C{7cm}}
+	\textsc{Ashay Somai} \newline
+		\textsc{\# 4366220} \newline
+		\texttt{ashaisomai@gmail.com} &
+	\textsc{Gavin Sun} \newline
+		\textsc{\# 4412249} \newline
+		\texttt{chuyansun@gmail.com}
+\end{tabular}
+\\[2mm]
+\begin{tabular}{C{7cm} C{7cm}}
+	\textsc{Jelle Tjallema} \newline
+		\textsc{\# 4215257} \newline
+		\texttt{jelle.tjallema@gmail.com}	&
+	\textsc{Lisette Veldkamp} \newline
+		\textsc{\# 4394712} \newline
+		\texttt{L.S.Veldkamp@student.tudelft.nl}
+\end{tabular}
+
+\vfill
+
+%% Only include the following lines if confidentiality is applicable.
+\bigskip
+\bigskip
+\emph{This report is confidential and cannot be made public until 26th of June, 2015.}
+%\emph{Op dit verslag is geheimhouding van toepassing tot en met 31 december 2013.}
+
+\end{center}
+
+\end{titlepage}
+

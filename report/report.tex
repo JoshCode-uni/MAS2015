@@ -8,6 +8,10 @@
 \usepackage{etoolbox}
 \usepackage{enumitem}
 \usepackage{pdfpages}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 %For digital release
 %\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=11mm]{geometry}
