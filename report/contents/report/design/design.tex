@@ -1,17 +1,32 @@
 \chapter{Design of an Agent System}
 \section{System Structure}
-Our system has three distinct roles for our four agents:
+Our system has three distinct roles for our four in-game agents:
 
 \begin{enumerate}
 \item The first being the \emph{Carrier}, designed to be optimal in retrieving and capturing the enemy flag. Once the flag has been captured, the \emph{Carrier} will often be defended by one of the \emph{Roamers}, for added security.
+
 \item The second is the \emph{Defender}, designed to defend our flag and home base. If our flag has been captured, he should chase the enemy flag carrier and re-capture the flag.
+
 \item The last role is the \emph{Roamer}, of which there are two agents running in a match. They are designed to generally walk over the entire map, getting a lot of weapons, health and armour and disrupting the enemy team. Additionally, they can capture the flag if they have nothing to collect or go after the enemy flag carrier if our flag is stolen.
 \end{enumerate}
 
+We also have a fourth role, called \emph{Overlord} which is an agent who doesn't join the Unreal Tournament Server, but rather an agent that manages the other agents. This agent is responsible for assigning roles to other agents.
+
 \subsection{Justification}
+We chose these four roles to divide the work that needs to be done in order to win the match.
+
+\begin{enumerate}
+\item[Carrier] We wanted a dedicated role that would be concerned with getting the enemy flag, whatever it may take without distractions. We think that in this way, we will consistently keep scoring points.
+
+\item[Defender] We also wanted a dedicated role that would stay with our flag so that the enemy team will have a hard time capturing our flag. He also chases the enemy flag carrier so that we keep track of his location for a short while, so that the \emph{Roamer} agents will know where to look for the enemy flag carrier if the \emph{Defender} can't take him out.
+
+\item[Roamer] Finally we had two agents left to assign a role. We think it is best to let two agents roam the map so that if our flag is captured and the \emph{Defender} couldn't stop them, we have two agents who are really powerful, for they have been gathering armour, weapons and health, who can easily take down the enemy flag carrier.
+\end{enumerate} 
 
 \section{Strategy of the Agent Team}
+\emph{Write this once we have a team-wide strategy}
 
 \subsection{Justification}
+\emph{Write this once we have a team-wide strategy}
 
 \section{Agent Team Validation}
