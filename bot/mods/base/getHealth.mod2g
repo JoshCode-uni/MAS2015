@@ -1,11 +1,11 @@
-main module [exit=nogoals] {
+module getHealth {
 	
 	goals {
-		done.
+		
 	}
 	
 	program {
-		if bel(true) then insert( heal ).
+		
 	}
 	
 }
@@ -13,7 +13,8 @@ main module [exit=nogoals] {
 event module {
 	
 	program {
-		if bel(percept(self)) then insert (iAmATeapot).
+		
+		if bel( status(H,_), H@<100 ) then adopt( heal ).
 	}	
 	
 }

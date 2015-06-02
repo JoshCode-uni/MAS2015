@@ -73,6 +73,12 @@ module getPercepts{
 				%%% Update the items that the bot can pick up ('send on change with negation' percept).
 				forall bel( pickup(UnrealID),  percept(not(pickup(UnrealID))) )
 					do delete( pickup(UnrealID) ).
+					
+				%%% Insert the items that the bot can pick up ('send on change with negation' percept).
+				forall bel( percept(pickup(UnrealID, Label, ItemType)) ) do insert( pickup(UnrealID, Label, ItemType) ).
+				%%% Update the items that the bot can pick up ('send on change with negation' percept).
+				forall bel( pickup(UnrealID, Label, ItemType),  percept(not(pickup(UnrealID, Label, ItemType))) )
+					do delete( pickup(UnrealID, Label, ItemType) ).
 				
 				%%% Insert information about slow volume fields ('send on change with negation' percept).
 				forall bel( percept(slowVolume(UnrealID)) ) do insert( slowVolume(UnrealID) ).

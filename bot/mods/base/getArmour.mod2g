@@ -1,6 +1,6 @@
 module getArmour {
 	
-	%knowledge {
+	knowledge {
 	%	wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Helmet == 0); 
 	%														(Armor = 'armor_vest', Vest == 0); 
 	%														(Armor = 'armor_shield_belt', Belt == 0); 
