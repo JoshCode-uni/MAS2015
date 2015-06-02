@@ -33,11 +33,24 @@ init module {
 		slowVolume(none).
 		path(none,none,none,none).
 		
+		% All modules
+		at(none).
+		target(none).
+		
+		% Weapon module
 		wepList(none).
 		priorities(none,none).
 		hardList(none).
 		wantWep(none).
 		getWep(none).
+		
+		% Carrier
+		preferedWeapons(none, none).
+		
+		% Roamer
+		wantArmor(none).
+		
+		
 		%%[END PLACEHOLDER]%%
 	}
 	program{
@@ -74,7 +87,7 @@ init module {
 			post{ true }
 		}
 		% Prefer a weapon
-		prefer([Weapon]) {
+		prefer(Weapon) {
 			pre{ true }
 			post{ true }
 		}
