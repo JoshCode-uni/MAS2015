@@ -69,6 +69,9 @@ init module {
 	}
 	goals {
 		prozac.
+		
+		% Initialise goals, because GOAL is stupid
+		getWep(none).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -123,7 +126,9 @@ main module {
 	
 	program {
 		% getWep/1 contains the location of a weapon.
-		if goal( getWep(Location) ) then navigate(Location).
+		if bel(true) then getWeapon.
+		
+		if bel(true) then skip.
 	}
 	
 }
