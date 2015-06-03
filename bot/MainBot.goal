@@ -1,9 +1,14 @@
+% State of minds %
 #import "mods/bot/Carrier.mod2g".
 #import "mods/bot/Defender.mod2g".
 #import "mods/bot/Roamer.mod2g".
+% Basics of the bot %
 #import "mods/base/getPercepts.mod2g".
 #import "mods/base/getWeapon.mod2g".
 #import "mods/base/getHealth.mod2g".
+#import "mods/base/getArmour.mod2g".
+#import "mods/base/getAmmo.mod2g".
+
 
 init module {
 	#import "mods/knowledge.pro".
@@ -44,6 +49,9 @@ init module {
 		wantWep(none).
 		getWep(none).
 		
+		% getArmour module
+		wantArmor(none).
+		
 		% Carrier
 		preferedWeapons(none, none).
 		
@@ -70,8 +78,11 @@ init module {
 	goals {
 		prozac.
 		
-		% Initialise goals, because GOAL is stupid
+		% [PLACEHOLDER] Initialise goals, because GOAL is stupid
 		getWep(none).
+		heal(none).
+		armor(none).
+		ammo(none).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -136,10 +147,19 @@ main module {
 event module {
 	
 	program {
+		% Percept Handling
 		if bel(true) then getPercepts.
 		
 		% GOAL MANAGEMENT
+		if bel(true) then adopt(blip).
+		
 		if bel(true) then getHealth.
+		
+		if bel(true) then getWeapon.
+		
+		if bel(true) then getArmour.
+		
+		if bel(true) then getAmmo.
 	}
 		
 }
