@@ -47,9 +47,9 @@ agentfiles {
 }
 
 launchpolicy {
-	when [max=1]@env do launch *:OL.
-	when [type=bot,max=1]@env do launch *:A.
-	when [type=bot,max=1]@env do launch *:B.
-	when [type=bot,max=1]@env do launch *:C.
-	when [type=bot,max=1]@env do launch *:D.
+	when [max=1]@env do launch AllHailTheOverlord:OL.
+	when [type=bot,max=1]@env do launch Shepard:A.
+	when [type=bot,max=1]@env do launch EDI:B.
+	when [type=bot,max=1]@env do launch Garrus:C.
+	when [type=bot,max=1]@env do launch Liara:D.
 }
