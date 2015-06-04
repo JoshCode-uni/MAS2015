@@ -13,6 +13,6 @@ module getAmmo {
 				if not( goal( ammo(_) ) ), bel( pickup(Destination,ammo,avril), not(at(Destination)), weapon(avril,Ammo,_), Ammo@=<5 ) then adopt( ammo(Destination) ).
 			
 			%% Execution %%	
-				if goal( ammo(Destination) ) then navigate(Destination).
+				if goal( ammo(Destination), not(Destination = none) ) then navigate(Destination).
 		}
 }
