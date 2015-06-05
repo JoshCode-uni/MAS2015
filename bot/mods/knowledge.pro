@@ -8,19 +8,13 @@
 	% [PlaceHolder] item/4 initiator to correct weird GOAL behaviour.
 	item(none,none,none,none).
 	
-	% get weapon inventory in list form.
-	wepList(List) :- weapon(X,_,_),
-	not(member(X, List)),
-	wepList([X|List]).
-	
 	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
 	% Input requirement: insert hardList to start. List is output.
 	priorities(List, Hlist) :- Hlist = [HH|TH],
-	wepList(Inv),
-	((not(member(HH,Inv)),
-	priorities([HH|List], TH));
-	(member(HH, Inv),
-	priorities(List, TH))).
+				((not(weapon(HH,_,_),
+				priorities([HH|List], TH));
+				(weapon(HH,_,_),
+				priorities(List, TH))).
 	priorities(X, []).
 	
 	% Hardcode base priorities list. 
@@ -28,8 +22,8 @@
 	
 	% gives true if want weapon.
 	wantWep(Weapon) :- hardList(HARD),
-	priorities(List, HARD),
-	member(Weapon, List).
+			priorities(List, HARD),
+			member(Weapon, List).
 	
 	% getWep(Type) is true if it is in inventory.
 	getWep(Weapon) :- (weapon(Weapon,_,_)).
@@ -44,9 +38,9 @@
 	
 	% wantArmor(Armor) is true if Armor is a wanted piece of armor.
 	wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Helmet == 0); 
-															(Armor = 'armor_vest', Vest == 0); 
-															(Armor = 'armor_shield_belt', Belt == 0); 
-															(Armor = 'armor_thighpads', Pants == 0)).
+			(Armor = 'armor_vest', Vest == 0); 
+			(Armor = 'armor_shield_belt', Belt == 0); 
+			(Armor = 'armor_thighpads', Pants == 0)).
 															
 %% *************************
 %% ** END getArmour.mod2g **
