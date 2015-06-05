@@ -41,13 +41,13 @@ module Carrier{
 				not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then adopt( bringBackFlag(UnrealID) ).
 			
 			% Do not go back to our base when we do not even hold the flag anymore.
-			if goal( bringBackFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, home), 
+			if goal( bringBackFlag(UnrealID)), bel( not(UnrealID = none), self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, home), 
 			 	not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
-			if goal( bringBackFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, dropped), 
+			if goal( bringBackFlag(UnrealID)), bel( not(UnrealID = none), self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, dropped), 
 				not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
 			
 			% If close, grab weapons and health laying around.
 			if not( goal( grabStuff(_) ) ), bel( item(UnrealID, weapon, ItemType, Position), currentWeapon(enforcer, primary) ) then adopt( grabStuff(UnrealID) ).	
-			if not( goal( grabStuff(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( grabStuff(UnrealID) )
+			if not( goal( grabStuff(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( grabStuff(UnrealID) ).
 	}
 }

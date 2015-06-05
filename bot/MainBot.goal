@@ -84,6 +84,11 @@ init module {
 		heal(none).
 		armor(none).
 		ammo(none).
+		takeFlag(none).
+		bringBackFlag(none).
+		pickUpFlag(none).
+		%temporary
+		grabStuff(none).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -137,6 +142,22 @@ init module {
 main module [exit=never] {
 	
 	program {
+		% When the bot is stuck or there is no path, this should be taken care of.
+		if bel( navigation(stuck, Destination) ) then respawn.
+		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).
+		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
+		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
+		
+		% Calculate path: priority 5.
+		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		% Go somewhere the bot needs to be: priority 4.
+		if a-goal( grabStuff(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		% Bring flag to our base: priority 3.
+		if a-goal( bringBackFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		% Go pick up our flag: priority 2.
+		if a-goal( pickUpFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		% Go get the flag: priority 1.
+		if a-goal( takeFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
 		
 	}
 	

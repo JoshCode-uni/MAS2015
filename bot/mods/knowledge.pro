@@ -11,7 +11,7 @@
 	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
 	% Input requirement: insert hardList to start. List is output.
 	priorities(List, Hlist) :- Hlist = [HH|TH],
-				((not(weapon(HH,_,_),
+				((not(weapon(HH,_,_)),
 				priorities([HH|List], TH));
 				(weapon(HH,_,_),
 				priorities(List, TH))).
