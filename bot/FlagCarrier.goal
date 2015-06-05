@@ -48,7 +48,10 @@ init module {
 		% 'Send once' percepts, insert in the believe base.
 		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
 		
+		% Insert navPoints.
 		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
+		
+		% Insert information about the bases in the game.
 		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
 		
 		% Insert all the pickups in the believe base.
@@ -224,41 +227,49 @@ event module {
 		
 		% GOAL MANAGEMENT
 			% If the bot sees no other bot, then he should look forward.
-			if bel( not(bot(UnrealID, _, _, _, _, _)) ) then look(none).
+			%if bel( not(bot(UnrealID, _, _, _, _, _)) ) then look(none).
 			% If the bot sees another bot, then stop and try to shoot him.
-			if bel( self(_, _, Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + shoot(UnrealID).
+			if bel( self(_, _, Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
 			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
-			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
+			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then stop + shoot(enemyFlagCarrier).
 			
 			% Adopt goal to calculate a path to enemy
-			if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, not(Team), Position, _, _) ) then adopt ( calculatePath(Location, Position) ).
+			if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
+			 then adopt ( calculatePath(Location, Position) ).
 			% Switch weapons when closer to or further away from enemies.
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 			 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
 				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 					orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
 				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, not(Team), Position, _, _),
+			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
 					orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
 				then prefer(WeaponList).
+				
+			% If close, grab weapons and health laying around.
+			if not( goal( goTo(_) ) ), bel( item(UnrealID, weapon, ItemType, Position), currentWeapon(enforcer, primary) ) then adopt( goTo(UnrealID) ).	
+			if not( goal( goTo(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( goTo(UnrealID) ).	
 		
-		% Go get weapons to test EQUIPMENT strategy!
-		%if not( goal( goTo(_) ) ), bel( pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).		
-		
-			% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			%if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, primary), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
-			
-			if not( goal( goTo(_) ) ), bel( currentWeapon(enforcer, primary), item(UnrealID, weapon, ItemType, Position) ) then adopt( goTo(UnrealID) ).
-			
-			%if not( goal( goTo(_) ) ), bel( not(currentWeapon(shock_rifle, _)), pickup(UnrealID, weapon, ItemType) ) then adopt( goTo(UnrealID) ).
-			
 			% Adopt goal to pick up our flag when it is dropped.
-			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) then adopt( pickUpFlag(UnrealID) ). 
+			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
+				then adopt( pickUpFlag(UnrealID) ). 
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) then adopt( getFlag(UnrealID)).	
+			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
+			 	then adopt( getFlag(UnrealID)).	
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
-			if bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then adopt( bringFlag(UnrealID) ).
+			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
+				not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( bringFlag(UnrealID) ).
+				
+			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
+			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
+				not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then adopt( bringFlag(UnrealID) ).
+			
+			% Do not go back to our base when we do not even hold the flag anymore.
+			if goal( bringFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, home), 
+			 	not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
+			if goal( bringFlag(UnrealID)), bel( self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, dropped), 
+				not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
 		
 			%% If the current goal has been reached, pick a new goal.			
 			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
