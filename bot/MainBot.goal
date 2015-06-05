@@ -2,6 +2,7 @@
 #import "mods/bot/Carrier.mod2g".
 #import "mods/bot/Defender.mod2g".
 #import "mods/bot/Roamer.mod2g".
+
 % Basics of the bot %
 #import "mods/base/getPercepts.mod2g".
 %#import "mods/base/getWeapon.mod2g".
@@ -133,13 +134,10 @@ init module {
 	}
 }
 
-main module {
+main module [exit=never] {
 	
 	program {
-		% getWep/1 contains the location of a weapon.
-%		if bel(true) then getWeapon.
 		
-		if bel(true) then skip.
 	}
 	
 }
@@ -149,9 +147,6 @@ event module {
 	program {
 		% Percept Handling
 		if bel(true) then getPercepts.
-		
-		% GOAL MANAGEMENT
-		if bel(true) then adopt(blip).
 		
 		if bel(true) then getHealth.
 		
