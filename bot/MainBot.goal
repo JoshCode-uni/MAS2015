@@ -147,6 +147,7 @@ main module [exit=never] {
 		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).
 		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
+		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		
 		% Calculate path: priority 5.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
