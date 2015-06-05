@@ -1,5 +1,5 @@
 module Carrier{
-	program {
+	program [order=linearall]{
 		
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		%% NO PERCEPTS IN THIS FILE %%
