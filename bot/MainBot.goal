@@ -12,7 +12,7 @@
 
 
 init module {
-	#import "mods/knowledge.pro".
+	#import "mods/knowledge.prolog".
 	beliefs {
 		% Initially, we are going nowhere.
 		% navigation(Status, Dest)
