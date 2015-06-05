@@ -41,6 +41,7 @@ init module {
 		
 		% All modules
 		at(none).
+		role(none, none).
 		target(none).
 		
 		% Weapon module
@@ -142,6 +143,10 @@ init module {
 main module [exit=never] {
 	
 	program {
+		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
+		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
+		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
+				
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel( navigation(stuck, Destination) ) then respawn.
 		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).

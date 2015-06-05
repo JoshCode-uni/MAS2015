@@ -4,6 +4,14 @@ module getPercepts{
 		% All common percepts here
 		
 		% MAILBOX MANAGEMENT (RECEIVE)
+				if bel( received(OverLord, role(Agent, carrier)), me(Me) ) then insert( role(Me, carrier) ).
+				if bel( received(OverLord, role(Agent, defender)), me(Me) ) then insert( role(Me, defender) ).
+				if bel( received(OverLord, role(Agent, roamer)), me(Me) ) then insert( role(Me, roamer) ).
+				
+				if bel( percept( received(OverLord, role(Agent, carrier)) ) ) then insert( received(OverLord, role(Agent, carrier)) ).
+				if bel( percept( received(OverLord, role(Agent, defender)) ) ) then insert( received(OverLord, role(Agent, defender)) ).
+				if bel( percept( received(OverLord, role(Agent, roamer)) ) ) then insert( received(OverLord, role(Agent, roamer)) ).
+
 		
 		% PERCEPT HANDLING
 			%% PERCEPTS ABOUT SELF
@@ -89,8 +97,6 @@ module getPercepts{
 			%% PERCEPTS ABOUT BOT ACTIONS
 				%%% Update path percept caused by the path action ('send on change' percept). We don't need to remove paths because the map doesn't change
 				forall bel( percept(path(StartID, EndID, Length, LocationList)) ) do insert( path(StartID, EndID, Length, LocationList) ).
-				%forall bel( path(OldStartId, OldEndId, OldLength, [OldLocation]),  percept(path(StartId, EndId, Length, [Location])) )
-				%	do delete( path(OldStartId, OldEndId, OldLength, [OldLocation]) ) + insert( path(StartId, EndId, Length, [Location]) ).
 	}
 	
 }
