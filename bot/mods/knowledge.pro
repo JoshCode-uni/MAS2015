@@ -41,7 +41,36 @@
 			(Armor = 'armor_vest', Vest == 0); 
 			(Armor = 'armor_shield_belt', Belt == 0); 
 			(Armor = 'armor_thighpads', Pants == 0)).
-															
+																		
 %% *************************
 %% ** END getArmour.mod2g **
+%% *************************
+
+%% *************************
+%% ** BGN Carrier.mod2g **
+%% *************************
+
+	% Prefer these weapons given the range to enemy.
+	preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
+					  	(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
+						  (Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
+
+	% calculate the length of a path from starting point to end point
+	calculatePath(StartID, EndId) :- path(StartID, EndID, Length, LocationList).
+	
+	% Take the flag from the component. We are at a certain location if the IDs match.
+	takeFlag(UnrealID) :- navigation(reached, UnrealID).
+	
+	% Pick up our flag of the ground. We are at a certain location if the IDs match.
+	pickUpFlag(UnrealID) :- navigation(reached, UnrealID).
+		
+	% Bring the flag back home to our base. We are at a certain location if the IDs match.
+	bringBackFlag(UnrealID) :- navigation(reached, UnrealID).
+	
+	%!!!!!!!!!!!!!!!!!!!!!!!!!%
+	% TEMPORARY GOAL (will be replaced for modules getHealth and getWeapon). Grab closeby stuff. We are at a certain location if the IDs match.
+	grabStuff(UnrealID) :- navigation(reached, UnrealID).
+	
+%% *************************
+%% ** BGN Carrier.mod2g **
 %% *************************
