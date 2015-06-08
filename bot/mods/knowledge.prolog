@@ -90,3 +90,19 @@
 %% *************************
 %% ** END Defender.mod2g **
 %% *************************
+
+%% *************************
+%% ** BGN Roamer.mod2g **
+%% *************************
+														
+		% true if list contains X.
+		listCon([H|T], X) :- H = X;
+							listCon(T, X).
+		
+		% get weapon inventory in list form.
+		wepList(List) :- weapon(X,_,_),
+							listCon(List, X).
+
+%% *************************
+%% ** END Roamer.mod2g **
+%% *************************
