@@ -1,22 +1,30 @@
 module Defender{
-	program {
+	program [order=linearall] {
 		% GOAL MANAGEMENT
-			
-			
-		% Adopt goal to get a weapon in the map, if the bot has not got any of these goals already.
-			if not( goal( at(_) ) ), bel((currentWeapon(enforcer, _)), pickup(UnrealID, weapon, _) ) then adopt(at(UnrealID)).
 		
-		% Adopt goal to get a weapon if no ammo
-			if  bel( item(_,ammo,Weapon,Destination), not(at(Destination)), weapon(Weapon,Ammo,_), Ammo@=<5 ) then adopt( at(Destination) ).
-		
-			%% If I have no goals, go to friendly base. (Need to patrol or something)
-			if not( goal( at(_) ) ), bel( self(_,_,Team), base(Team, UnrealID)) then adopt( at(UnrealID)).
+			% If the bot percepts the enemyFlagCarrier, he should shoot him so the flag will be dropped.
+			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + shoot(enemyFlagCarrier).
 			
-			%% If the current goal has been reached, pick a new goal.			
-			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+			% If the bot sees another bot, he should shoot him.
+			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + shoot(UnrealID).
+			
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+			
+			% If close, grab stuff laying around.
+			if not( goal( getStuff(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( getStuff(UnrealID) ).	
+			if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
+						
+			%% Patrol at our base.
+			if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
+			
+			%% If our flag is gone, go to enemy base.
+			%if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), not(Team = OtherTeam), base(OtherTeam, UnrealID), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
+			
 			%% If I have flag, bring back to base.
-			%if bel( flag(blue, HolderUnrealID, Position), 
-			%		flagState(blue, held), self(HolderUnrealID, _, _), 
-			%		base(red, Destination) ) then adopt( bringFlag(Destination) ).
+			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
+					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
+					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).	
+
 	}
 }

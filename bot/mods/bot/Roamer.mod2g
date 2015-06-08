@@ -1,6 +1,6 @@
 module Roamer{
 	
-	program {
+	program [order=linearall] {
 		% GOAL MANAGEMENT
 		
 			%% See goals %%

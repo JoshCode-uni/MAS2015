@@ -74,3 +74,19 @@
 %% *************************
 %% ** BGN Carrier.mod2g **
 %% *************************
+
+%% *************************
+%% ** BGN Defender.mod2g **
+%% *************************
+
+		% myTeam(?Team).
+		myTeam(Team) :- self(_,_,Team).
+		% enemy(+UnrealID).
+		enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
+		
+		% Go to a destination. We are at a certain location if the IDs match.
+		goTo(UnrealID) :- navigation(reached, UnrealID).
+		
+%% *************************
+%% ** END Defender.mod2g **
+%% *************************
