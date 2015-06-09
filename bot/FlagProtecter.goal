@@ -10,11 +10,28 @@ init module {
 		% if the coordinates are approximately equal.
 		at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 			round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
+			
+		% Go to a destination. We are at a certain location if the IDs match.
+		bringFlag(UnrealID) :- navigation(reached, UnrealID).
+		
+		% We are at a certain location if the IDs match, or ...
+		kill(UnrealID) :- navigation(reached, UnrealID).
+			
 		% Go to a destination. We are at a certain location if the IDs match.
 		goTo(UnrealID) :- navigation(reached, UnrealID).
 		
+<<<<<<< HEAD
 		% Can be used to calculate the distance between (X1,Y1) and (X2,Y2), as of yet, it gives the SQUARED distance.
 		distance(Dist,X1,Y1,X2,Y2) :- Dist is (X1-X2)*(X1-X2)+(Y1-Y2)*(Y1-Y2).
+=======
+		% Go to a destination. We are at a certain location if the IDs match.
+		getStuff(UnrealID) :- navigation(reached, UnrealID).
+		
+		% myTeam(?Team).
+		myTeam(Team) :- self(_,_,Team).
+		% enemy(+UnrealID).
+		enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
+>>>>>>> 663d718fafb325a5c87af495a04d890b218fe5f2
 	}
 	beliefs{
 		% Initially, we are going nowhere.
@@ -101,11 +118,23 @@ main module {
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel (percept(navigation(stuck, Destination))) then respawn.
 		if bel( navigation(noPath, Destination) ), goal( at(Destination) ) then drop( at(Destination) ).
+		if bel( navigation(noPath, Destination) ), goal( goTo(Destination) ) then drop( goTo(Destination) ).
+		if bel( navigation(noPath, Destination) ), goal( kill(Destination) ) then drop( kill(Destination) ).
+		if bel( navigation(noPath, Destination) ), goal( getStuff(Destination) ) then drop( getStuff(Destination) ).
 		
-		% Try to go to our destination if we want to be there. First priority.
+		% Priority #1: make sure to follow a bot to kill him!
+		if a-goal( bringFlag(UnrealID) ) then navigate(UnrealID). 
+		
+		% Priority #2: make sure to follow a bot to kill him!
+		if a-goal( kill(UnrealID) ) then navigate(UnrealID). 
+		
+		% Try to go to our destination if we want to be there. #3 priority.
 		if goal( goTo(Destination) ) then navigate(Destination).
 		
-		% Try to go to our destination if we want to be there.
+		% Priority #4
+		if a-goal( getStuff(UnrealID) ) then navigate(UnrealID). 
+		
+		% Try to go to our destination if we want to be there. Last priority.
 		if goal( at(Destination) ) then navigate(Destination).
 	}
 }
@@ -199,6 +228,7 @@ event module {
 			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
 			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + stop + shoot(enemyFlagCarrier).
 			% If the bot sees another bot, then stop and try to shoot him.
+<<<<<<< HEAD
 			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + stop + shoot(UnrealID).
 		
 			% Adopt goal to get a weapon if no ammo.
@@ -219,10 +249,29 @@ event module {
 					pickup(Destination,_,_), 
 					navPoint(Destination,location(X2,Y2,_),_), 
 					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( at(Destination) ).
+=======
+			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + shoot(UnrealID).
+			
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+			
+			% If close, grab stuff laying around.
+			if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
+			%if not( goal( goTo(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( goTo(UnrealID) ).	
+						
+			%% Patrol at our base.
+			if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
+			
+			%% If our flag is gone, go to enemy base.
+			if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), not(Team = OtherTeam), base(OtherTeam, UnrealID), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
+			
+			%% If the current goal has been reached, pick a new goal.			
+			if not( goal( at(_) ) ), bel( target(Destination) ) then adopt( at(Destination) ).
+>>>>>>> 663d718fafb325a5c87af495a04d890b218fe5f2
 			
 			%% If I have flag, bring back to base.
-			if bel( flag(blue, HolderUnrealID, Position), 
-					flagState(blue, held), self(HolderUnrealID, _, _), 
-					base(red, Destination) ) then adopt( bringFlag(Destination) ).
+			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
+					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
+					base(Team, Destination) ) then adopt( bringFlag(Destination) ).
 	}
 }
