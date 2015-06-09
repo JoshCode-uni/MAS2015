@@ -1,19 +1,16 @@
-main module [exit=nogoals] {
-	
-	goals {
-		done.
-	}
+module getHealth {
 	
 	program {
-		if bel(true) then insert( heal ).
+		
+	
+		%% Goal Handling %%
+			% If health is lower then 100, get health.
+			if bel( status(H,_), H@<100, pickup(Location, health, _), not( at(Location) ) ) then adopt( heal(Location) ).
+			% If health is lower then 150, look for super_health. (What is name of vials which also overcharge?). 
+			if bel( status(H,_), H@<150, item(Location, health, super_health,_) ) then adopt( heal(Location) ).
+		%% Execution %%
+			%if your goal is to get a heal at an location, go to the heal.
+			if goal( heal(Location), not(Location = none) ) then navigate(Location).
 	}
-	
-}
-
-event module {
-	
-	program {
-		if bel(percept(self)) then insert (iAmATeapot).
-	}	
 	
 }

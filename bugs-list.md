@@ -16,4 +16,3 @@ If our flag is gone, the Carrier goes to our base and then goes all over the map
 It receives goTo goals but doesn't ever do something with it.
 
 ## Roamer ##
-##### <span style="color:orange;">[Critical]</span> - Gets stuck when it cannot find anything to do #####

@@ -1,14 +1,12 @@
 module getArmour {
-	
-	%knowledge {
-	%	wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Helmet == 0); 
-	%														(Armor = 'armor_vest', Vest == 0); 
-	%														(Armor = 'armor_shield_belt', Belt == 0); 
-	%														(Armor = 'armor_thighpads', Pants == 0)).
-	%}
-	
+
 	program {
-		
+		%% Goal Handling %%
+			% If I want and see armor, get armor.
+			if bel( wantArmor(Armor), item(Location,_, Armor,_) ) then adopt( armor(Location) ).
+		%% Execution %%
+			%if your goal is to the armor at an location, go to the armor.
+			if goal( armor(Location), not(Location = none) ) then navigate(Location).
 	}
 
 }

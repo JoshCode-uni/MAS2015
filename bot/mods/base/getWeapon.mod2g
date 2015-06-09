@@ -1,55 +1,15 @@
-module getWeapon [exit=nogoals] {
-	%%% Go to getWeapon module when belief there is a weapon you don't have. %%%
-	
-	knowledge{
-	% get weapon inventory in list form.
-	wepList(List) :- weapon(X,_,_),
-					not(member(X, List)),
-					wepList([X|List]).	
-					
-	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
-	%Input requirement: insert hardList to start. List is output.
-	priorities(List, Hlist) :- Hlist = [HH|TH],
-								wepList(Inv),
-								((not(member(HH,Inv)), 
-									priorities([HH|List], TH));
-								(member(HH, Inv), 
-									priorities(List, TH))).
-	priorities(X, []).
-	
-	%Hardcode base priorities list.
-	hardList(List) :- List = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].					
-						
-	% gives true if want weapon.
-	wantWep(Weapon) :- hardList(HARD),
-						priorities(List, HARD),
-						member(Weapon, List).
-	}
-	
-	goals {
-		done.
-	}
+module getWeapon {
 	
 	program {
-		
-	}
-}
-
-event module getWeapon {
-	
-	program {
-		% Insert information about the weapon inventory ('send on change with negation' percept).
-		forall bel( percept(weapon(WeaponType, Ammo, AltAmmo)) )
-			do insert( weapon(WeaponType, Ammo, AltAmmo) ).
-					
-		% Insert information about an item the bot sees ('send on change with negation' percept).
-		forall bel( percept(item(UnrealID, Label, ItemType, Position)) ) do insert( item(UnrealID, Label, ItemType, Position) ).
-		% Update information about an item the bot sees ('send on change with negation' percept).
-		forall bel( item(OldUnrealID, OldLabel, OldItemType, OldPosition),  percept(not(item(OldUnrealID, OldLabel, OldItemType, OldPosition))) )
-			do delete( item(OldUnrealID, OldLabel, OldItemType, OldPosition) ).
-					
-		% If I see a weapon that is not in inventory and better then current loadout, pickup.
-		if  bel( ) then adopt( at(Destination) ).
+		%% Goal Handling %%
+			% If I shoot with enforcer, get a weapon pronto.
+			if  bel( currentWeapon(enforcer,_), pickup(Location,weapon,Type), wantWep(Type) ) then adopt( getWep(Location) ).
+			
+			% If I see a weapon that is not in inventory and better then current loadout, pickup.
+			if bel( item(Location,weapon,Type,_), wantWep(Type) ) then adopt( getWep(Location) ).
+			
+		%% Execution %%
+		if goal( getWep(Location), not(Location = none) ) then navigate(Location).
 	}
 	
 }

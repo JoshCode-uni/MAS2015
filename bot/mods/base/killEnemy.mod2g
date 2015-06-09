@@ -1,0 +1,16 @@
+module killEnemy {
+
+	program [order = linearall] {
+		%% Goal Handling %%
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+		
+		%% Execution %%
+			% If we have a goal to kill someone, go to the last known spot.
+			if goal( kill(UnrealID)) then navigate(UnrealID).
+			% If we reached the last known spot, and we lost the enemy, look around.
+			if goal( kill(UnrealID)), bel(navigation(reached, UnrealID)) then orientation(UnrealID, yaw, _).
+
+	}
+
+}
