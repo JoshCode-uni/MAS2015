@@ -1,10 +1,10 @@
 \chapter{Program of requirements}
-
+\todo{Add introductory paragraph}
 \section{Prioritising Requirements}
 Using the MoSCoW method, where the M stands for Must, the S for Should, the C for Could and the W for Won't, we decided to put all the minimum requirements under the M. All the other functionalities, which are use to better our bots, are placed under the S. Everything that was taken into consideration, but eventually denied, because it was to hard to implement, was placed under the C. The rest are placed under the W.\\
 
 \section{Functionalities}
-
+\todo{Add introductory paragraph}
 \subsection{Minimum Functionality}
 The minimum functionality is basically to grab the enemy flag and return it. And eventually you should win the game of Capture the Flag. This taken to account, we decided to make it our number one priority. We also knew that by only implementing this, we would definitely lose. Maybe in the beginning, when there is only one level 1 epic bot, we would have a chance at beating them. To make successful bots we should have additional functionalities.\\ 
 
@@ -21,7 +21,7 @@ We chose this design, because of various reasons. One of them is when every bot 
 Functionalities that we could have are:
 \begin{itemize}
 	\item Another agent, one who has an overview of the game and tells the other bots what to do
-	\item When the one of Roamers or the Flag capturer grabs a flag, he will be followed by the other, who will defend him against enemy bots.
+	\item When one of the Roamers or the Flag capturer grabs a flag, he will be followed by the other, who will defend him against enemy bots.
 	\item An agent, who has only one task, to control the respawn of the bots. Sometimes, the bots get stuck, and they are idle for some time. The agent should handle this, wasting no time.
 \end{itemize}
 The idea to make a controlling agent is a good one. This would make the implementation more accessible, but on the other hand, the program would run very slow. The controlling agent has to send a lot of messages to the other agents, and this would cost a lot of time. There would be a significant delay in executing tasks, which would decrease our chance at winning the game. So we will not have this functionality.\\

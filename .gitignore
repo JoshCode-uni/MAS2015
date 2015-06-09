@@ -1,10 +1,11 @@
-*/report.pdf
+*/*.pdf
 *.log
 *.out
 *.toc
 *.synctex.gz
 *.aux
 *.tex.aux
+*.tdo
 
 */desktop.ini
 */thumbs.db
