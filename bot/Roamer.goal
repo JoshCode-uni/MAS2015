@@ -7,7 +7,7 @@
 % [W] Health Strategy (Joshua, in modules, on hold)
 % [ ] Weapon Strategy
 
-#import "mods/base/emptyModule.mod2g".
+%#import "mods/base/emptyModule.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getWeapon.mod2g".
 
