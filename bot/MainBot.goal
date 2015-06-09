@@ -180,7 +180,7 @@ event module {
 		
 		if bel(true) then getHealth.
 		
-		%if bel(true) then getWeapon.
+		if bel(true) then getWeapon.
 		
 		if bel(true) then getArmour.
 		

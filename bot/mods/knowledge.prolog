@@ -2,17 +2,12 @@
 %% ** BGN getWeapon.mod2g **
 %% *************************
 
-	% [PlaceHolder] weapon/3 initiator to correct weird GOAL behaviour.
-	weapon(none,none,none).
-	
-	% [PlaceHolder] item/4 initiator to correct weird GOAL behaviour.
-	item(none,none,none,none).
 	
 	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
 	% Input requirement: insert hardList to start. List is output.
     priorities([HH|HT], Wep) :-Wep = HH;
                                (
-                               not(weapon(HH)),
+                               not(weapon(HH,_,_)),
                                priorities(HT,Wep)
                                ).
     priorities([],_).
@@ -24,7 +19,7 @@
 	wantWep(Weapon) :- hardList(HARD),
                        priorities(HARD, Weapon),
                        member(Weapon, HARD),
-                       not(weapon(Weapon)).
+                       not(weapon(Weapon,_,_)).
 	
 	% getWep(Type) is true if it is in inventory.
 	getWep(Weapon) :- (weapon(Weapon,_,_)).
