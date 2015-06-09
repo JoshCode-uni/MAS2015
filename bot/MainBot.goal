@@ -75,6 +75,10 @@ init module {
 		
 		%%TEST%%
 		
+		%%[TEMPORARY GOAL FIX]%%
+		
+		%%[END TEMPORARY FIX]%%
+		
 		
 	}
 	goals {
