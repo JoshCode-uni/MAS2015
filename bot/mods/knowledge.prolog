@@ -1,3 +1,23 @@
+%% *********************
+%% ** BGN ALL MODULES **
+%% *********************
+
+notnon(Var) :- not(Var = none).
+
+%goalStack(Stack) :- Stack = [].
+
+%pushStack(Element) :- .
+%popStack(Element) :- goalStack([H|Tail]), ELement = H.
+
+% Prefer these weapons given the range to enemy.
+preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
+					(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
+					(Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
+
+%% *********************
+%% ** END ALL MODULES **
+%% *********************
+
 %% *************************
 %% ** BGN getWeapon.mod2g **
 %% *************************
@@ -86,33 +106,10 @@ grabStuff(UnrealID) :- navigation(reached, UnrealID).
 %% **********************
 %% ** BGN Roamer.mod2g **
 %% **********************
-														
-		% true if list contains X.
-		listCon([H|T], X) :- H = X;
-							listCon(T, X).
 		
 		% get weapon inventory in list form.
-		wepList(List) :- weapon(X,_,_),
-							listCon(List, X).
+		wepList(List) :- weapon(X,_,_),	member(X, List).
 
 %% **********************
 %% ** END Roamer.mod2g **
 %% **********************
-
-%% *********************
-%% ** BGN ALL MODULES **
-%% *********************
-
-%goalStack(Stack) :- Stack = [].
-
-%pushStack(Element) :- .
-%popStack(Element) :- goalStack([H|Tail]), ELement = H.
-
-% Prefer these weapons given the range to enemy.
-preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
-					(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
-					(Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
-
-%% *********************
-%% ** END ALL MODULES **
-%% *********************
