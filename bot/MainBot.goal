@@ -41,7 +41,10 @@ init module {
 		
 		% All modules
 		at(none).
-		role('Liara', carrier).
+		role('Liara', roamer).
+		role('Shepard', carrier).
+		role('EDI', defender).
+		role('Garrus', roamer).
 		target(none).
 
 		%Code for changing role
