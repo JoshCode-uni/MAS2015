@@ -10,20 +10,21 @@
 	
 	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
 	% Input requirement: insert hardList to start. List is output.
-	priorities(List, Hlist) :- Hlist = [HH|TH],
-				((not(weapon(HH,_,_)),
-				priorities([HH|List], TH));
-				(weapon(HH,_,_),
-				priorities(List, TH))).
-	priorities(X, []).
+    priorities([HH|HT], Wep) :-Wep = HH;
+                               (
+                               not(weapon(HH)),
+                               priorities(HT,Wep)
+                               ).
+    priorities([],_).
 	
 	% Hardcode base priorities list. 
 	hardList(List) :- List = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].
 	
 	% gives true if want weapon.
 	wantWep(Weapon) :- hardList(HARD),
-			priorities(List, HARD),
-			member(Weapon, List).
+                       priorities(HARD, Weapon),
+                       member(Weapon, HARD),
+                       not(weapon(Weapon)).
 	
 	% getWep(Type) is true if it is in inventory.
 	getWep(Weapon) :- (weapon(Weapon,_,_)).

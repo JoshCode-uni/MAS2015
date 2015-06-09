@@ -6,10 +6,10 @@ module getWeapon {
 			if  bel( currentWeapon(enforcer,_), pickup(Location,weapon,Type), wantWep(Type) ) then adopt( getWep(Location) ).
 			
 			% If I see a weapon that is not in inventory and better then current loadout, pickup.
-			if bel( item(Location,weapon,Type,_), wantWep(Type)) then adopt( getWep(Location) ).
+			if bel( item(Location,weapon,Type,_), wantWep(Type) ) then adopt( getWep(Location) ).
 			
 		%% Execution %%
-		if goal( getWep(Location) ) then navigate(Location).
+		if goal( getWep(Location), not(Location = none) ) then navigate(Location).
 	}
 	
 }
