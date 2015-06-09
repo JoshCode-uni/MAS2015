@@ -4,13 +4,13 @@ module getPercepts{
 		% All common percepts here
 		
 		% MAILBOX MANAGEMENT (RECEIVE)
-				if bel( received(OverLord, role(Agent, carrier)), me(Me) ) then insert( role(Me, carrier) ).
-				if bel( received(OverLord, role(Agent, defender)), me(Me) ) then insert( role(Me, defender) ).
-				if bel( received(OverLord, role(Agent, roamer)), me(Me) ) then insert( role(Me, roamer) ).
+				if bel( me(Me), role(Me, OldRole), received(OverLord, role(Agent, carrier)) ) then insert( role(Me, carrier) ) + delete( role(Me, OldRole) ).
+				if bel( me(Me), role(Me, OldRole), received(OverLord, role(Agent, defender)) ) then insert( role(Me, defender) ) + delete( role(Me, OldRole) ).
+				if bel( me(Me), role(Me, OldRole), received(OverLord, role(Agent, roamer)) ) then insert( role(Me, roamer) ) + delete( role(Me, OldRole) ).
 				
-				if bel( percept( received(OverLord, role(Agent, carrier)) ) ) then insert( received(OverLord, role(Agent, carrier)) ).
-				if bel( percept( received(OverLord, role(Agent, defender)) ) ) then insert( received(OverLord, role(Agent, defender)) ).
-				if bel( percept( received(OverLord, role(Agent, roamer)) ) ) then insert( received(OverLord, role(Agent, roamer)) ).
+				if bel( received(OverLord, role(OldAgent, carrier)), percept( received(OverLord, role(Agent, carrier)) ) ) then insert( received(OverLord, role(Agent, carrier)) ) + delete( received(OverLord, role(OldAgent, carrier)) ).
+				if bel( received(OverLord, role(OldAgent, defender)), percept( received(OverLord, role(Agent, defender)) ) ) then insert( received(OverLord, role(Agent, defender)) ) + delete( received(OverLord, role(OldAgent, defender)) ).
+				if bel( received(OverLord, role(OldAgent, roamer)), percept( received(OverLord, role(Agent, roamer)) ) ) then insert( received(OverLord, role(Agent, roamer)) ) + delete( received(OverLord, role(OldAgent, roamer)) ).
 
 		
 		% PERCEPT HANDLING

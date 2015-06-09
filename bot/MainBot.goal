@@ -88,6 +88,7 @@ init module {
 		takeFlag(none).
 		bringBackFlag(none).
 		pickUpFlag(none).
+		goTo(none).
 		%temporary
 		grabStuff(none).
 	}
@@ -154,16 +155,18 @@ main module [exit=never] {
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		
-		% Calculate path: priority 5.
+		% Calculate path: priority 6.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
-		% Go somewhere the bot needs to be: priority 4.
+		% Go somewhere to grab stuff of the ground: priority 5.
 		if a-goal( grabStuff(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
-		% Bring flag to our base: priority 3.
+		% Bring flag to our base: priority 4.
 		if a-goal( bringBackFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
-		% Go pick up our flag: priority 2.
+		% Go pick up our flag: priority 3.
 		if a-goal( pickUpFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
-		% Go get the flag: priority 1.
+		% Go get the flag: priority 2.
 		if a-goal( takeFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		% Go to a destination: priority 1.
+		if goal( goTo(Destination), not(Destination = none) ) then navigate(Destination).
 		
 	}
 	
