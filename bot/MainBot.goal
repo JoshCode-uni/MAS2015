@@ -1,15 +1,15 @@
 % State of minds %
-#import "mods/bot/Carrier.mod2g".
-#import "mods/bot/Defender.mod2g".
-#import "mods/bot/Roamer.mod2g".
-
-% Basics of the bot %
 #import "mods/base/getPercepts.mod2g".
 #import "mods/base/getWeapon.mod2g".
 #import "mods/base/getHealth.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getAmmo.mod2g".
 
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/Roamer.mod2g".
+
+% Basics of the bot %
 
 init module {
 	#import "mods/knowledge.prolog".
@@ -18,59 +18,21 @@ init module {
 		% navigation(Status, Dest)
 		navigation(none, none).
 		
-		% The bot spawns with 100 health and 0 armour.
-		status(100,0).
-		
-		% We start with no armor, no powerups and a basic weapon.
-		armor(none, none, none, none).
-		powerup(none, none).
-		currentWeapon(enforcer, primary).
-		
-		%%[PLACEHOLDER] delete if GOAL behaves %%
 		orientation(none, none, none).
-		weapon(none,none,none).
-		score(0,0,0).
-		flagState(none,none).
-		item(none,none,none,none).
-		flag(none,none,none).
-		bot(none,none,none,none,none,none).
-		pickup(none).
-		pickup(none,none,none).
-		slowVolume(none).
-		path(none,none,none,none).
 		
-		% All modules
-		at(none).
+		status(100,0).
+
+		currentWeapon(enforcer, primary).
+
+		score(0,0,0).
+
 		role('Liara', roamer).
 		role('Shepard', carrier).
 		role('EDI', defender).
 		role('Garrus', roamer).
-		target(none).
-
-		%Code for changing role
-		%changeRole(none, none). 
-		
-		% Weapon module
-		wepList(none).
-		priorities(none,none).
-		hardList(none).
-		wantWep(none).
-		getWep(none).
-		
-		% getArmour module
-		wantArmor(none).
-		
-		% Carrier
-		preferedWeapons(none, none).
-		
-		% Roamer
-		wantArmor(none).
-		
-		
-		%%[END PLACEHOLDER]%%
 	}
 	program{
-		% 'Send once' percepts, insert in the believe base.
+		% 'SEND ONCE' percepts inserting into the belief base.
 		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
 		
 		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
@@ -78,6 +40,11 @@ init module {
 		
 		% Insert all the pickups in the believe base.
 		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
+		
+		% 'SEND ON CHANGE' percepts initialization.
+		if bel( percept(navigation(State, Destination)) ) then insert( navigation(State, Destination) ).
+		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
+		
 		
 		%%TEST%%
 		
@@ -88,21 +55,6 @@ init module {
 		%%[END TEMPORARY FIX]%%
 		
 		
-	}
-	goals {
-		prozac.
-		
-		% [PLACEHOLDER] Initialise goals, because GOAL is stupid
-		getWep(none).
-		heal(none).
-		armor(none).
-		ammo(none).
-		takeFlag(none).
-		bringBackFlag(none).
-		pickUpFlag(none).
-		goTo(none).
-		%temporary
-		grabStuff(none).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
