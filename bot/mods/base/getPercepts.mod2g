@@ -4,13 +4,9 @@ module getPercepts{
 		% All common percepts here
 		
 		% MAILBOX MANAGEMENT (RECEIVE)
-				%forall bel( me(Me), role(Me, OldRole),  percept( received(OverLord, role(Agent, NewRole)) ) )
-				%	do delete( role(Me, OldRole) ) + insert( received(OverLord, role(Agent, NewRole)) ).
-		
-				if bel( me(Me), percept( received(OverLord, role(Agent, NewRole)) ) ) then insert( role(Me, NewRole) ).
-				if bel( me(Me), role(Me, OldRole), percept( received(OverLord, role(Agent, NewRole)) ) ) 
-					then delete( role(Me, OldRole) ) + insert( role(Me, NewRole) ).
-		
+				forall bel( percept(received(Sender, not(role(Agent, Role))))) do delete(role(Agent, Role)).
+				forall bel( percept(received(Sender, role(Agent, Role)))) do insert(role(Agent, Role)).
+
 		% PERCEPT HANDLING
 			%% PERCEPTS ABOUT SELF
 				%%% Update the navigation state of the bot ('send on change' percept).

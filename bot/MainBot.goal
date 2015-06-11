@@ -41,16 +41,14 @@ init module {
 		
 		% All modules
 		at(none).
-		role(none, none).
+		role('Liara', roamer).
+		role('Shepard', carrier).
+		role('EDI', defender).
+		role('Garrus', roamer).
 		target(none).
-		
-		
-		
+
 		%Code for changing role
 		%changeRole(none, none). 
-		
-		
-		
 		
 		% Weapon module
 		wepList(none).
@@ -84,6 +82,8 @@ init module {
 		%%TEST%%
 		
 		%%[TEMPORARY GOAL FIX]%%
+		
+		if bel(true) then delete(role(none, none)).
 		
 		%%[END TEMPORARY FIX]%%
 		
@@ -155,7 +155,7 @@ init module {
 
 main module [exit=never] {
 	
-	program {
+	program [order=linearall] {
 		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
 		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
 		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
@@ -168,17 +168,17 @@ main module [exit=never] {
 		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		
 		% Calculate path: priority 6.
-		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		if goal( calculatePath(StartID, EndID), notnon(StartID), notnon(EndID) ) then path(StartID, EndID).
 		% Go somewhere to grab stuff of the ground: priority 5.
-		if a-goal( grabStuff(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		if a-goal( grabStuff(UnrealID), notnon(UnrealID) ) then navigate(UnrealID).
 		% Bring flag to our base: priority 4.
-		if a-goal( bringBackFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		if a-goal( bringBackFlag(UnrealID), notnon(UnrealID) ) then navigate(UnrealID).
 		% Go pick up our flag: priority 3.
-		if a-goal( pickUpFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		if a-goal( pickUpFlag(UnrealID), notnon(UnrealID) ) then navigate(UnrealID).
 		% Go get the flag: priority 2.
-		if a-goal( takeFlag(UnrealID), not(UnrealID = none) ) then navigate(UnrealID).
+		if a-goal( takeFlag(UnrealID), notnon(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
-		if goal( goTo(Destination), not(Destination = none) ) then navigate(Destination).
+		if goal( goTo(Destination), notnon(Destination) ) then navigate(Destination).
 		
 		
 		
@@ -202,13 +202,13 @@ event module {
 		% Percept Handling
 		if bel(true) then getPercepts.
 		
-		if bel(true) then getHealth.
+		%if bel(true) then getHealth.
 		
-		if bel(true) then getWeapon.
+		%if bel(true) then getWeapon.
 		
-		if bel(true) then getArmour.
+		%if bel(true) then getArmour.
 		
-		if bel(true) then getAmmo.
+		%if bel(true) then getAmmo.
 	}
 		
 }
