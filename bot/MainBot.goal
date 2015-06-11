@@ -41,14 +41,6 @@ init module {
 		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
 		% Power Up Status
 		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
-		
-		%%TEST%%
-		
-		%%[TEMPORARY GOAL FIX]%%
-		
-		if bel(true) then delete(role(none, none)).
-		
-		%%[END TEMPORARY FIX]%%
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
