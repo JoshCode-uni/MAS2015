@@ -4,14 +4,14 @@
 Our system has three distinct roles for our four in-game agents:
 
 \begin{enumerate}
-\item The first being the \emph{Carrier}, designed to be optimal in retrieving and capturing the enemy flag. Once the flag has been captured, the \emph{Carrier} will often be defended by one of the \emph{Roamers}, for added security.
+\item The first being the \emph{Flag Carrier}, designed to be optimal in retrieving and capturing the enemy flag. Once the flag has been captured, the \emph{ Flag Carrier} will often be defended by one of the \emph{Roamers}, for added security.
 
-\item The second is the \emph{Defender}, designed to defend our flag and home base. If our flag has been captured, he should chase the enemy flag carrier and re-capture the flag.
+\item The second is the \emph{Flag Defender}, designed to defend our flag and home base. If our flag has been captured, he should chase the enemy flag carrier and re-capture the flag if he knows where the flag is. If he does not know, he should roam around the enemy base, laying an ambush.
 
-\item The last role is the \emph{Roamer}, of which there are two agents running in a match. They are designed to generally walk over the entire map, getting a lot of weapons, health and armour and disrupting the enemy team. Additionally, they can capture the flag if they have nothing to collect or go after the enemy flag carrier if our flag is stolen.
+\item The final role is the \emph{Roamer}, a class which will be assigned to two of the bots. They are designed to cross the entire map, constantly improving themselves by collecting weapons, health and armour and disrupting the enemy team. Additionally, they can capture the flag if they are powerful enough, return our flag whenever it is stolen, or protect the flag carrier when he is in possession of the flag.
 \end{enumerate}
 
-We also have a fourth role, called \emph{Overlord} which is an agent who doesn't join the Unreal Tournament Server, but rather an agent that manages the other agents. This agent is responsible for assigning roles to other agents.
+Besides roles assigned to the actual bots, we have a fourth role, called \emph{the Overlord}. \emph{The Overlord} does not control a bot and as such does not directly participate in the game. He can be seen as a commander, keeping track of where the flag is and assigning different roles to the bots in the game.
 
 \subsection{Justification}
 We chose these four roles to divide the work that needs to be done in order to win the match.

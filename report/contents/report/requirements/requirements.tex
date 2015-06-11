@@ -2,28 +2,49 @@
 \todo{Add literature reference for MoSCoW method, http://cdn.projectsmart.co.uk/pdf/moscow-method.pdf}
 This chapter is focused on all the requirements and functionalities. The MoSCoW\textsuperscript{1} method is used for prioritising requirements. The functionalities is divided into three subsections, the minimum, advanced and extended functionality. 
 \section{Prioritising Requirements}
-Using the MoSCoW method, where the M stands for Must, the S for Should, the C for Could and the W for Won't, all the minimum requirements are put under the M. All the other functionalities, which are use to better the bots, are placed under the S. Everything that was taken into consideration, but eventually denied, because it was too hard to implement, was placed under the C. The rest are placed under the W.\\
+Using the MoSCoW method (where the M stands for Must, S for Should, C for Could and W for Won't), all the minimum requirements are mentioned under the M. All the other functionalities, which are use to improve the bots, are placed under the S. Everything that was taken into consideration, but eventually denied because it was either too hard to implement, would take to long to implement, or was technologically unfeasible was placed under the C. Everything else was placed under W.\\
 
 
 \section{Minimum Functionality}
-The minimum functionality is basically to grab the enemy flag and return it. And eventually you should win the game of Capture the Flag. This taken into account, it should be the number one priority. Only implementing this, the bots would definitely lose. Maybe in the beginning, when there is only one level 1 epic bot, they would have a chance at beating them. To make successful bots, there should be advanced functionalities.\\ 
+The functionalities that must be present are:
+\begin{itemize}
+	\item Getting the enemy flag \\
+		\textit{The minimum functionality is being able to grab the enemy flag and return it, eventually winning the game of Capture the Flag. Seeing that this is the objective of the project, it is our top priority.}
+	\item Shooting \\
+		\textit{Whenever the bot has an enemy bot in his visual, he should shoot and try to kill him.}
+\end{itemize}
 
 \section{Advanced Functionality}
-To extend the bots, they are divided into groups:
-\begin{description}
-	\item[Flag Carrier] One bot with the task to capture the enemy flag and return it
-	\item[Roamer] Two bots with the task to eliminate the enemy team
-	\item[Flag Defender] One bot with the task to defend their own flag 
-\end{description}
-This design choice is made, because of various reasons. One of them is when every bot has the same task, to capture the enemy flag, they would get in each others way. Also this would be very inefficient because no one would defend their own flag. The bots should also have the ability to pickup weapons, armor and health. This will give a large boost, and the chances of winning will increase. Another thing which is important, is to return the our own flag if it is dropped by the enemy. Otherwise the bots can not score any points. There also should be strategy's to pickup things. You do not want to grab health when your life is full for example. At last the bot should switch weapons based on the distance between him and the opponent. If they are close to each other, he should switch to a weapon with a high close-range damage vice versa.\\
+Functionalities that we should have are:
+\begin{itemize}
+	\item Group strategy \\
+		\textit{When every bot has the same task, capturing the enemy flag, they would get in each others way. Besides this, it would leave their own flag defenceless, so a strategy in which every bot has a task is beneficial. We have opted to choose for a strategy consisting of defenders, attackers and roamers.}
+	\item Pickups \\
+		\textit{The bots should also have the ability to pickup weapons, armour and health. This will give us the edge when fighting the native bots, increasing the chances of winning.}
+	\item Flag returning \\
+		\textit{Bots should return their own flag whenever it is dropped by the enemy, as it is impossible to score when the flag is not in its own base.}
+	\item Distance-based weapon choice \\
+		\textit{The bots should switch weapons based on the distance between them and the opponent. If they are close to each other, he should switch to a weapon with a high close-range damage and vice versa.}
+\end{itemize}
 
 \section{Extended Functionality}
 Functionalities that we could have are:
 \begin{itemize}
-	\item Another agent, one who has an overview of the game and tells the other bots what to do
-	\item When one of the Roamers or the Flag capturer grabs a flag, he will be followed by the other, who will defend him against enemy bots.
-	\item An agent, who has only one task, to control the respawn of the bots. Sometimes, the bots get stuck, and they are idle for some time. The agent should handle this, wasting no time.
+	\item An overlord \\
+		\textit{This is another agent, akin to a commander, which has an overview of the game and can control the bot-agents.}
+	\item Pickup strategy \\
+		\textit{This would mean the bots would choose their pickups sensibly (e.g. getting health whenever they are low on health).}
+	\item Following strategy \\
+		\textit{Whenever one of the bots possesses the flag, other bots will follow and protect him.}
+	\item Better stuck strategy \\
+		\textit{An agent tasked solely with controlling the respawning of the bots. This is in order to prevent any time loss from the bots being stuck.}
 \end{itemize}
-The idea to make a controlling agent is a good one. This would make the implementation more accessible, but on the other hand, the program would run very slow. The controlling agent has to send a lot of messages to the other agents, and this would cost a lot of time. There would be a significant delay in executing tasks, which would decrease our chance at winning the game. So this functionality is excluded.\\
+
+\section{Excluded Functionality}
+Functionalities that will not be implemented are:
+\begin{itemize}
+	\item An extensive overlord \\
+		\textit{The idea of making a controlling agent is a good one and making sure he has as much information as possible seems like a good idea, but the excessive amount of messages would severely impair the speed of the system.}
+\end{itemize}
 
 
