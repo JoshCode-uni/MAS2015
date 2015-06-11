@@ -133,8 +133,7 @@ main module [exit=never] {
 		%+drop(changeRole(Agent, defender))+adopt (role(Agent, defender)).
 		
 		%if bel(changeRole(Agent, roamer), me(Me), Agent = Me) then drop(role(Agent, carrier))
-		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).
-		
+		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).	
 		if bel(didEvent) then delete(didEvent).
 	}
 	
