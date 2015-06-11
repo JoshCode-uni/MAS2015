@@ -1,7 +1,4 @@
 \chapter{Introduction}
-% !! All the paragraph headers are temporary and should be removed !!
-\todo{Remove this text and headings before release}
-\emph{All these headings will be removed in the final version, they are here now to keep track of what needs to be in the introduction.}
 
 \paragraph{Problem}
 Capture the Flag in Unreal Tournament 3 is a game with a simple objective: Capture the enemy flag and bring it back to your own base. However simple this objective may seem and however trivial a task it can be for a human, this task is already quite extensive for a machine.
@@ -10,22 +7,25 @@ Capture the Flag in Unreal Tournament 3 is a game with a simple objective: Captu
 Unreal Tournament 3 is the third installment in the Unreal Tournament series, a series of so called \emph{First Person Shooter} games. It has multiple modes of games: Death Match, where killing as many enemies as you can is the objective. Team Death Match is the same, only with cooperation within teams instead of every man for himself. The last game mode is Capture the Flag, in which there are two teams, each with a flag. The objective is collecting your enemies' flag from their base and transporting it to your own base, while your own flag needs to be present as well. We will focus on the latter game mode.
 
 \paragraph{Main Question}
-Our objective is to write a so-called team of \emph{agents} which are capable of defeating computer controlled enemies written by the game's programmers. Our team will consist of four agents who will communicate with each other to maximise their efficiency. Our team will take on a team of three \emph{agents} enemies, with the skill level set to three.
+Our objective is to write a so-called team of \emph{agents} which are capable of defeating computer controlled enemies written by the game's programmers. Our team will consist of four agents who will communicate with each other to maximise their efficiency. Our team will take on a team of three enemies, with the skill level set to three. Our main question is therefore: \emph{How can we design a multi-agent system controlling 4 in-game bots, that is able to defeat 3 native bots?}
 
 \paragraph{Other Questions}
-
-\todo{Think of other questions}.
+Other questions that will be answered during this report are:
+\begin{itemize}
+	\item What are good strategies for a team of 4 bots? 
+	\item How can we make sure the system reacts fast enough? 
+	\item How can we create a solid code base, which could be extended without much problems? 
+	\item How can we make sure the system performs as expected under all circumstances? 
+\end{itemize}
 
 \paragraph{Structure}
-
-\todo{Make this part prettier}
 
 \begin{enumerate}
 \item[Chapter 2] In this chapter, we will start by giving an outline to the requirements of this project. We will discuss the minimum functionality that needs to be present in each bot and some advanced functionality we will implement in ours. Furthermore, we will discuss extended functionality, which will be implemented if we have time to do so.
 
 \item[Chapter 3] In this chapter the Unreal Tournament environment will be analyzed, together with different scenarios that will arise in the game. What our bots should do in each situation will be discussed as well.
 
-\item[Chapter 4] The following chapter design decisions such as the system structure and the strategy of our bots will be explained and justified.
+\item[Chapter 4] The following chapter is focused on design decisions such as the system structure and the strategy of our bots. They will be explained and justified.
 
 \item[Chapter 5] The next chapter focuses on testing. Our testing approach will be mentioned, together with the revelations stemming from tests.
 

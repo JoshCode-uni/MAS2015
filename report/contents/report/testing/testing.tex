@@ -1,26 +1,36 @@
 \chapter{Testing Approach and Results}
 
-INTRODUCTION
+Testing can be considered an important part of every project, especially when the project is related to computer science. Yet, it is often overlooked or seen as too expensive, resulting in major problems later on. We tried to avoid this pitfall by starting testing early on in the project. How the system was tested and what the results where can be seen in this chapter.
 
 \section{Testing approach}
-During the project, we have used multiple forms of testing, with various degrees of success. The main problem faced was the fact that we could in essence only test the entire system, as there would be no feasible way to test parts of the game. This severely impairs testing, as it decreases both controllability and observability, condemning us to end-to-end testing. Another factor which made testing difficult was the (apparent) non-deterministic behaviour of the native bots.\\
+During the project, we have used multiple forms of testing, with various degrees of success. The main problem faced was the fact that we could in essence only test the entire system, as there would be no feasible way to test parts of the game. This severely impaired testing, as it decreased both controllability and observability, condemning us to end-to-end testing. Another factor which made testing difficult was the (apparent) non-deterministic behaviour of the native bots.\\
 \\
 Our first testing approach was aimed at taking non-deterministic behaviour out of the equation. The plan was to create very simple maps, in which both our bots and the native bots could only do a single thing. The idea was quickly abandoned, as creating the maps was time-consuming and tweaking them in order to make the bots behave in the expected way was close to impossible.\\
 \\
-A second testing approach was considered after we noticed we could control bots of the enemies' team as well. This allowed us to create bots which would behave exactly as expected, in a desired deterministic way. Again, time was an issue, as programming a new bot for every (few) testing scenario was unadvisable, especially taking into account the actual data we gathered this way.\\
+A second testing approach was considered after we realized we could control bots of the enemies' team as well. This allowed us to create bots which would behave exactly as expected, in a desired deterministic way. Again, time was an issue, as programming a new bot for every (few) testing scenario(s) was unadvisable, especially taking into account the (usability of the) actual data we gathered this way.\\
 \\
-After this, any form of automatic testing was deemed inefficient. Instead, it was determined that it would be replaced by careful monitoring the environment, looking for unwanted behaviour using checklists. Apart from this, the system would be tested by occasionally pitching various combinations of roles against a human player, which could create situations himself, such as getting the flag or shooting at a bot.\\
+After this, any form of automatic testing was deemed inefficient. Instead, it was determined that it would be replaced by careful monitoring the environment, looking for unwanted behaviour, possibly using checklists. Apart from this, the system would be tested by occasionally pitching various combinations of roles against a human player, who could create the wanted situations himself, such as getting the flag or shooting at a bot. The person would then look at the reaction of the bots for anything unusual and judge whether the evoked reaction was adequate.\\
 
-\section{Kinds of bugs}
-\emph{This section was written on the 2nd of June, 2015. These bugs were present at that time.}
-\newline\newline
-The kinds of bugs found by our testing are the following:
+\section{Discovered bugs}
+Of course we encountered many bugs and erroneous behaviour during the development cycle. Most of them were insignificant or not interesting, but below we will enlarge on several of the larger and/or more interesting bugs:
 
 \begin{itemize}
-\item Bots being stuck somewhere on the map.
-\item Bots not properly resetting their view after looking somewhere.
-\item Bots executing actions that were not defined at all, resulting in the bot doing nothing.
-\item The bot terminating when it has nothing to do
-\item The bot getting stuck when it has nothing to do
-\todo{Add more bugs to the final version!}
+\item Bots terminating when no more goals are present. \\
+	During the testing of the system, it was noticed that bots often terminated, but pinpointing why turned out to be difficult. Eventually we realised that this was due to the bot not having any goals any more. The problem was solved by including an unreachable goal in each bot, appropriately called Prozac.
+	\\
+\item Bots not running. \\
+	After refactoring, none of the bots did anything useful anymore, instead rotating at their starting position. Finding out why took almost a week, but eventually it was noticed that it was related to send-once percepts. The bug was eventually solved by simply upgrading Goal, making it a possibility that the bug was Goal-related.
+	\\
+\item Bots looking at seemingly random points. \\
+	At the start of the project, it was noticed that bots often looked at seemingly random directions, instead of facing the intended way. The bug was related to the look-percept, which was called whenever an enemy was spotted, but never deleted again. 
+	\\
+\item The system is running really slow. \\
+	After refactoring, it was noticed that the system reacted really slow, often even missing enemies. This turned out to be due to various skip actions, which introduced a disproportionate amount of delay. Simply removing the skip actions resulted in a 1000-2000\% increase in speed.
+	\\
+\item Bots falling of the elevator.
+	Whenever a bot is standing on the elevator, he almost immediately falls off again. This is most likely related to the navigate action and is unwanted as it costs time in dangerous areas. As of yet, it is still a pending issue. 
+	\\
+\item Bots jumping up against the base after capturing the flag.
+	When a bot has captured the enemy flag, he jumps off the platform. Almost immediately after landing, he turns around and touches the enemy base again, before continuing his route. It is suspected that it is related to the navigate action and that jumping makes the bot miss one of the navPoints. This is, as of yet, a pending issue as well. 
+	\\
 \end{itemize}

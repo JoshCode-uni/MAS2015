@@ -1,14 +1,14 @@
 \chapter{Conclusions and Recommendations}
 
-Our objective was to create a multi-agent system, which was capable of defeating the computer controlled enemies written by the game?s programmers. This report described the various strategies used to defeat the bots and the process behind creating the winning team.
+Our objective was to create a multi-agent system, which was capable of defeating the computer controlled enemies written by the game's programmers. This report described the various strategies used to defeat the bots and the process behind creating the winning team.
     
 \section{Strategy}
 Our strategy to achieve victory over the bots included four roles, roamers, flag carrier, flag defender and an Overlord. 1 carrier, 1 defender, 2 roamers would be fielded while the overlord would serve as a commander and not participate in field action. This strategy turned out to be a good one, as it allowed us to achieve the goal and answer the main question.
 
 \section{Code structure}
-The code structure was initially calling a separate file for each class, which was superseded by a main bot for general behaviour and a modular approach for classes. This allowed us to plug in class-based behaviour on the fly, allowing a dynamic role allocation. This was achieved through refactoring and eliminated the majority of redundant code in addition to improved flexibility. Slight increases in the stability and efficiency of the code were also noticed.
+The code structure was initially calling a separate file for each class, which was superseded by a main bot for general behaviour and a modular approach for the classes. This allowed us to plug in class-based behaviour on the fly, allowing a dynamic role allocation. This was achieved through refactoring and eliminated the majority of redundant code in addition to improved flexibility. Slight increases in the stability and efficiency of the code were also noticed.
 
 \section{Production strategy}
-During the making of the multi-agent system, the Sprint-strategy was used. This is a true and tested method, which has 
+During the making of the multi-agent system, the Sprint-strategy was used. This is a true and tested method, which has proven itself over time. During our project, we noticed that it was indeed a good way of managing a project.
 
-In conclusion, our project generally succeeded in achieving the objective of defeating the native bots using the above strategy, but this is certainly not the best strategy. There is much improvement that can be done in similar projects in the future.
+In conclusion, our project has succeeded in general by achieving the objective of defeating the native bots using the above strategy. Of course, there is always room for improvement. We would advise other people to experiment with other role distributions, be it by varying their quantities, or by introducing completely new forms of behaviour. It would also be interesting to make the bots aware of their surroundings on a smaller level, making sure they can hide in corners or duck behind walls for example. This would resemble "true" intelligence.
