@@ -8,8 +8,6 @@ at(UnrealID) :- navigation(reached, UnrealID).
 at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 
-notnon(Var) :- not(Var = none).
-
 %goalStack(Stack) :- Stack = [].
 
 %pushStack(Element) :- .
