@@ -8,10 +8,10 @@ at(UnrealID) :- navigation(reached, UnrealID).
 at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)), 
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 
-%goalStack(Stack) :- Stack = [].
-
-%pushStack(Element) :- .
-%popStack(Element) :- goalStack([H|Tail]), ELement = H.
+% myTeam(?Team).
+myTeam(Team) :- self(_,_,Team).
+% enemy(+UnrealID).
+enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
 
 % Prefer these weapons given the range to enemy.
 preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
@@ -27,26 +27,26 @@ preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(lin
 %% *************************
 
 	
-	% weapon priority list, contains hardList without worse weapons then the ones in inventory.
-	% Input requirement: insert hardList to start. List is output.
-    priorities([HH|HT], Wep) :-Wep = HH;
-                               (
-                               not(weapon(HH,_,_)),
-                               priorities(HT,Wep)
-                               ).
-    priorities([],_).
-	
-	% Hardcode base priorities list. 
-	hardList(List) :- List = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].
-	
-	% gives true if want weapon.
-	wantWep(Weapon) :- hardList(HARD),
-                       priorities(HARD, Weapon),
-                       member(Weapon, HARD),
-                       not(weapon(Weapon,_,_)).
-	
-	% getWep(Type) is true if it is in inventory.
-	getWep(Weapon) :- (weapon(Weapon,_,_)).
+% weapon priority list, contains hardList without worse weapons then the ones in inventory.
+% Input requirement: insert hardList to start. List is output.
+priorities([HH|HT], Wep) :-Wep = HH;
+                           (
+                           not(weapon(HH,_,_)),
+                           priorities(HT,Wep)
+                           ).
+priorities([],_).
+
+% Hardcode base priorities list. 
+hardList(List) :- List = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].
+
+% gives true if want weapon.
+wantWep(Weapon) :- hardList(HARD),
+                   priorities(HARD, Weapon),
+                   member(Weapon, HARD),
+                   not(weapon(Weapon,_,_)).
+
+% getWep(Type) is true if it is in inventory.
+getWep(Weapon) :- (weapon(Weapon,_,_)).
 
 
 %% *************************
@@ -94,14 +94,9 @@ grabStuff(UnrealID) :- navigation(reached, UnrealID).
 %% ************************
 %% ** BGN Defender.mod2g **
 %% ************************
-
-		% myTeam(?Team).
-		myTeam(Team) :- self(_,_,Team).
-		% enemy(+UnrealID).
-		enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
 		
-		% Go to a destination. We are at a certain location if the IDs match.
-		goTo(UnrealID) :- navigation(reached, UnrealID).
+% Go to a destination. We are at a certain location if the IDs match.
+goTo(UnrealID) :- navigation(reached, UnrealID).
 		
 %% ************************
 %% ** END Defender.mod2g **
@@ -110,9 +105,9 @@ grabStuff(UnrealID) :- navigation(reached, UnrealID).
 %% **********************
 %% ** BGN Roamer.mod2g **
 %% **********************
-		
-		% get weapon inventory in list form.
-		wepList(List) :- weapon(X,_,_),	member(X, List).
+
+% get weapon inventory in list form.
+wepList(List) :- weapon(X,_,_),	member(X, List).
 
 %% **********************
 %% ** END Roamer.mod2g **

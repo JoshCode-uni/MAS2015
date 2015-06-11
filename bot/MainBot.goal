@@ -4,6 +4,7 @@
 #import "mods/base/getHealth.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getAmmo.mod2g".
+#import "mods/base/dropAllGoals.mod2g".
 
 #import "mods/bot/Carrier.mod2g".
 #import "mods/bot/Defender.mod2g".
@@ -18,10 +19,10 @@ init module {
 		currentWeapon(enforcer, primary).
 		score(0,0,0).
 
-		role('Liara', roamer).
 		role('Shepard', carrier).
 		role('EDI', defender).
 		role('Garrus', roamer).
+		role('Liara', roamer).
 	}
 	program{
 		% 'SEND ONCE' percepts inserting into the belief base.
@@ -86,7 +87,7 @@ init module {
 			post{ true }
 		}
 		% Let the bot continue with what he was doing
-		skip {
+		skip@int {
 			pre{ true }
 			post{ true }
 		}
@@ -101,6 +102,11 @@ init module {
 main module [exit=never] {
 	
 	program [order=linearall] {
+		if goal(X), bel(length(X, Size), Size > 0) then drop(X).
+		
+		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then dropAllGoals + navigate(HolderUnrealID).
+		if bel(flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
+				
 		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
 		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
 		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
@@ -126,17 +132,16 @@ main module [exit=never] {
 		if goal( goTo(Destination) ) then navigate(Destination).
 		
 		
-		
+		%% THIS DOESN'T BELONG HERE AND IS WRONG!!!
 		%Overlord role change code(WIP, don't activate)
 		%if bel(changeRole(Agent, carrier), me(Me), Agent = Me) then drop(role(Agent, roamer))
-		%+drop(changeRole(Agent,carrier))+adopt (role(Agent, carrier)).
+		%+drop(changeRole(Agent, carrier)) + adopt (role(Agent, carrier)).
 		
 		%if bel(changeRole(Agent, defender), me(Me), Agent = Me) then drop(role(Agent, roamer))
-		%+drop(changeRole(Agent,defender))+adopt (role(Agent, defender)).
+		%+drop(changeRole(Agent, defender))+adopt (role(Agent, defender)).
 		
 		%if bel(changeRole(Agent, roamer), me(Me), Agent = Me) then drop(role(Agent, carrier))
 		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).
-		
 	}
 	
 }
