@@ -121,7 +121,10 @@ grabStuff(UnrealID) :- navigation(reached, UnrealID).
 		
 % Go to a destination. We are at a certain location if the IDs match.
 goTo(UnrealID) :- navigation(reached, UnrealID).
-		
+
+% Can be used to calculate the distance between (X1,Y1) and (X2,Y2), as of yet, it gives the SQUARED distance.
+distance(Dist,X1,Y1,X2,Y2) :- Dist is (X1-X2)*(X1-X2)+(Y1-Y2)*(Y1-Y2).
+
 %% ************************
 %% ** END Defender.mod2g **
 %% ************************
