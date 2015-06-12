@@ -4,8 +4,8 @@ module getPercepts{
 		% All common percepts here
 		
 		% MAILBOX MANAGEMENT (RECEIVE)
-				forall bel( percept(received(Sender, not(role(Agent, Role))))) do delete(role(Agent, Role)).
-				forall bel( percept(received(Sender, role(Agent, Role)))) do insert(role(Agent, Role)).
+				forall bel( received(Sender, not(role(Agent, Role))) ) do delete(role(Agent, Role)).
+				forall bel( received(Sender, role(Agent, Role)) ) do insert(role(Agent, Role)).
 
 		% PERCEPT HANDLING
 			%% PERCEPTS ABOUT SELF

@@ -19,10 +19,10 @@ init module {
 		currentWeapon(enforcer, primary).
 		score(0,0,0).
 
-		role('Shepard', carrier).
-		role('EDI', defender).
-		role('Garrus', roamer).
-		role('Liara', roamer).
+		%role('Shepard', carrier).
+		%role('EDI', defender).
+		%role('Garrus', roamer).
+		%role('Liara', roamer).
 	}
 	program{
 		% 'SEND ONCE' percepts inserting into the belief base.
