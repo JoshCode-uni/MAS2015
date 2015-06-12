@@ -102,13 +102,13 @@ ammo(Location) :- navigation(reached, Location).
 calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 
 % Take the flag from the component. We are at a certain location if the IDs match.
-takeFlag(UnrealID) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
+takeFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
 
 % Pick up our flag of the ground. We are at a certain location if the IDs match.
 pickUpFlag(UnrealID) :- navigation(reached, UnrealID).
 	
 % Bring the flag back home to our base. We are at a certain location if the IDs match.
-bringBackFlag(UnrealID) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
+bringBackFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!%
 % TEMPORARY GOAL (will be replaced for modules getHealth and getWeapon). Grab closeby stuff. We are at a certain location if the IDs match.
@@ -145,9 +145,8 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% *************************
 
 % spin in a round.
-rotate(A,C,B) :- orientation(A, _, _), 
-					A = location(X, Y, Z),
-					B = location( (X + cos(C + (pi/2))), Y, (Z + sin(C + (pi/2)))).
+rotate(A,C,B) :- A = location(X, Y, Z),
+				 B = location( (X + cos(C + (pi/2))), Y, (Z + sin(C + (pi/2)))).
 					
 %% *************************
 %% ** END killEnemy.mod2g **
