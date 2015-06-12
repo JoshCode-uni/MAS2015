@@ -16,6 +16,9 @@ module Roamer{
 			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
 					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
 					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).
+			
+			%Roamer should help to escort the carrier
+			%if bel( haveFlag(pos) ), then insert navigate(pos) + delete(received(haveFlag(pos)).
 	}
 	
 }
