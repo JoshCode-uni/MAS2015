@@ -139,3 +139,16 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% **********************
 %% ** END Roamer.mod2g **
 %% **********************
+
+%% *************************
+%% ** BGN killEnemy.mod2g **
+%% *************************
+
+% spin in a round.
+rotate(A,C,B) :- orientation(A, _, _), 
+					A = location(X, Y, Z),
+					B = location( (X + cos(C + (pi/2))), Y, (Z + sin(C + (pi/2)))).
+					
+%% *************************
+%% ** END killEnemy.mod2g **
+%% *************************
