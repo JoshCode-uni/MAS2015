@@ -1,15 +1,17 @@
 module getHealth {
 	
 	program {
-		
 	
 		%% Goal Handling %%
-			% If health is lower then 100, get health.
-			if bel( status(H,_), H@<100, pickup(Location, health, _), not( at(Location) ) ) then adopt( heal(Location) ).
-			% If health is lower then 150, look for super_health. (What is name of vials which also overcharge?). 
+			% If health is lower than 100, travel to get health.
+			if bel( status(H,_), H@<100, pickup(Location, health, _), me(Me), Agent = Me, not(role(Agent, carrier)) ) then adopt( heal(Location) ).
+			% If health is lower than 100 and health is closeby, get health.
+			if bel( status(H,_), H@<100, item(Location, health, _) ) then adopt( heal(Location) ).
+			% If health is lower than 150, get super_health. (What is name of vials which also overcharge?). 
 			if bel( status(H,_), H@<150, item(Location, health, super_health,_) ) then adopt( heal(Location) ).
+			
 		%% Execution %%
-			%if your goal is to get a heal at an location, go to the heal.
+			%if your goal is to get a heal at an location, go to the health.
 			if goal( heal(Location) ) then navigate(Location).
 	}
 	

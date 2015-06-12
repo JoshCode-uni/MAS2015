@@ -9,7 +9,7 @@ module getWeapon {
 			if bel( item(Location,weapon,Type,_), wantWep(Type) ) then adopt( getWep(Location) ).
 			
 		%% Execution %%
-		if goal( getWep(Location), not(Location = none) ) then navigate(Location).
+		if goal( getWep(Location) ) then navigate(Location).
 	}
 	
 }
