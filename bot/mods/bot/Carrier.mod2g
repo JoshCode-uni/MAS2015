@@ -12,19 +12,19 @@ module Carrier{
 			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then stop + shoot(enemyFlagCarrier).
 			
 			% Adopt goal to calculate a path to enemy
-			if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
-			 then adopt ( calculatePath(Location, Position) ).
+			%if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
+			% then adopt ( calculatePath(Location, Position) ).
 			 
 			% Switch weapons when closer to or further away from enemies.
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
-			 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
-				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
-					orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
-				then prefer(WeaponList).
-			if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
-					orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
-				then prefer(WeaponList).	
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			% 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
+			%	then prefer(WeaponList).	
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
