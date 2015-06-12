@@ -113,6 +113,7 @@ main module [exit=never] {
 		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
+		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
 		% Go pick up our flag: priority 7.
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
