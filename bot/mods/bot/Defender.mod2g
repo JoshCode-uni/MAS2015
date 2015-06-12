@@ -2,32 +2,20 @@ module Defender{
 	program [order=linearall] {
 		% GOAL MANAGEMENT
 		
-			% If the bot percepts the enemyFlagCarrier, he should shoot him so the flag will be dropped.
-			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then look(enemyFlagCarrier) + shoot(enemyFlagCarrier).
-			
 			% If the bot sees another bot, he should shoot him.
-			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then look(UnrealID) + shoot(UnrealID).
+			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
 			
 			% If the bot percepts an enemy bot, adopt goal to kill him.
 			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
 			
 			% If close, grab stuff laying around.
-			if not( goal( getStuff(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( getStuff(UnrealID) ).	
-			if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
+			%if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
 						
 			%% Patrol at our base.
 			if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
-			
-			%% If our flag is gone, go to enemy base.
-			%if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), not(Team = OtherTeam), base(OtherTeam, UnrealID), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
-			
+																	
 			%The Defender should not abandon its post to cover the flag carrier
 			%if bel( haveFlag(selfPos) ), then delete(received(haveFlag(selfPos)).
-			
-			%% If I have flag, bring back to base.
-			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
-					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
-					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).	
 
 	}
 }

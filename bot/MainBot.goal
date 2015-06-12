@@ -98,6 +98,10 @@ main module [exit=never] {
 		
 		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then dropAllGoals + navigate(HolderUnrealID).
 		if bel(flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
+	
+		% Adopt goal to pick up our flag when it is dropped.		
+		if bel( myTeam(Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
+		 	then adopt( pickUpFlag(UnrealID) ).
 				
 		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
 		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
@@ -110,19 +114,18 @@ main module [exit=never] {
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		
-		% Calculate path: priority 6.
-		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
-		% Go somewhere to grab stuff of the ground: priority 5.
-		if a-goal( grabStuff(UnrealID) ) then navigate(UnrealID).
-		% Bring flag to our base: priority 4.
-		if a-goal( bringBackFlag(UnrealID) ) then navigate(UnrealID).
-		% Go pick up our flag: priority 3.
+		% Go pick up our flag: priority 6.
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
-		% Go get the flag: priority 2.
+		% Calculate path: priority 5.
+		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		% Go somewhere to grab stuff of the ground: priority 4.
+		if a-goal( grabStuff(UnrealID) ) then navigate(UnrealID).
+		% Bring other team's 'flag to our base: priority 3.
+		if a-goal( bringBackFlag(UnrealID) ) then navigate(UnrealID).
+		% Go get the other team's' flag: priority 2.
 		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
 		if goal( goTo(Destination) ) then navigate(Destination).
-		
 		
 		%% THIS DOESN'T BELONG HERE AND IS WRONG!!!
 		%Overlord role change code(WIP, don't activate)

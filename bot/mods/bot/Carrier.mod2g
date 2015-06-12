@@ -13,14 +13,17 @@ module Carrier{
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
-			 	then adopt( takeFlag(UnrealID)).	
-			% Adopt goal to pick up our flag when it is dropped.
-			if bel( self(_, _, Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
-				then adopt( pickUpFlag(UnrealID) ). 
+			 	then adopt( takeFlag(UnrealID)).				 	
 			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
 			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
 				not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( bringBackFlag(UnrealID) ).
 				
+			% If bot has flag, send to everyone to alert them.
+			%if bel( self(HolderUnrealID, NickName, Team), orientation(selfPos,_,_), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
+			%	not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then allother.sendonce(haveFlag(selfPos)).
+			
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
 			% Adopt goal to calculate a path to enemy
 			%if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
 			% then adopt ( calculatePath(Location, Position) ).
@@ -36,19 +39,7 @@ module Carrier{
 			%		orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
 			%	then prefer(WeaponList).
 			
-			
-			% Do not go back to our base when we do not even hold the flag anymore.
-			%if goal( bringBackFlag(UnrealID)), bel( not(UnrealID = none), self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, home), 
-			% 	not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
-			%if goal( bringBackFlag(UnrealID)), bel( not(UnrealID = none), self(_, _, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, dropped), 
-			%	not(Team = OtherTeam), self(HolderUnrealID, NickName, Team), base(Team, UnrealID) ) then drop( bringFlag(UnrealID) ).
-			
-			%If bot has flag, send to everyone to alert them.
-			%if bel( self(HolderUnrealID, NickName, Team), orientation(selfPos,_,_), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
-			%	not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then allother.sendonce(haveFlag(selfPos)).
-			
-			% If close, grab weapons and health laying around.
-			%if not( goal( grabStuff(_) ) ), bel( item(UnrealID, weapon, ItemType, Position), currentWeapon(enforcer, primary) ) then adopt( grabStuff(UnrealID) ).	
-			%if not( goal( grabStuff(_) ) ), bel( item(UnrealID, health, ItemType, Position), status(Health, Armour), Health < 100 ) then adopt( grabStuff(UnrealID) ).
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%			
+	
 	}
 }
