@@ -46,8 +46,10 @@ wantWep(Weapon) :- hardList(HARD),
                    not(weapon(Weapon,_,_)).
 
 % getWep(Type) is true if it is in inventory.
-getWep(Weapon) :- (weapon(Weapon,_,_)).
+% getWep(Weapon) :- (weapon(Weapon,_,_)).
 
+% Get a weapon. We are at a certain location if the locations match.
+getWep(Location) :- navigation(reached, Location).
 
 %% *************************
 %% ** END getWeapon.mod2g **
@@ -62,16 +64,41 @@ wantArmor(Armor) :- armor(Helmet,Vest,Pants,Belt), ((Armor = 'armor_helmet', Hel
 		(Armor = 'armor_vest', Vest == 0); 
 		(Armor = 'armor_shield_belt', Belt == 0); 
 		(Armor = 'armor_thighpads', Pants == 0)).
+		
+% Get some armor. We are at a certain location if the locations match.
+armor(Location) :- navigation(reached, Location).
 
 %% *************************
 %% ** END getArmour.mod2g **
+%% *************************
+
+%% *************************
+%% ** BGN getHealth.mod2g **
+%% *************************
+
+% Go get health to heal. We are at a certain location if the locations match.
+heal(Location) :- navigation(reached, Location).
+
+%% *************************
+%% ** END getHealth.mod2g **
+%% *************************
+
+%% *************************
+%% ** BGN getAmmo.mod2g **
+%% *************************
+
+% Get extra ammo when needed. We are at a certain location if the locations match.
+ammo(Location) :- navigation(reached, Location).
+
+%% *************************
+%% ** END getAmmo.mod2g **
 %% *************************
 
 %% ***********************
 %% ** BGN Carrier.mod2g **
 %% ***********************
 
-% calculate the length of a path from starting point to end point
+% Calculate the length of a path from starting point to end point
 calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 
 % Take the flag from the component. We are at a certain location if the IDs match.

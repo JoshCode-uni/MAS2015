@@ -10,7 +10,7 @@ module getHealth {
 			if bel( status(H,_), H@<150, item(Location, health, super_health,_) ) then adopt( heal(Location) ).
 		%% Execution %%
 			%if your goal is to get a heal at an location, go to the heal.
-			if goal( heal(Location), not(Location = none) ) then navigate(Location).
+			if goal( heal(Location) ) then navigate(Location).
 	}
 	
 }
