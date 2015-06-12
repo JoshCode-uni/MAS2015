@@ -12,8 +12,26 @@ module Defender{
 			%if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
 						
 			%% Patrol at our base.
-			if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
-																	
+			%if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
+
+			%if not( goal( goTo(_) ) ), bel( navPoint(Destination,_,_) ) then adopt( goTo(Destination) ).
+			
+			%% Collect pickups around base.
+			if not( goal( goTo(_) ) ), bel(self(_,_,Team), base(Team, BaseID), 
+					flagState(Team,home),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					pickup(Destination,_,_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
+
+			%% If the flag is gone, ambush the enemy in his own base.
+			if not( goal( goTo(_) ) ), bel(self(_,_,Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
+					(flagState(Team,held); flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					pickup(Destination,_,_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
+																
 			%The Defender should not abandon its post to cover the flag carrier
 			%if bel( haveFlag(selfPos) ), then delete(received(haveFlag(selfPos)).
 
