@@ -102,13 +102,13 @@ ammo(Location) :- navigation(reached, Location).
 calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 
 % Take the flag from the component. We are at a certain location if the IDs match.
-takeFlag(UnrealID) :- navigation(reached, UnrealID).
+takeFlag(UnrealID) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
 
 % Pick up our flag of the ground. We are at a certain location if the IDs match.
 pickUpFlag(UnrealID) :- navigation(reached, UnrealID).
 	
 % Bring the flag back home to our base. We are at a certain location if the IDs match.
-bringBackFlag(UnrealID) :- navigation(reached, UnrealID).
+bringBackFlag(UnrealID) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!%
 % TEMPORARY GOAL (will be replaced for modules getHealth and getWeapon). Grab closeby stuff. We are at a certain location if the IDs match.
