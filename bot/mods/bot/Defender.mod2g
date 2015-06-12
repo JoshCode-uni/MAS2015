@@ -21,6 +21,9 @@ module Defender{
 			%% If our flag is gone, go to enemy base.
 			%if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), not(Team = OtherTeam), base(OtherTeam, UnrealID), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
 			
+			%The Defender should not abandon its post to cover the flag carrier
+			%if bel( haveFlag(selfPos) ), then delete(received(haveFlag(selfPos)).
+			
 			%% If I have flag, bring back to base.
 			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
 					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
