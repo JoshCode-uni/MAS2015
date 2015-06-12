@@ -102,12 +102,7 @@ init module {
 main module [exit=never] {
 	
 	program [order=linearall] {
-		
 		%% NOTE: It is slow because it does the event module after every action!!!
-		
-		if bel(true) then adopt(prio(1, a)).
-		if bel(true) then adopt(prio(2, b)).
-		forall goal(prio(Int, Goal)) do drop(prio(Int, Goal)).
 		
 		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then dropAllGoals + navigate(HolderUnrealID).
 		if bel(flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
@@ -147,6 +142,8 @@ main module [exit=never] {
 		
 		%if bel(changeRole(Agent, roamer), me(Me), Agent = Me) then drop(role(Agent, carrier))
 		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).
+		
+		if bel(didEvent) then delete(didEvent).
 	}
 	
 }
@@ -155,7 +152,7 @@ event module {
 	
 	program {
 		% Percept Handling
-		if bel(true) then getPercepts.
+		if bel(not(didEvent)) then getPercepts.
 		
 		%if bel(true) then getHealth.
 		
@@ -164,6 +161,7 @@ event module {
 		%if bel(true) then getArmour.
 		
 		%if bel(true) then getAmmo.
+		if bel(not(didEvent)) then insert(didEvent).
 	}
 		
 }
