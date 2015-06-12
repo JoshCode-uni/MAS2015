@@ -145,8 +145,9 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% *************************
 
 % spin in a round.
-rotate(A,C,B) :- A = location(X, Y, Z),
-				 B = location( (X + cos(C + (pi/2))), Y, (Z + sin(C + (pi/2)))).
+% rotate(+Location, +Angle, -LookLocation)
+rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + cos(Angle + pi/2), NewZ is Z + sin(Angle + pi/2),
+				 LookLocation = location(NewX, Y, NewZ).
 					
 %% *************************
 %% ** END killEnemy.mod2g **
