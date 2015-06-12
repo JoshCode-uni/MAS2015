@@ -112,17 +112,14 @@ main module [exit=never] {
 		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).
 		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
-		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
-		% Go pick up our flag: priority 7.
+		% Go pick up our flag: priority 6.
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 6.
+		% If your goal is to get a heal at an location, go to the health. Priority 5.
 		if a-goal( heal(Location) ) then navigate(Location).
-		% Calculate path: priority 5.
+		% Calculate path: priority 4.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
-		% Go somewhere to grab stuff of the ground: priority 4.
-		if a-goal( grabStuff(UnrealID) ) then navigate(UnrealID).
 		% Bring other team's 'flag to our base: priority 3.
 		if a-goal( bringBackFlag(UnrealID) ) then navigate(UnrealID).
 		% Go get the other team's' flag: priority 2.

@@ -106,10 +106,6 @@ pickUpFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), MyTeam = Team, self(Ho
 	
 % Bring other team's flag to our base. True when other team's flag is back at home.
 bringBackFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
-
-%!!!!!!!!!!!!!!!!!!!!!!!!!%
-% TEMPORARY GOAL (will be replaced for modules getHealth and getWeapon). Grab closeby stuff. We are at a certain location if the IDs match.
-grabStuff(UnrealID) :- navigation(reached, UnrealID).
 	
 %% ***********************
 %% ** END Carrier.mod2g **

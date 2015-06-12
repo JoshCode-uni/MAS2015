@@ -7,12 +7,6 @@ module Defender{
 			
 			% If the bot percepts an enemy bot, adopt goal to kill him.
 			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
-			
-			% If close, grab stuff laying around.
-			%if not( goal( getStuff(_) ) ), bel( item(UnrealID, Label, ItemType, Position) ) then adopt( getStuff(UnrealID) ).	
-						
-			%% Patrol at our base.
-			%if not( goal( goTo(_) ) ), bel( not(at(UnrealID)), self(_,_,Team), base(Team, UnrealID), flagState(Team, home) ) then adopt( goTo(UnrealID) ).
 
 			%if not( goal( goTo(_) ) ), bel( navPoint(Destination,_,_) ) then adopt( goTo(Destination) ).
 			
