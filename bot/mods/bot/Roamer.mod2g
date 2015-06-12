@@ -2,17 +2,18 @@ module Roamer{
 	
 	program [order=linearall] {
 		%% See goals %%
-								
-			%% If I have the flag, bring back to base.
-			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
-					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
-					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).	
-					
+												
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
 			if not( goal( goTo(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( goTo(Destination) ).
 								
-			%% If I have no goals, go to enemy base. (Placeholder)
-			if not( goal( goTo(_) ) ), bel( self(_, _, Team), status(Health,_), base(OtherTeam, Destination), not(Team = OtherTeam), not(goTo(Destination))) then adopt( goTo(Destination)).
+			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
+			if bel( self(_, _, Team), status(Health,_), Health > 100, base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
+			 	then adopt( takeFlag(UnrealID)).		
+
+			%% If I have the flag, bring back to base.
+			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
+					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
+					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).
 	}
 	
 }
