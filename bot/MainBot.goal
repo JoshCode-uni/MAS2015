@@ -149,9 +149,9 @@ event module {
 		
 		if bel(true) then getWeapon.
 		
-		if bel(true, me(Me), Agent = Me, not(role(Agent, carrier))) then getArmour.
+		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getArmour.
 		
-		if bel(true, me(Me), Agent = Me, not(role(Agent, carrier))) then getAmmo.
+		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
 		
 		%if bel(not(didEvent)) then insert(didEvent).
 	}
