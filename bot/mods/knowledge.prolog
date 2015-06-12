@@ -48,9 +48,6 @@ wantWep(Weapon) :- hardList(HARD),
 % getWep(Type) is true if it is in inventory.
 % getWep(Weapon) :- (weapon(Weapon,_,_)).
 
-% Get a weapon. We are at a certain location if the locations match.
-getWep(Location) :- navigation(reached, Location).
-
 %% *************************
 %% ** END getWeapon.mod2g **
 %% *************************
@@ -101,13 +98,13 @@ ammo(Location) :- navigation(reached, Location).
 % Calculate the length of a path from starting point to end point
 calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 
-% Take the flag from the component. We are at a certain location if the IDs match.
+% Take the flag from the component. True when bot holds the other team's flag.
 takeFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
 
-% Pick up our flag of the ground. We are at a certain location if the IDs match.
-pickUpFlag(UnrealID) :- navigation(reached, UnrealID).
+% Pick up our flag of the ground. True when bot holds our flag.
+pickUpFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), MyTeam = Team, self(HolderID, _, _).
 	
-% Bring the flag back home to our base. We are at a certain location if the IDs match.
+% Bring other team's flag to our base. True when other team's flag is back at home.
 bringBackFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!%
@@ -144,8 +141,8 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% ** BGN killEnemy.mod2g **
 %% *************************
 
-% spin in a round.
-% rotate(+Location, +Angle, -LookLocation)
+% Spin around.
+% Rotate(+Location, +Angle, -LookLocation)
 rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + cos(Angle + pi/2), NewZ is Z + sin(Angle + pi/2),
 				 LookLocation = location(NewX, Y, NewZ).
 					
