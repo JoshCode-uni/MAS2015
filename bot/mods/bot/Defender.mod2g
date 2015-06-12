@@ -1,0 +1,33 @@
+module Defender{
+	program [order=linearall] {
+		% GOAL MANAGEMENT
+		
+			% If the bot sees another bot, he should shoot him.
+			if bel( self(_,_,Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
+			
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+
+			%if not( goal( goTo(_) ) ), bel( navPoint(Destination,_,_) ) then adopt( goTo(Destination) ).
+			
+			%% Collect pickups around base.
+			if not( goal( goTo(_) ) ), bel(self(_,_,Team), base(Team, BaseID), 
+					flagState(Team,home),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					pickup(Destination,_,_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
+
+			%% If the flag is gone, ambush the enemy in his own base.
+			if not( goal( goTo(_) ) ), bel(self(_,_,Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
+					(flagState(Team,held); flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					pickup(Destination,_,_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
+																
+			%The Defender should not abandon its post to cover the flag carrier
+			%if bel( haveFlag(selfPos) ), then delete(received(haveFlag(selfPos)).
+
+	}
+}

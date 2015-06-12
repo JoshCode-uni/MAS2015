@@ -1,0 +1,162 @@
+% State of minds %
+#import "mods/base/getPercepts.mod2g".
+#import "mods/base/getWeapon.mod2g".
+#import "mods/base/getHealthGoals.mod2g".
+#import "mods/base/getArmour.mod2g".
+#import "mods/base/getAmmo.mod2g".
+#import "mods/base/dropAllGoals.mod2g".
+
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/Roamer.mod2g".
+
+% Basics of the bot %
+
+init module {
+	#import "mods/knowledge.prolog".
+	beliefs {
+		status(100,0).
+		currentWeapon(enforcer, primary).
+		score(0,0,0).
+
+		%role('Shepard', carrier).
+		%role('EDI', defender).
+		%role('Garrus', roamer).
+		%role('Liara', roamer).
+	}
+	program{
+		% 'SEND ONCE' percepts inserting into the belief base.
+		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
+		
+		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
+		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
+		
+		% Insert all the pickups in the believe base.
+		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
+		
+		% 'SEND ON CHANGE' percepts initialization.
+		%% Navigation
+		if bel( percept(navigation(State, Destination)) ) then insert( navigation(State, Destination) ).
+		%% Orientation
+		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
+		% Power Up Status
+		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
+	}
+	actionspec {
+		% Make a best effort attempt to navigate to a certain location on the map.
+		navigate(Destination) {
+			pre{ not(navigation(navigating, _)) }
+			post{ true }
+		}
+		% Stop
+		stop {
+			pre{ true }
+			post{ true }
+		}
+		% Shoot a target
+		shoot(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Prefer a weapon
+		prefer(Weapon) {
+			pre{ true }
+			post{ true }
+		}
+		% Look at target
+		look(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Respawn
+		respawn {
+			pre{ true }
+			post{ true }
+		}
+		% Find a path
+		path(From, To) {
+			pre{ true }
+			post{ true }
+		}
+		% Let the bot continue with what he was doing
+		skip@int {
+			pre{ true }
+			post{ true }
+		}
+		% Deploy
+		deploy {
+			pre{ true }
+			post{ true }
+		}
+	}
+}
+
+main module [exit=never] {
+	
+	program [order=linearall] {
+		%% NOTE: It is slow because it does the event module after every action!!!
+		
+		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then dropAllGoals + navigate(HolderUnrealID).
+		if bel(flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
+	
+		% Adopt goal to pick up our flag when it is dropped.		
+		if bel( myTeam(Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
+		 	then adopt( pickUpFlag(UnrealID) ).
+				
+		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
+		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
+		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
+				
+		% When the bot is stuck or there is no path, this should be taken care of.
+		if bel( navigation(stuck, Destination) ) then respawn.
+		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).
+		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
+		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
+		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
+		
+		% Go pick up our flag: priority 6.
+		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
+		% If your goal is to get a heal at an location, go to the health. Priority 5.
+		if a-goal( heal(Location) ) then navigate(Location).
+		% Calculate path: priority 4.
+		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		% Bring other team's 'flag to our base: priority 3.
+		if a-goal( bringBackFlag(UnrealID) ) then navigate(UnrealID).
+		% Go get the other team's' flag: priority 2.
+		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
+		% Go to a destination: priority 1.
+		if goal( goTo(Destination) ) then navigate(Destination).
+		
+		%% THIS DOESN'T BELONG HERE AND IS WRONG!!!
+		%Overlord role change code(WIP, don't activate)
+		%if bel(changeRole(Agent, carrier), me(Me), Agent = Me) then drop(role(Agent, roamer))
+		%+drop(changeRole(Agent, carrier)) + adopt (role(Agent, carrier)).
+		
+		%if bel(changeRole(Agent, defender), me(Me), Agent = Me) then drop(role(Agent, roamer))
+		%+drop(changeRole(Agent, defender))+adopt (role(Agent, defender)).
+		
+		%if bel(changeRole(Agent, roamer), me(Me), Agent = Me) then drop(role(Agent, carrier))
+		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).	
+		%if bel(didEvent) then delete(didEvent).
+	}
+	
+}
+
+event module {
+	
+	program {
+		% Percept Handling
+		if bel(true) then getPercepts.
+		
+		if bel(true) then getHealthGoals.
+		
+		if bel(true) then getWeapon.
+		
+		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getArmour.
+		
+		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
+		
+		%if bel(not(didEvent)) then insert(didEvent).
+	}
+		
+}

@@ -1,0 +1,5 @@
+module dropAllGoals{
+	program{
+		%forall goal(prio(Int, Goal)) do drop(prio(Int, Goal)).
+	}
+}

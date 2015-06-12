@@ -1,0 +1,42 @@
+init module {
+	
+	knowledge {
+		% Find an agent for a role.
+		findCarrier(Agent) :- needCarrier, freeAgent(Agent).
+		findDefender(Agent) :- needDefender, freeAgent(Agent).
+		findRoamer(Agent) :- needRoamer, freeAgent(Agent).
+		
+		% Find an agent that is assignable (Never me).
+		freeAgent(Agent) :- me(Me), agent(Agent), not(Agent = Me), not(role(Agent, _)).
+		
+		% Check if we need a certain role
+		needCarrier :- findall(Agent, role(Agent, carrier), RoleList), length(RoleList, Roles), Roles < 1.		% Carrier
+		needDefender :- findall(Agent, role(Agent, defender), RoleList), length(RoleList, Roles), Roles < 1.	% Defender
+		needRoamer :- findall(Agent, role(Agent, roamer), RoleList), length(RoleList, Roles), Roles < 2.		% Roamer
+	}
+	
+	beliefs {
+		% Temporary segment to make GOAL do things instead of crash and burn
+		role(none, none).
+	}
+	
+}
+
+main module {
+	
+	program [order=linearall] {
+		
+		if bel(findCarrier(Agent)) then (Agent).sendonce(role(Agent, carrier)) + insert(role(Agent, carrier)).
+		if bel(findDefender(Agent)) then (Agent).sendonce(role(Agent, defender)) + insert(role(Agent, defender)).
+		if bel(findRoamer(Agent)) then (Agent).sendonce(role(Agent, roamer)) + insert(role(Agent, roamer)).
+		
+		
+		%Change role, WIP
+		%if bel(dies(Agent), role(Agent, role), not role = roamer)then insert(changeRole(Agent, role)).
+		%if bel(changeRole(Agent, role), role = carrier, role(Agent2, roamer))
+		%then insert findCarrier(Agent2)+findRoamer(Agent).
+		%if bel(changeRole(Agent, role), role = defender, role(Agent2, roamer))
+		%then insert findDefender(Agent2)+findRoamer(Agent).
+	}
+	
+}
