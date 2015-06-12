@@ -1,4 +1,4 @@
-module getHealth {
+module getHealthGoals {
 	
 	program {
 	
@@ -10,9 +10,6 @@ module getHealth {
 			% If health is lower than 150, get super_health. (What is name of vials which also overcharge?). 
 			if goal(not(heal(_))), bel( status(H,_), H@<150, item(Location, health, super_health,_) ) then adopt( heal(Location) ).
 			
-		%% Execution %%
-			%if your goal is to get a heal at an location, go to the health.
-			if goal( heal(Location) ) then navigate(Location).
 	}
 	
 }

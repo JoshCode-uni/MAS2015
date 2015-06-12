@@ -1,7 +1,7 @@
 % State of minds %
 #import "mods/base/getPercepts.mod2g".
 #import "mods/base/getWeapon.mod2g".
-#import "mods/base/getHealth.mod2g".
+#import "mods/base/getHealthGoals.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getAmmo.mod2g".
 #import "mods/base/dropAllGoals.mod2g".
@@ -114,8 +114,10 @@ main module [exit=never] {
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( grabStuff(Destination) ), bel( navigation(noPath, Destination) ) then drop( grabStuff(Destination) ).
 		
-		% Go pick up our flag: priority 6.
+		% Go pick up our flag: priority 7.
 		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
+		% If your goal is to get a heal at an location, go to the health. Priority 6.
+		if a-goal( heal(Location) ) then navigate(Location).
 		% Calculate path: priority 5.
 		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		% Go somewhere to grab stuff of the ground: priority 4.
@@ -148,7 +150,7 @@ event module {
 		% Percept Handling
 		if bel(true) then getPercepts.
 		
-		if bel(true) then getHealth.
+		if bel(true) then getHealthGoals.
 		
 		if bel(true) then getWeapon.
 		
