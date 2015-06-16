@@ -123,7 +123,7 @@ main module [exit=never] {
 		% If a bot you want to kill dies, drop the want to kill.
 		if goal( kill(Bot)), bel(fragged(_,_,Bot,_))  then drop( kill(Bot) ).
 		% If we have a goal to kill someone, go to the last known spot.
-		if goal( kill(UnrealID)) then navigate(UnrealID).
+		if goal( kill(UnrealID) ) then navigate(UnrealID).
 		
 		% Go pick up our flag: priority 6.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
@@ -136,7 +136,7 @@ main module [exit=never] {
 		% Go get the other team's' flag: priority 2.
 		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
-		if goal( goTo(Destination) ) then navigate(Destination).
+		if a-goal( goTo(Destination) ) then navigate(Destination).
 		
 	}
 	
