@@ -13,10 +13,19 @@ module Carrier{
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
-			 	then adopt( takeFlag(UnrealID)).				 	
-			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
+			 	then adopt( takeFlag(UnrealID)).
+			 					 	
+			% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
 			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
 				not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( bringBackFlag(UnrealID) ).
+			
+			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
+			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), not(Team = OtherTeam),
+					base(Team, BaseID), flagState(Team,held), flagState(OtherTeam,held),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					pickup(Destination,_,_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
 				
 			% If bot has flag, send to everyone to alert them.
 			%if bel( self(HolderUnrealID, NickName, Team), orientation(selfPos,_,_), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
