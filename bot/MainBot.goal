@@ -101,7 +101,7 @@ main module [exit=never] {
 	
 		% Adopt goal to pick up our flag when it is dropped.		
 		if bel( myTeam(Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
-		 	then adopt( pickUpFlag(UnrealID) ).
+		 	then adopt( return(UnrealID) ).
 				
 		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
 		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
@@ -109,13 +109,13 @@ main module [exit=never] {
 				
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel( navigation(stuck, Destination) ) then respawn.
-		if goal( pickUpFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( pickUpFlag(Destination) ).
+		if goal( returnFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( returnFlag(Destination) ).
 		if goal( bringBackFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( bringBackFlag(Destination) ).
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
 		% Go pick up our flag: priority 6.
-		if a-goal( pickUpFlag(UnrealID) ) then navigate(UnrealID).
+		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
 		% If your goal is to get a heal at an location, go to the health. Priority 5.
 		if a-goal( heal(Location) ) then navigate(Location).
 		% Calculate path: priority 4.
