@@ -104,10 +104,10 @@ calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 takeFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
 
 % Pick up our flag of the ground. True when bot holds our flag.
-pickUpFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), MyTeam = Team, self(HolderID, _, _).
+returnFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), MyTeam = Team, self(HolderID, _, _).
 	
 % Bring other team's flag to our base. True when other team's flag is back at home.
-bringBackFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
+deliverFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), not(self(HolderID, _, _)).
 	
 %% ***********************
 %% ** END Carrier.mod2g **
