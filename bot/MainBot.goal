@@ -10,6 +10,7 @@
 #import "mods/bot/Carrier.mod2g".
 #import "mods/bot/Defender.mod2g".
 #import "mods/bot/Roamer.mod2g".
+#import "mods/bot/killEnemy.mod2g".
 
 % Basics of the bot %
 
