@@ -7,8 +7,7 @@ module killEnemy {
 			
 		
 		%% Execution %%
-			% If we have a goal to kill someone, go to the last known spot.
-			if goal( kill(UnrealID)) then navigate(UnrealID).
+			
 			% If we reached the last known spot, and we lost the enemy, look around. 
 			%if goal( kill(UnrealID)), bel(navigation(reached, UnrealID), orientation(_,Angle,_), rotate(UnrealID, Angle, B)) then adopt(rotate(0,B)).
 			% for-loop implementation to ensure full rotation.

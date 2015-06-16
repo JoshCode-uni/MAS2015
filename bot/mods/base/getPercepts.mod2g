@@ -91,6 +91,12 @@ module getPercepts{
 			%% PERCEPTS ABOUT BOT ACTIONS
 				%%% Update path percept caused by the path action ('send on change' percept). We don't need to remove paths because the map doesn't change
 				forall bel( percept(path(StartID, EndID, Length, LocationList)) ) do insert( path(StartID, EndID, Length, LocationList) ).
+				
+				%%% Update fragged percept caused by the fragging of an enemy.
+				forall bel( percept( fragged(Time,Killer,Victim,Weapon)) ) do insert( fragged(Time,Killer,Victim,Weapon) ).
+				%%% Update the fragged percept.
+				forall bel( fragged(OldTime,OldKiller,OldVictim,OldWeapon), percept(not(fragged(OldTime,OldKiller,OldVictim,OldWeapon))) )
+					do delete( fragged(OldTime,OldKiller,OldVictim,OldWeapon)).
 	}
 	
 }

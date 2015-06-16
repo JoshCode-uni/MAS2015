@@ -142,6 +142,8 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% ** BGN killEnemy.mod2g **
 %% *************************
 
+%kill(UnrealID) :- percept(fragged(_,_,UnrealID,_));navigation(reached,UnrealID).
+
 % Spin around.
 % Rotate(+Location, +Angle, -LookLocation)
 rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + cos(Angle + pi/2), NewZ is Z + sin(Angle + pi/2),

@@ -120,6 +120,11 @@ main module [exit=never] {
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
+		% If a bot you want to kill dies, drop the want to kill.
+		if goal( kill(Bot)), bel(fragged(_,_,Bot,_))  then drop( kill(Bot) ).
+		% If we have a goal to kill someone, go to the last known spot.
+		if goal( kill(UnrealID)) then navigate(UnrealID).
+		
 		% Go pick up our flag: priority 6.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
 		% If your goal is to get a heal at an location, go to the health. Priority 5.
