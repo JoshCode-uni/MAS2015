@@ -140,10 +140,10 @@ main module [exit=never] {
 event module {
 	
 	program {
-		% Percept Handling
-		if bel(true) then killEnemy.
-		
+		% Percept Handling	
 		if bel(true) then getPercepts.
+		
+		if bel(true) then killEnemy.
 		
 		if bel(true) then getHealthGoals.
 		

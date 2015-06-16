@@ -4,7 +4,7 @@ module Roamer{
 		%% See goals %%
 			
 			% If the bot percepts an enemy bot, adopt goal to kill him.
-			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+			%if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
 		
 			if not( goal( goTo(_) ) ), bel(not(iHaveFlag), myTeam(Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
 					(flagState(Team,held) ; flagState(Team,dropped)),
