@@ -127,17 +127,7 @@ main module [exit=never] {
 		% Go to a destination: priority 1.
 		if goal( goTo(Destination) ) then navigate(Destination).
 		
-		%% THIS DOESN'T BELONG HERE AND IS WRONG!!!
-		%Overlord role change code(WIP, don't activate)
-		%if bel(changeRole(Agent, carrier), me(Me), Agent = Me) then drop(role(Agent, roamer))
-		%+drop(changeRole(Agent, carrier)) + adopt (role(Agent, carrier)).
 		
-		%if bel(changeRole(Agent, defender), me(Me), Agent = Me) then drop(role(Agent, roamer))
-		%+drop(changeRole(Agent, defender))+adopt (role(Agent, defender)).
-		
-		%if bel(changeRole(Agent, roamer), me(Me), Agent = Me) then drop(role(Agent, carrier))
-		%+drop(role(Agent, defender))+drop(changeRole(Agent,roamer))+adopt (role(Agent, roamer)).	
-		%if bel(didEvent) then delete(didEvent).
 	}
 	
 }

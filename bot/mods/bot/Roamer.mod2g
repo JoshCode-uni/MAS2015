@@ -25,7 +25,7 @@ module Roamer{
 					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
 			
 			%Roamer should help to escort the carrier
-			%if bel( haveFlag(pos) ), then insert navigate(pos) + delete(received(haveFlag(pos)).
+			%if bel( haveFlag(pos) ), then insert goTo(pos) + delete(received(haveFlag(pos)).
 	}
 	
 }
