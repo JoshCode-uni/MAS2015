@@ -144,7 +144,7 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% ** BGN killEnemy.mod2g **
 %% *************************
 
-%kill(UnrealID) :- percept(fragged(_,_,UnrealID,_));navigation(reached,UnrealID).
+kill(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
 % Spin around.
 % Rotate(+Location, +Angle, -LookLocation)
