@@ -34,18 +34,14 @@ preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(lin
 %% ** BGN getWeapon.mod2g **
 %% *************************
 
-	
 % weapon priority list, contains hardList without worse weapons then the ones in inventory.
 % Input requirement: insert hardList to start. List is output.
-priorities([HH|HT], Wep) :-Wep = HH;
-                           (
-                           not(weapon(HH,_,_)),
-                           priorities(HT,Wep)
-                           ).
+% priorities(+List, -Weapon).
+priorities([HH|HT], Wep) :- Wep = HH ; (not(weapon(HH, _, _)), priorities(HT,Wep)).
 priorities([],_).
 
 % Hardcode base priorities list. 
-hardList(List) :- List = [flak, stinger, linkgun, shockrifle, rocketlauncher, biorifle, sniperrifle].
+hardList(List) :- List = [flak_cannon, stinger_minigun, link_gun, shock_rifle, rocket_launcher, bio_rifle, sniper_rifle].
 
 % gives true if want weapon.
 wantWep(Weapon) :- hardList(HARD),
