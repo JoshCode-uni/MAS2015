@@ -1,9 +1,9 @@
 \chapter{Conclusions and Recommendations}
 
-Our objective was to create a multi-agent system, which was capable of defeating the computer controlled enemies written by the game's programmers. This report described the various strategies used to defeat the bots and the process behind creating the winning team.
+The objective was to create a multi-agent system, which was capable of defeating 'native bots', computer controlled enemies written by the game's programmers. This report described the various strategies used to defeat the bots and the process behind creating the winning team.
     
 \section{Strategy}
-Our strategy to achieve victory over the bots included four roles, roamers, flag carrier, flag defender and an Overlord. 1 carrier, 1 defender, 2 roamers would be fielded while the overlord would serve as a commander and not participate in field action. This strategy turned out to be a good one, as it allowed us to achieve the goal and answer the main question.
+Strategy used to achieve victory over the bots included four roles, roamers, flag carrier, flag defender and an Overlord. 1 carrier, 1 defender and 2 roamers would be fielded while the overlord would serve as a commander and not participate in field action. This strategy turned out to be a good one, as it allowed us to achieve the goal and answer the main question.
 
 \section{Code structure}
 The code structure was initially calling a separate file for each class, which was superseded by a main bot for general behaviour and a modular approach for the classes. This allowed us to plug in class-based behaviour on the fly, allowing a dynamic role allocation. This was achieved through refactoring and eliminated the majority of redundant code in addition to improved flexibility. Slight increases in the stability and efficiency of the code were also noticed.
@@ -12,3 +12,15 @@ The code structure was initially calling a separate file for each class, which w
 During the making of the multi-agent system, the Sprint-strategy was used. This is a true and tested method, which has proven itself over time. During our project, we noticed that it was indeed a good way of managing a project.
 
 In conclusion, our project has succeeded in general by achieving the objective of defeating the native bots using the above strategy. Of course, there is always room for improvement. We would advise other people to experiment with other role distributions, be it by varying their quantities, or by introducing completely new forms of behaviour. It would also be interesting to make the bots aware of their surroundings on a smaller level, making sure they can hide in corners or duck behind walls for example. This would resemble "true" intelligence.
+\pagebreak
+\section{Recommendations}
+During the course of our project, there were functions and features deemed too difficult or not possible with the current limited time and resources at hand. Here are some recommendation for those who would like to go further with this project.
+
+\subsection{Implement role changing during battle}
+It was an idea that in the event where an important bot gets fragged, the overlord could initialize a role change to let the important role to be carried out by a bot that’s fully geared. Then the freshly spawned bot can go scavenge its own gear while the original task is carried on by a more capable bot.
+
+\subsection{Improvement on bots combat behaviour}
+There are many aspect of behaviours that seem trivial for us humans, but are absent on bots, implementing them can be beneficial for the AI behaviour. Object permanence is one of those examples. Human learn that things don’t vanish when they leave our line of sight, but the bots don’t. The moment an enemy leaves their line of sight bots will forget their existence. Implementing these kind of bot behaviour have potential to greatly improve results.
+
+\subsection{Robustness}
+Unfortunately, even on our most stable builds, bots are plagued by random events leading to doing the wrong goal or even breaking down. Events where the flag cannot be returned, the elevator taken by another bot or stuck under the elevator are examples of random events that can mess up a bot. All these events can be avoided if the bots were designed to be more fault-tolerant and robust.

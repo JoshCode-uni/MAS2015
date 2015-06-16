@@ -13,9 +13,9 @@ Our system has three distinct roles for our four in-game agents:
 \item The final role is the \emph{Roamer}, a class which will be assigned to two of the bots. They are designed to cross the entire map, constantly improving themselves by collecting weapons, health and armour and disrupting the enemy team. Additionally, they can capture the flag if they are powerful enough, return our flag whenever it is stolen, or protect the flag carrier when he is in possession of the flag.
 \end{enumerate}
 
-Besides roles assigned to the actual bots, we have a fourth role, called \emph{the Overlord}. \emph{The Overlord} does not control a bot and as such does not directly participate in the game. He can be seen as a commander, keeping track of where the flag is and assigning different roles to the bots in the game.
+Besides roles assigned to the actual bots, we have a fourth role, called \emph{the Overlord}. \emph{The Overlord} does not control a bot and as such does not directly participate in the game. He can be seen as a commander, keeping track of where the flag is and assigning different roles to the bots in the game.\\
 
-\subsection{Justification}
+\paragraph{Justification}
 We chose these four roles to divide the work that needs to be done in order to win the match.
 
 \begin{enumerate}
@@ -33,9 +33,9 @@ Our strategy starts with a defender and an attacker. The attacker simply tries t
 
 The two bots are complemented by two roamers, who collect as many pickups as they can, after which they will charge the enemy base. They are also helpful at returning the flag once it has been stolen, as they are usually much stronger than the normal bots.
 
-All of this is overseen by the Overlord, which can dynamically switch roles, or even change the number of bots of each class. He also keeps track of where the flag is if one of the bots sees it, sending other bots there as well.
+All of this is overseen by the Overlord, which can dynamically switch roles, or even change the number of bots of each class. He also keeps track of where the flag is if one of the bots sees it, sending other bots there as well.\\
 
-\subsection{Weapons}
+\paragraph{Weapons}
 As mentioned earlier in the report, our bots will choose their weapons according to the distance to the enemy. The list is compiled based on various aspects of the weapons, the prime characteristic being the damage per second. The preferences are as follows: \\
 
 \begin{tabular}{| l | l | l |}
