@@ -124,14 +124,13 @@ main module [exit=never] {
 		% If your goal is to get a heal at an location, go to the health. Priority 5.
 		if a-goal( heal(Location) ) then navigate(Location).
 		% Calculate path: priority 4.
-		if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
+		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		% Bring other team's 'flag to our base: priority 3.
 		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).
 		% Go get the other team's' flag: priority 2.
 		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
 		if goal( goTo(Destination) ) then navigate(Destination).
-		
 		
 	}
 	
