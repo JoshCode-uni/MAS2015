@@ -8,16 +8,14 @@ module Carrier{
 		% GOAL MANAGEMENT
 			% If the bot sees another bot, then stop and try to shoot him.
 			if bel( self(_, _, Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
-			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
-			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then shoot(enemyFlagCarrier).
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
 			 	then adopt( takeFlag(UnrealID)).
 			 					 	
 			% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
-			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
-				not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( deliverFlag(UnrealID) ).
+			%if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
+			%	not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( deliverFlag(UnrealID) ).
 			
 			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
 			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), not(Team = OtherTeam),
