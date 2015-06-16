@@ -20,7 +20,7 @@ module Roamer{
 			%if not( goal( goTo(_) ) ), bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, held), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
 								
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home), status(Health,_), Health > 100 ) 
+			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home), status(Health,_), Health >= 100 ) 
 			 	then adopt( takeFlag(UnrealID)).
 
 			%% If I have the flag, bring back to base.
