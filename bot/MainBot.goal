@@ -4,6 +4,7 @@
 #import "mods/base/getHealthGoals.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getAmmo.mod2g".
+#import "mods/base/killEnemy.mod2g".
 #import "mods/base/dropAllGoals.mod2g".
 
 #import "mods/bot/Carrier.mod2g".
@@ -140,6 +141,8 @@ event module {
 	
 	program {
 		% Percept Handling
+		if bel(true) then killEnemy.
+		
 		if bel(true) then getPercepts.
 		
 		if bel(true) then getHealthGoals.
