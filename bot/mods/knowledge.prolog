@@ -10,9 +10,12 @@ at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)),
 
 % myTeam(?Team).
 myTeam(Team) :- self(_,_,Team).
+
+theirTeam(Team) :- myTeam(Team), base(TheirTeam, BaseID), myBase(MyBase), not(BaseID = MyBase).
 % myBase(?BaseID).
 myBase(BaseID) :- myTeam(Team), base(Team, BaseID).
 theirBase(BaseID) :- myTeam(Team), base(TheirTeam, BaseID), not(Team = TheirTeam).
+
 % enemy(+UnrealID).
 enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
 
