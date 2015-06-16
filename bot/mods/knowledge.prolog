@@ -13,6 +13,8 @@ myTeam(Team) :- self(_,_,Team).
 % enemy(+UnrealID).
 enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
 
+iHaveFlag :- self(MyID, _, _), flag(Team, MyID, _), myTeam(MyTeam), not(MyTeam = Team).
+
 % Prefer these weapons given the range to enemy.
 preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(link_gun, primary), weapon(flak_cannon, primary), weapon(stinger_minigun, primary)]) ;
 					(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;

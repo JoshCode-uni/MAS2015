@@ -2,6 +2,12 @@ module Roamer{
 	
 	program [order=linearall] {
 		%% See goals %%
+		
+			if not( goal( goTo(_) ) ), bel(not(iHaveFlag), myTeam(Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
+					(flagState(Team,held) ; flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
 												
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
 			if not( goal( goTo(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( goTo(Destination) ).
@@ -16,13 +22,6 @@ module Roamer{
 			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
 					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
 					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).
-					
-			if not( goal( goTo(_) ) ), bel(myTeam(Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
-					(flagState(Team,held) ; flagState(Team,dropped)),
-					navPoint(BaseID,location(X1,Y1,_),_), 
-					pickup(Destination,_,_), 
-					navPoint(Destination,location(X2,Y2,_),_), 
-					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
 			
 			%Roamer should help to escort the carrier
 			%if bel( haveFlag(pos) ), then insert goTo(pos) + delete(received(haveFlag(pos)).
