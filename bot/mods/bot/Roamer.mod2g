@@ -6,6 +6,7 @@ module Roamer{
 			% If the bot percepts an enemy bot, adopt goal to kill him.
 			%if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
 		
+			% If our flag is gone, walk around the enemy base to make sure it doesn't get captured
 			if not( goal( goTo(_) ) ), bel(not(iHaveFlag), myTeam(Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
 					(flagState(Team,held) ; flagState(Team,dropped)),
 					navPoint(BaseID,location(X1,Y1,_),_), 
@@ -19,7 +20,7 @@ module Roamer{
 								
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home), status(Health,_), Health > 100 ) 
-			 	then adopt( takeFlag(UnrealID)).		
+			 	then adopt( takeFlag(UnrealID)).
 
 			%% If I have the flag, bring back to base.
 			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
