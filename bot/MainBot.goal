@@ -97,7 +97,7 @@ main module [exit=never] {
 	program [order=linearall] {
 		%% NOTE: It is slow because it does the event module after every action!!!
 		
-		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then dropAllGoals + navigate(HolderUnrealID).
+		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then adopt( returnFlag(HolderUnrealID) ).
 		
 		% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
 		if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 

@@ -24,7 +24,7 @@ module Roamer{
 			%% If I have the flag, bring back to base.
 			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
 					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
-					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).
+					base(Team, Destination) ) then adopt( deliverFlag(Destination) ).
 			
 			%Roamer should help to escort the carrier
 			%if bel( haveFlag(pos) ), then insert goTo(pos) + delete(received(haveFlag(pos)).
