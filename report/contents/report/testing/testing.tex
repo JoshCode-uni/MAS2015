@@ -3,16 +3,16 @@
 Testing can be considered an important part of every project, especially when the project is related to computer science. Yet, it is often overlooked or seen as too expensive, resulting in major problems later on. We tried to avoid this pitfall by starting testing early on in the project. How the system was tested and what the results where can be seen in this chapter.
 
 \section{Testing approach}
-During the project, we have used multiple forms of testing, with various degrees of success. The main problem faced was the fact that we could in essence only test the entire system, as there would be no feasible way to test parts of the game. This severely impaired testing, as it decreased both controllability and observability, condemning us to end-to-end testing. Another factor which made testing difficult was the (apparent) non-deterministic behaviour of the native bots.\\
+During the project, multiple forms of testing were used, with various degrees of success. The main problem faced was the fact that in essence, only the entire system can be tested, as there would be no feasible way to test only parts of the game. This severely impaired testing, as it decreased both controllability and observability, condemning us to end-to-end testing. Another factor which made testing difficult was the (apparent) non-deterministic behaviour of the native bots.\\
 \\
 Our first testing approach was aimed at taking non-deterministic behaviour out of the equation. The plan was to create very simple maps, in which both our bots and the native bots could only do a single thing. The idea was quickly abandoned, as creating the maps was time-consuming and tweaking them in order to make the bots behave in the expected way was close to impossible.\\
 \\
-A second testing approach was considered after we realized we could control bots of the enemies' team as well. This allowed us to create bots which would behave exactly as expected, in a desired deterministic way. Again, time was an issue, as programming a new bot for every (few) testing scenario(s) was unadvisable, especially taking into account the (usability of the) actual data we gathered this way.\\
+A second testing approach was considered after realizing the possibility to control bots of the enemies' team. This allowed us to create bots which would behave exactly as expected, in a desired deterministic way. Again, time was an issue, as programming a new bot for every (few) testing scenario(s) was unadvisable, especially taking into account the (usability of the) actual data gathered through this method.\\
 \\
 After this, any form of automatic testing was deemed inefficient. Instead, it was determined that it would be replaced by careful monitoring the environment, looking for unwanted behaviour, possibly using checklists. Apart from this, the system would be tested by occasionally pitching various combinations of roles against a human player, who could create the wanted situations himself, such as getting the flag or shooting at a bot. The person would then look at the reaction of the bots for anything unusual and judge whether the evoked reaction was adequate.\\
 
 \section{Discovered bugs}
-Of course we encountered many bugs and erroneous behaviour during the development cycle. Most of them were insignificant or not interesting, but below we will enlarge on several of the larger and/or more interesting bugs:
+Many bugs and erroneous behaviour occurred during the development cycle. Most of them were insignificant or not irrelevant, but there were several of the larger and/or more interesting bugs. The following is a list of these bugs:
 
 \begin{itemize}
 \item Bots terminating when no more goals are present. \\

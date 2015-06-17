@@ -26,10 +26,10 @@ The ten scenarios are:
 	\item The flag capturer sees a weapon. \\
 	\textit{Important percepts: pickup location, who is holding the flag, weapons owned} \\
 	If the flag capturer sees a weapon he does not already own, he should pick it up, but only if he is not carrying the flag. Returning the flag should take precedence.\\
-	\item The enemy captures our flag. \\
-	\textit{Important percepts: our flag status} \\
+	\item The enemy captures a friendly flag. \\
+	\textit{Important percepts: friendly flag status} \\
 	Both the roamers and the flag capturer should continue with their tasks, while the flag defender should first return to his own base (in the hopes of spotting the enemy), after which he will roam around the enemy base (to lay an ambush). \\
-	\item The flag capturer has the flag, but our flag is not at home. \\
-	\textit{Important percepts: our flag status, friendly base location, enemy flag status} \\
-	As long as our flag is not at base, it is impossible to score. It is therefore important for the roamers to search our flag and return it, while the flag capturer and the flag defender roam around their own base, defending each other and making sure scoring is almost inevitable if the flag is returned. \\
+	\item The flag capturer has the flag, but the friendly flag is not at home. \\
+	\textit{Important percepts: friendly flag status, friendly base location, enemy flag status} \\
+	As long as the friendly flag is not at base, it is impossible to score. It is therefore important for the roamers to search for the flag and return it, while the flag capturer and the flag defender roam around their own base, defending each other and making sure scoring is almost inevitable if the flag is returned. \\
 \end{enumerate}

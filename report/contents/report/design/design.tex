@@ -13,13 +13,13 @@ Our system has three distinct roles for our four in-game agents:
 \item The final role is the \emph{Roamer}, a class which will be assigned to two of the bots. They are designed to cross the entire map, constantly improving themselves by collecting weapons, health and armour and disrupting the enemy team. Additionally, they can capture the flag if they are powerful enough, return our flag whenever it is stolen, or protect the flag carrier when he is in possession of the flag.
 \end{enumerate}
 
-Besides roles assigned to the actual bots, we have a fourth role, called \emph{the Overlord}. \emph{The Overlord} does not control a bot and as such does not directly participate in the game. He can be seen as a commander, keeping track of where the flag is and assigning different roles to the bots in the game.\\
+Besides roles assigned to the actual bots, a fourth rolewas created, called \emph{the Overlord}. \emph{The Overlord} does not control a bot and as such does not directly participate in the game. He can be seen as a commander, keeping track of where the flag is and assigning different roles to the bots in the game.\\
 
 \paragraph{Justification}
 We chose these four roles to divide the work that needs to be done in order to win the match.
 
 \begin{enumerate}
-\item[Carrier] We wanted a dedicated role that would be concerned with getting the enemy flag, whatever it may take without distractions. We think that in this way, we will consistently keep scoring points.
+\item[Carrier] We wanted a dedicated role that would be concerned with getting the enemy flag, whatever it may take without distractions. We believe that in this way, our bots will consistently keep scoring points.
 
 \item[Defender] We also wanted a dedicated role that would stay with our flag so that the enemy team will have a hard time capturing our flag. He also chases the enemy flag carrier so that we keep track of his location for a short while, so that the \emph{Roamer} agents will know where to look for the enemy flag carrier if the \emph{Defender} cannot take him out.
 
