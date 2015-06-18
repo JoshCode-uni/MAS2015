@@ -3,7 +3,7 @@ module getWeapon {
 	program {
 		%% Goal Handling %%
 			% If I shoot with an enforcer now, get a weapon pronto.
-			if bel( currentWeapon(enforcer,_), pickup(Location, weapon, Type), wantWep(Type) ) then adopt( getWep(Location) ).
+			if bel( currentWeapon(enforcer,_), pickup(Location, weapon, Type), wantWep(Type), me(Me), Agent = Me, not(role(Agent, carrier)) ) then adopt( getWep(Location) ).
 			
 			% If I see a weapon that is not in inventory and better then current loadout, pick it up.
 			if bel( item(Location,weapon,Type,_), wantWep(Type) ) then adopt( getWep(Location) ).

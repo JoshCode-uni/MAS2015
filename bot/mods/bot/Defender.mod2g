@@ -1,15 +1,10 @@
 module Defender{
 	program [order=linearall] {
 		% GOAL MANAGEMENT
-		
-			% If the bot sees another bot, he should shoot him.
-			% Should be handeled in killEnemy Module
-			%if bel( myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
-			
-			% If the bot percepts an enemy bot, adopt goal to kill him.
-			%if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
-
+					
 			%if not( goal( goTo(_) ) ), bel( navPoint(Destination,_,_) ) then adopt( goTo(Destination) ).
+			
+			%if not( goal( goTo(_) ) ), bel( myTeam(Team), base(Team, BaseID) ) then adopt( goTo(BaseID) ).
 			
 			%% Collect pickups around base.
 			if not( goal( goTo(_) ) ), bel(myTeam(Team), base(Team, BaseID), 

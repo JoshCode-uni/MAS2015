@@ -4,6 +4,7 @@
 #import "mods/base/getHealthGoals.mod2g".
 #import "mods/base/getArmour.mod2g".
 #import "mods/base/getAmmo.mod2g".
+#import "mods/base/getPowerUps.mod2g".
 #import "mods/base/killEnemy.mod2g".
 #import "mods/base/dropAllGoals.mod2g".
 
@@ -97,18 +98,20 @@ main module [exit=never] {
 	program [order=linearall] {
 		%% NOTE: It is slow because it does the event module after every action!!!
 		
+		% If our flag is dropped, adopt goal to get it.
 		if bel(flag(Team, HolderUnrealID, dropped), myTeam(Team)) then adopt( returnFlag(HolderUnrealID) ).
+		% Adopt goal to pick up our flag when it is dropped.		
+		if bel( myTeam(Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
+		 	then adopt( returnFlag(UnrealID) ).
+		 	
+		% If the flag of the other team is dropped, adopt goal to take it.
+		if bel( flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
 		
 		% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
 		if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
 			not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( deliverFlag(UnrealID) ).
-		
-		if bel(flag(Team, HolderUnrealID, dropped), not(myTeam(Team))) then dropAllGoals + adopt( takeFlag(HolderUnrealID) ).
-	
-		% Adopt goal to pick up our flag when it is dropped.		
-		if bel( myTeam(Team), flagState(Team, dropped), flag(Team, none, Position), navPoint(UnrealID, Position, [NeigsUnrealID])) 
-		 	then adopt( return(UnrealID) ).
-				
+					
+		% Enter the module of the role that the bot has.
 		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
 		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
 		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
@@ -120,23 +123,24 @@ main module [exit=never] {
 		if goal( takeFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( takeFlag(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
-		% If a bot you want to kill dies, drop the want to kill.
-		if goal( kill(Bot)), bel(fragged(_,_,Bot,_))  then drop( kill(Bot) ).
-		% If we have a goal to kill someone, go to the last known spot.
-		if goal( kill(UnrealID) ) then navigate(UnrealID).
-		
+		% If a bot you want to kill dies, drop the goal to kill it.
+		% if goal( kill(Bot)), bel(fragged(_,_,Bot,_))  then drop( kill(Bot) ).
+				
 		% Go pick up our flag: priority 6.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 5.
+		% If we have a goal to kill someone, go to the last known spot. Priority 5.
+		if a-goal( kill(UnrealID) ) then navigate(UnrealID).
+		% If your goal is to get a heal at an location, go to the health. Priority 4.
 		if a-goal( heal(Location) ) then navigate(Location).
-		% Calculate path: priority 4.
-		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		% Bring other team's 'flag to our base: priority 3.
 		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).
 		% Go get the other team's' flag: priority 2.
 		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
 		if a-goal( goTo(Destination) ) then navigate(Destination).
+
+		% Calculate path, not used.
+		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
 		
 	}
 	
@@ -148,11 +152,13 @@ event module {
 		% Percept Handling	
 		if bel(true) then getPercepts.
 		
-		if bel(true) then killEnemy.
+		if bel(true, me(Me), Agent = Me, not(role(Agent, carrier)) ) then killEnemy.
 		
 		if bel(true) then getHealthGoals.
 		
 		if bel(true) then getWeapon.
+		
+		if bel(true) then getPowerUps.
 		
 		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getArmour.
 		

@@ -15,9 +15,6 @@ module Roamer{
 												
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
 			if not( goal( goTo(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( goTo(Destination) ).
-			
-			% This is implemented in the walking around thingy above
-			%if not( goal( goTo(_) ) ), bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, held), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
 								
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home), status(Health,_), Health >= 100 ) 

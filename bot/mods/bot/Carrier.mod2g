@@ -5,10 +5,7 @@ module Carrier{
 		%% NO PERCEPTS IN THIS FILE %%
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
 		
-		% GOAL MANAGEMENT
-			% If the bot sees another bot, then stop and try to shoot him.
-			% Depricated line, should be handeled in kill module
-			%if bel( myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
+		% GOAL MANAGEMENT.
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
 			if not(goal(takeFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, home) ) 
@@ -21,7 +18,7 @@ module Carrier{
 			 	then adopt( takeFlag(UnrealID)).
 			 					 	
 			% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
-			if bel( iHaveFlag, myBase(UnrealID) ) then adopt( deliverFlag(UnrealID) ).
+			%if bel( iHaveFlag, myBase(UnrealID) ) then adopt( deliverFlag(UnrealID) ).
 			
 			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
 			if not( goal( goTo(_) ) ), bel(iHaveFlag, myTeam(Team), myBase(BaseID),

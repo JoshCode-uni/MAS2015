@@ -85,6 +85,17 @@ heal(Location) :- navigation(reached, Location).
 %% *************************
 
 %% *************************
+%% ** BGN getPowerUp.mod2g **
+%% *************************
+
+% Go get powerups. We are at a certain location if the locations match.
+getPowerUp(Location) :- navigation(reached, Location).
+
+%% *************************
+%% ** END getPowerUp.mod2g **
+%% *************************
+
+%% *************************
 %% ** BGN getAmmo.mod2g **
 %% *************************
 
