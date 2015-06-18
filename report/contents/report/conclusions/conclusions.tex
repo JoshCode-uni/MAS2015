@@ -10,17 +10,21 @@ The code structure was initially calling a separate file for each class, which w
 
 \section{Production strategy}
 During the making of the multi-agent system, the Sprint-strategy was used. This is a true and tested method, which has proven itself over time. During our project, we noticed that it was indeed a good way of managing a project.
-
-In conclusion, our project has succeeded in general by achieving the objective of defeating the native bots using the above strategy. Of course, there is always room for improvement. We would advise other people to experiment with other role distributions, be it by varying their quantities, or by introducing completely new forms of behaviour. It would also be interesting to make the bots aware of their surroundings on a smaller level, making sure they can hide in corners or duck behind walls for example. This would resemble "true" intelligence.
 \pagebreak
 \section{Recommendations}
 During the course of our project, there were functions and features deemed too difficult or not possible with the current limited time and resources at hand. Here are some recommendation for those who would like to go further with this project.
 
-\subsection{Implement role changing during battle}
-It was an idea that in the event where an important bot gets fragged, the overlord could initialize a role change to let the important role to be carried out by a bot thatâ€™s fully geared. Then the freshly spawned bot can go scavenge its own gear while the original task is carried on by a more capable bot.
+\subsection{(Dynamic) role distribution}
+It was an idea that in the event where an important bot gets fragged, the overlord could initialise a role change to let the important role be carried out by a bot that i€™s fully geared. The freshly spawned bot can then scavenge its own gear while the original task is carried out by a more capable bot.\\
+ Besides this, it would also be interesting to experiment with other role distributions, be it by varying their quantities, or by introducing completely new forms of behaviour.
 
 \subsection{Improvement on bots combat behaviour}
-There are many aspect of behaviours that seem trivial for us humans, but are absent on bots, implementing them can be beneficial for the AI behaviour. Object permanence is one of those examples. Human learn that things donâ€™t vanish when they leave our line of sight, but the bots donâ€™t. The moment an enemy leaves their line of sight bots will forget their existence. Implementing these kind of bot behaviour have potential to greatly improve results.
+There are many aspects of behaviour that seem trivial for us humans, but are absent on bots. Implementing them can be beneficial for the AI behaviour. Object permanence is one of those examples. Humans learn that things do not vanish when they leave our line of sight, but the bots do not. The moment an enemy leaves their line of sight bots will forget their existence. Implementing this kind of bot behaviour has the potential to greatly improve results.
 
 \subsection{Robustness}
-Unfortunately, even on our most stable builds, bots are plagued by random events leading to doing the wrong goal or even breaking down. Events where the flag cannot be returned, the elevator taken by another bot or stuck under the elevator are examples of random events that can mess up a bot. All these events can be avoided if the bots were designed to be more fault-tolerant and robust.
+Unfortunately, even on our most stable builds, there are still some stability issues. Events where the flag cannot be returned, or events that are related to the elevators sometimes result in unexpected or even unwanted behaviour. Redesigning (parts of) the bots in order to make them more fault-tolerant and robust could alleviate these problems.
+
+\subsection{More detailed observance}
+Finally, it would also be interesting to make the bots aware of their surroundings on a smaller level, making sure they can hide in corners or duck behind walls for example. This would resemble "true" intelligence more and could result in significant increases of the quality and quantity of enemies that can be defeated.
+
+In conclusion, our project has succeeded in general by achieving the objective of defeating the native bots using the above strategy. Of course, there is still room for improvement, as can be seen in the areas mentioned under recommendations.
