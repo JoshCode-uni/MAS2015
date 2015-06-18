@@ -1,3 +1,36 @@
+\newpage
 \subsection{Joshua}
 \subsubsection{Summary}
 \subsubsection{Reflection}
+This project has been quite the roller coaster. From critical GOAL errors to Prolog crashes, one might say we really have seen it all. My role in this project was quite varying. My initial role was \emph{Trac Wiki Manager}, however I have fulfilled a spectrum of different roles.
+
+\noindent
+\textbf{Roles}\\
+In the beginning, I helped everybody set up their local repository and project, which grew into becoming the de facto \emph{Git Master}, helping everybody with their Git errors, making sure that the repository was as clean as we could get it and keeping an eye on branching, making sure that nobody \emph{ever} made a commit to the master branch.
+
+Besides that, I feel that I took on the role of leading the development of the bots, making sure that the tickets for each week were things we really needed. Also, within this role, I wrote the Design Specifications for the bots as a sort of protocol or standard for everybody to follow. This made sure that the overall structure of our system is clear and everybody can abide by that.
+
+\noindent
+\textbf{Contributions}\\
+Of course, everybody's role is to contribute to the the final product. As of the time of writing this section, the 18th of June, I have made a total of 92 commits, adding 4315 lines to the repository and removing 1795 lines for a total of 2520 lines contributed.
+
+However, lines contributed doesn't say everything, so here is a list of things I can remember I implemented:
+
+\begin{itemize}
+\item[-] \textbf{Refactoring.} I led the refactoring effort, which I completed together with Jelle. Over the course of a few weeks, our code had gotten messier than it should have been. To fix this, we decided to refactor the entire code, because we also wanted to implement dynamic role assignment, something which wasn't possible with our old structure.
+\item[-] \textbf{Fixing Errors.} Arguably the largest part of my contributions to this project, after the giant refactoring we did, was fixing errors, bugs and unexpected behaviour. I cannot remember how much time I spent in the debug mode of Eclipse executing the bots line by line to find countless errors, but it was quite a lot.
+\item[-] \textbf{Structure.} As stated above, I designed the overall structure of the Multi-Agent System.
+\item[-] \textbf{Report.} I made the starting layout for the report and the layout of the title page. I also wrote the introduction and the most of chapter 4.
+\item[-] \textbf{Overlord.} I wrote what was supposed to be the basic part of the Overlord agent, but is still the only code in the agent so far. Together with this, I made sure that the handling of messages about roles to the agents was handled properly.
+\end{itemize}
+\noindent
+\textbf{Improvements}\\
+What went well is that after refactoring and when there was a clear structure in place, everybody started to work hard on the project. Unfortunately, this was already far into the project, so what can be improved next time is that we start with writing a structure before we start writing lacklustre code without any structure. This was the second-largest blocking element in the development of our system.
+
+Moving on to something else that can be improved, which is out of our control and what was the largest annoyance by far, and that is expressed lightly, is \textbf{GOAL} itself. GOAL is clearly not a finished programming language, to the point that it will give critical runtime errors and crash when you have implemented the code exactly as you should have. This causes us to write workarounds, one of which was implicating our ability to develop very much. One time, a GOAL update completely broke our system because of an error not on our part and not in our ability to fix. This error in GOAL is still not fixed to this day, the 18th of June 2015, 2 weeks after it was introduced. Moreover, the GOAL plugin for Eclipse is also a disaster to work with, giving a lot of errors which are entirely not true, so even the error checking in the plugin cannot be trusted for a second. GOAL, at the moment, is way too inconsistent and this inconsistency is what impairs us to write a good Multi-Agent System.
+
+\noindent
+\textbf{Learning}\\
+The largest thing to take away from this project for me is that every team needs to start with outlining the structure of the system as clear as possible before a single line of code is written. This ensures that everybody knows how to construct the system and this prevents a lot of dirty code.
+
+Another thing I learned this project is to never use GOAL again, at least not in it's current state. It is not in a state which is ready for use in projects like this.
