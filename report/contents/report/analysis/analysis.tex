@@ -4,32 +4,32 @@ The ten scenarios are:
 \begin{enumerate}
 	\item A bot is near the flag. \\
 	\textit{Important percepts: bot's location, enemy base location, friendly base location} \\
-	His goal is to grab the enemy flag, and as soon as he percepts he is holding the flag, he will alert the overlord and his goal will be to carry their flag back to his base. He should take the shortest route to his own base, killing every enemy he might run into on the way there.\\
+	His goal is to grab the enemy flag, and as soon as he percepts he is holding the flag, he will alert the overlord and his goal will be to carry their flag back to his base. He should take the shortest route to his own base, killing every enemy he might run into on the way there.
 	\item The flag defender encounters an enemy. \\
 	\textit{Important percepts: bot's location, friendly base location, enemy bot location} \\
-	The flag defender is constantly roaming around his own base. Whenever he encounters an enemy, his priority is to kill him. As soon as he loses the enemy, he should return to roaming around his flag base, possibly collecting health and/or other pickups if the need arises.\\
+	The flag defender is constantly roaming around his own base. Whenever he encounters an enemy, his priority is to kill him. As soon as he loses the enemy, he should return to roaming around his flag base, possibly collecting health and/or other pickups if the need arises.
 	\item The roamer encounters an enemy. \\
 	\textit{Important percepts: enemy bot location} \\
-	If a roamer sees an enemy, his priority is to kill them, even if it means chasing them. His choice of weapons should be based on the distance between the roamer and his enemy, switching to weapons that are optimal for the encountered range. After the fight is over, the roamer should continue to roam the map, possibly collecting health and/or other pickups. \\
+	If a roamer sees an enemy, his priority is to kill them, even if it means chasing them. His choice of weapons should be based on the distance between the roamer and his enemy, switching to weapons that are optimal for the encountered range. After the fight is over, the roamer should continue to roam the map, possibly collecting health and/or other pickups.
 	\item One of the roamers is hit. \\
 	\textit{Important percepts: bot's health, health location} \\
-	When the enemy hits a roamer, causing his health to drop below 100, the bot will adopt a new goal to leave the battlefield and grab a health pickup. This will only happen if health packs are available. When his health reaches 100 again, he goes back to running around the map looking for enemies.\\
+	When the enemy hits a roamer, causing his health to drop below 100, the bot will adopt a new goal to leave the battlefield and grab a health pickup. This will only happen if health packs are available. When his health reaches 100 again, he goes back to running around the map looking for enemies.
 	\item The roamer is low on ammo. \\
 	\textit{Important percepts: ammo left, ammo location} \\
-	When the a roamer notices he is low on ammo, he will adopt the goal to get ammo. Similar to collecting health whenever it drops below 100.\\
-	\item The roamer sees a weapon or armour. \\
+	When the a roamer notices he is low on ammo, he will adopt the goal to get ammo. Similar to collecting health whenever it drops below 100.
+	\item The roamer sees a weapon or armour.
 	\textit{Important percepts: pickup location} \\
-	The roamer should check whether or not it is already in the possession of that type of armour/weapon. If he is not, he should pick up the armour/weapon.\\
+	The roamer should check whether or not it is already in the possession of that type of armour/weapon. If he is not, he should pick up the armour/weapon.
 	\item The roamer ends up capturing the flag. \\
 	\textit{Important percepts: who is holding the flag} \\
-	When the roamer is carrying the flag, he should alert the overlord. The overlord in his turn should assign the role of flag carrier to the roamer and vice versa, essentially swapping their behaviour.\\
+	When the roamer is carrying the flag, he should alert the overlord. The overlord in his turn should assign the role of flag carrier to the roamer and vice versa, essentially swapping their behaviour.
 	\item The flag capturer sees a weapon. \\
 	\textit{Important percepts: pickup location, who is holding the flag, weapons owned} \\
-	If the flag capturer sees a weapon he does not already own, he should pick it up, but only if he is not carrying the flag. Returning the flag should take precedence.\\
+	If the flag capturer sees a weapon he does not already own, he should pick it up, but only if he is not carrying the flag. Returning the flag should take precedence.
 	\item The enemy captures a friendly flag. \\
 	\textit{Important percepts: friendly flag status} \\
-	Both the roamers and the flag capturer should continue with their tasks, while the flag defender should first return to his own base (in the hopes of spotting the enemy), after which he will roam around the enemy base (to lay an ambush). \\
+	Both the roamers and the flag capturer should continue with their tasks, while the flag defender should first return to his own base (in the hopes of spotting the enemy), after which he will roam around the enemy base (to lay an ambush).
 	\item The flag capturer has the flag, but the friendly flag is not at home. \\
 	\textit{Important percepts: friendly flag status, friendly base location, enemy flag status} \\
-	As long as the friendly flag is not at base, it is impossible to score. It is therefore important for the roamers to search for the flag and return it, while the flag capturer and the flag defender roam around their own base, defending each other and making sure scoring is almost inevitable if the flag is returned. \\
+	As long as the friendly flag is not at base, it is impossible to score. It is therefore important for the roamers to search for the flag and return it, while the flag capturer and the flag defender roam around their own base, defending each other and making sure scoring is almost inevitable if the flag is returned.
 \end{enumerate}
