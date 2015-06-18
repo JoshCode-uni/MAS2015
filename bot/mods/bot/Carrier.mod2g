@@ -16,9 +16,6 @@ module Carrier{
 			% Adopt goal to go to the other team's flagbase, if flag is dropped.
 			if not(goal(takeFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, dropped) ) 
 			 	then adopt( takeFlag(UnrealID)).
-			 					 	
-			% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
-			%if bel( iHaveFlag, myBase(UnrealID) ) then adopt( deliverFlag(UnrealID) ).
 			
 			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
 			if not( goal( goTo(_) ) ), bel(iHaveFlag, myTeam(Team), myBase(BaseID),
