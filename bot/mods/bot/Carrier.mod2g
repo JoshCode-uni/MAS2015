@@ -22,7 +22,26 @@ module Carrier{
 					(flagState(Team,held) ; flagState(Team,dropped)),
 					navPoint(BaseID,location(X1,Y1,_),_), 
 					navPoint(Destination,location(X2,Y2,_),_), 
-					distance(Dist,X1,Y1,X2,Y2), Dist<1400) then adopt( goTo(Destination) ).		
+					distance(Dist,X1,Y1,X2,Y2), Dist<1400) then adopt( goTo(Destination) ).
+			
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
+			% Adopt goal to calculate a path to enemy
+			%if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
+			% then adopt ( calculatePath(Location, Position) ).
+			 
+			% Switch weapons when closer to or further away from enemies.
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			% 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
+			%	then prefer(WeaponList).
+			
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%			
 	
 	}
 }
