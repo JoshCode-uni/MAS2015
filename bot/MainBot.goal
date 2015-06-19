@@ -121,12 +121,14 @@ main module [exit=never] {
 		if goal( kill(UnrealID) ), bel( navigation(noPath, Destination) ) then drop( kill(Destination) ).
 		if goal( heal(UnrealID) ), bel( navigation(noPath, Destination) ) then drop( heal(Destination) ).
 				
-		% Go pick up our flag: priority 7.
+		% Go pick up our flag: priority 8.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
-		% If we have a goal to kill someone, go to the last known spot. Priority 6.
+		% If we have a goal to kill someone, go to the last known spot. Priority 7.
 		if a-goal( kill(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 5.
+		% If your goal is to get a heal at an location, go to the health. Priority 6.
 		if a-goal( heal(Location) ) then navigate(Location).
+		% IF the goal is to get armor, go to that location. Priority 5.
+		if a-goal( armor(Location) ) then navigate(Location).
 		% If your goal is to get a weapon, go to that location. Priority 4.
 		if a-goal( getWep(Location) ) then navigate(Location).
 		% Bring other team's 'flag to our base: priority 3.
@@ -151,15 +153,15 @@ event module {
 		
 		if bel(true, me(Me), Agent = Me, not(iHaveFlag) ) then killEnemy.
 		
-		if bel(true, me(Me), Agent = Me, role(Agent, roamer)) then getHealthGoals.
+		if bel(true, me(Me), Agent = Me) then getHealthGoals.
 		
 		if bel(true) then getWeapon.
 		
 		if bel(true) then getPowerUps.
 		
-		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getArmour.
+		if bel( true, me(Me), Agent = Me ) then getArmour.
 		
-		if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
+		%if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
 		
 		%if bel(not(didEvent)) then insert(didEvent).
 	}
