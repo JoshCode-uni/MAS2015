@@ -106,14 +106,16 @@ main module [exit=never] {
 		% When the bot is killed he should drop all of his goals.
 		if bel( fragged(_, _, VictimID, _), self(VictimID, _, _) ) then dropAllGoals.
 		
-		if bel(navigation(navigating, _)), goal(returnFlag(_)) then stop.
+		if goal(returnFlag(GoalDest)), bel(navigation(navigating, NavDest), not(NavDest = GoalDest)) then stop.
 		
 		% Go pick up our flag: priority 9.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 8.
-		if a-goal( heal(Location) ) then navigate(Location).
 		% Bring other team's 'flag to our base: priority 7.
 		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).
+		% If your goal is to get a heal at an location, go to the health. Priority 8.
+		if a-goal( heal(Location) ) then navigate(Location).
+		% If we have a goal to kill someone, go to the last known spot. Priority 8.
+		if a-goal( follow(UnrealID) ) then navigate(UnrealID).
 		% If the goal is to get powerups, go to that location. Priority 6.
 		if a-goal( getPowerUp(Location) ) then navigate(Location).
 		% If the goal is to get armor, go to that location. Priority 6.
@@ -127,8 +129,7 @@ main module [exit=never] {
 		% If the goal is to get ammo, navigate there: priority 1.
 		if a-goal( ammo(Destination) ) then navigate(Destination).
 
-		% If we have a goal to kill someone, go to the last known spot. Priority 8.
-		%if a-goal( kill(UnrealID) ) then navigate(UnrealID).
+		
 
 		% Calculate path, not used.
 		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
