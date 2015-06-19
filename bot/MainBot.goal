@@ -109,7 +109,7 @@ main module [exit=never] {
 		%% NOTE: It is slow because it does the event module after every action!!!
 
 		% When the bot is stuck or there is no path, this should be taken care of.
-		if bel( navigation(stuck, Destination) ) then respawn.
+		if bel( navigation(stuck, Destination), suicideCountdown(0) ) then respawn + insert(suicideCountdown(8)).
 		
 		% When the bot is killed he should drop all of his goals.
 		if bel( fragged(_, _, VictimID, _), self(VictimID, _, _) ) then dropAllGoals.
