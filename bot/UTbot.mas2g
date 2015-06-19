@@ -33,6 +33,13 @@ environment {
 					["skin", "AlienFemaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
+				],
+				[
+				 	["name", "RotationBot"],
+					["skill", 5],
+					["skin", "AlienFemaleA"], 
+					["team", "red"],
+					["logLevel", "WARNING"]
 				]
 			]
 	].
@@ -44,6 +51,7 @@ agentfiles {
 	"MainBot.goal" [name=B] .
 	"MainBot.goal" [name=C] .
 	"MainBot.goal" [name=D] .
+	"RotateBot.goal" [name=ROT] .
 }
 
 launchpolicy {
@@ -52,4 +60,5 @@ launchpolicy {
 	when [type=bot,max=1]@env do launch EDI:B.
 	when [type=bot,max=1]@env do launch Garrus:C.
 	when [type=bot,max=1]@env do launch Liara:D.
+	when [type=bot,max=1]@env do launch RotationBot:ROT.
 }

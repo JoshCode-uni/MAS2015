@@ -3,7 +3,7 @@ module killEnemy {
 	program [order = linearall] {
 		%% Goal Handling %%
 			% If the bot percepts an enemy bot, adopt goal to kill him.
-			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+			if not(goal(kill(_))), bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
 			
 		%% Execution %%
 			

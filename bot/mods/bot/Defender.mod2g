@@ -15,7 +15,7 @@ module Defender{
 					pickup(Destination,_,_),
 					navPoint(BaseID,location(X1,Y1,_),_), 
 					navPoint(Destination,location(X2,Y2,_),_), 
-					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
+					distance(Dist,X1,Y1,X2,Y2), Dist < 1400) then adopt( goTo(Destination) ).
 																				
 
 	}
