@@ -148,17 +148,14 @@ event module {
 		% Percept Handling	
 		if bel(true) then getPercepts.
 		
-		if bel(true, me(Me), Agent = Me, not(iHaveFlag) ) then killEnemy.
-		
-		if bel(true, me(Me), Agent = Me) then getHealthGoals.
-		
-		if bel(true) then getWeapon.
-		
+		% Enter modules
+		if bel(true, not(iHaveFlag) ) then killEnemy.
+		if bel(true) then getHealthGoals.
 		if bel(me(Me), not(role(Me, defender))) then getPowerUps.
+		if bel(true, not(iHaveFlag)) then getWeapon.
+		if bel(me(Me), role(Me, roamer), not(iHaveFlag)) then getArmour.
 		
-		if bel(me(Me), not(role(Me, defender))) then getArmour.
-		
-		%if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
+		%if bel( true, me(Me), role(Me, roamer) ) then getAmmo.
 		
 		%if bel(not(didEvent)) then insert(didEvent).
 	}
