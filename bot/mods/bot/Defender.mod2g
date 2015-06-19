@@ -17,8 +17,6 @@ module Defender{
 					navPoint(Destination,location(X2,Y2,_),_), 
 					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
 																				
-			%The Defender should not abandon its post to cover the flag carrier
-			%if bel( haveFlag(selfPos) ), then delete(received(haveFlag(selfPos)).
 
 	}
 }
