@@ -144,6 +144,9 @@ main module [exit=never] {
 		if a-goal( takeFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 1.
 		if a-goal( goTo(Destination) ) then navigate(Destination).
+		
+		% If the goal is to get ammo, navigate there. Least priority.
+		if a-goal( ammo(Destination) ) then navigate(Destination).
 
 		% Calculate path, not used.
 		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
