@@ -1,5 +1,7 @@
 module RoamerAction{
 	program{
+		
+		
 		% Go pick up our flag: priority 9.
 		if goal(returnFlag(GoalDest)), bel(navigation(navigating, NavDest), not(NavDest = GoalDest)) then stop.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
@@ -10,16 +12,16 @@ module RoamerAction{
 		if a-goal( follow(UnrealID) ) then navigate(UnrealID).
 		% Go get the other team's' flag: priority 6.
 		if a-goal( captureFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 5.
-		if a-goal( heal(Location) ) then navigate(Location).
-		% If the goal is to get powerups, go to that location. Priority 4.
-		if a-goal( getPowerUp(Location) ) then navigate(Location).
-		% If your goal is to get a weapon, go to that location. Priority 3.
-		if a-goal( getWep(Location) ) then navigate(Location).
-		% If the goal is to get armor, go to that location. Priority 2.
-		if a-goal( armor(Location) ) then navigate(Location).
-		% Go to a destination: priority 1.
+		% Go to a destination: priority 5.
 		if a-goal( goTo(Destination) ) then navigate(Destination).
+		% If your goal is to get a heal at an location, go to the health. Priority 4.
+		if a-goal( heal(Location) ) then navigate(Location).
+		% If the goal is to get powerups, go to that location. Priority 3.
+		if a-goal( getPowerUp(Location) ) then navigate(Location).
+		% If your goal is to get a weapon, go to that location. Priority 2.
+		if a-goal( getWep(Location) ) then navigate(Location).
+		% If the goal is to get armor, go to that location. Priority 1.
+		if a-goal( armor(Location) ) then navigate(Location).
 		% If the goal is to get ammo, navigate there: priority 0.
 		if a-goal( ammo(Destination) ) then navigate(Destination).	
 	}
