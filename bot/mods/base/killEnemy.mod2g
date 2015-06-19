@@ -3,12 +3,14 @@ module killEnemy {
 	program [order = linearall] {
 		%% Goal Handling %%
 			% If the bot percepts an enemy bot, adopt goal to kill him.
-			if not(goal(kill(_))), bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+			if not(goal(follow(_))), bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( follow(UnrealID) ).
 			
+			% Follow a bot if it has a flag. (if enemy to kill, if friend to support)
+			if bel( bot(ID,_,_,_,_,_), flag(_,ID,_) ), not( goal(follow(ID))) then adopt( follow(ID)).			
 		%% Execution %%
 			
 			% If we reached the last known spot, and we lost the enemy, look around. 
-			%if goal( kill(UnrealID)), bel(navigation(reached, UnrealID), orientation(_,Angle,_), rotate(UnrealID, Angle, B)) then adopt(rotate(0,B)).
+			%if goal( follow(UnrealID)), bel(navigation(reached, UnrealID), orientation(_,Angle,_), rotate(UnrealID, Angle, B)) then adopt(rotate(0,B)).
 			% for-loop implementation to ensure full rotation.
 			if goal(rotate(X,I)), bel(X@<3, orientation(Loc ,Angle,_), rotate(Loc , Angle + pi/2, B)) then look(I) + adopt(rotate(X+1,B)).
 			if goal(rotate(X,I)), bel(X@>=3) then look(I).
