@@ -47,7 +47,7 @@ init module {
 		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
 		
 		if bel(orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLook)) then adopt( rotate(0, NextLook, NextLD) ).
-		if bel(true) then insert(rotateTimer(2)).
+		if bel(true) then insert(rotateTimer(3)).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -119,7 +119,7 @@ event module {
 		% Percept Handling
 		if bel(true) then getPercepts.
 		
-		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(2)).
+		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(3)).
 		if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
 	}
 

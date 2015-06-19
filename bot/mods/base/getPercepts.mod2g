@@ -104,7 +104,7 @@ module getPercepts{
 		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
 		if goal( returnFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( returnFlag(Destination) ).
 		if goal( follow(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( follow(UnrealID) ).
-		if goal( follow(UnrealID) ), bel( not(bot(UnrealID, _, _, _, _, _))), then drop(follow(UnrealID)).
+		if goal( follow(UnrealID) ), bel( not(bot(UnrealID, _, _, _, _, _))) then drop(follow(UnrealID)).
 		if goal( heal(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( heal(UnrealID) ).
 		if goal( getPowerUp(Location) ), bel( navigation(noPath, Location) ) then drop( getPowerUp(Location) ).
 		if goal( armor(Location) ), bel( navigation(noPath, Location) ) then drop( armor(Location) ).
