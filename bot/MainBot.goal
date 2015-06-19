@@ -103,6 +103,9 @@ main module [exit=never] {
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel( navigation(stuck, Destination) ) then respawn.
 		
+		% When the bot is killed he should drop all of his goals.
+		if bel( fragged(_, _, VictimID, _), self(VictimID, _, _) ) then dropAllGoals.
+		
 		if bel(navigation(navigating, _)), goal(returnFlag(_)) then stop.
 		
 		% Go pick up our flag: priority 9.
