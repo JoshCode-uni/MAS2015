@@ -12,6 +12,7 @@ module Defender{
 			%% Walk around around base.
 			if not( goal( goTo(_) ) ), bel(myTeam(Team), base(Team, BaseID), 
 					flagState(Team,home),
+					pickup(Destination,_,_),
 					navPoint(BaseID,location(X1,Y1,_),_), 
 					navPoint(Destination,location(X2,Y2,_),_), 
 					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).

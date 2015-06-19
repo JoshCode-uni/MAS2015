@@ -168,9 +168,9 @@ event module {
 		
 		if bel(true) then getWeapon.
 		
-		if bel(true) then getPowerUps.
+		if bel(me(Me), not(role(Me, defender))) then getPowerUps.
 		
-		if bel( true, me(Me), Agent = Me ) then getArmour.
+		if bel(me(Me), not(role(Me, defender))) then getArmour.
 		
 		%if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
 		
