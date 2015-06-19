@@ -1,0 +1,9 @@
+# If you want a cool Gource configuration for this project, contact: Joshua Slik
+/gource/**
+
+# --------------------------------------------------------
+# !!! ONLY EXCEPTIONS BELOW THIS LINE PLEASE THANK YOU !!!
+# --------------------------------------------------------
+
+# Include the Gource captions, so other people can add milestones to them.
+!/gource/gource-captions.txt

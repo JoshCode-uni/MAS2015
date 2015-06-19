@@ -39,15 +39,15 @@ environment {
 }
 
 agentfiles {
+	"Overlord.goal" [name=OL] .
 	"MainBot.goal" [name=A] .
 	"MainBot.goal" [name=B] .
 	"MainBot.goal" [name=C] .
 	"MainBot.goal" [name=D] .
-	"Overlord.goal" [name=OL] .
 }
 
 launchpolicy {
-	when [max=1]@env do launch AllHailTheOverlord:OL.
+	when [max=1]@env do launch Overlord:OL.
 	when [type=bot,max=1]@env do launch Shepard:A.
 	when [type=bot,max=1]@env do launch EDI:B.
 	when [type=bot,max=1]@env do launch Garrus:C.

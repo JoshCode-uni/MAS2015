@@ -5,22 +5,24 @@ module Carrier{
 		%% NO PERCEPTS IN THIS FILE %%
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
 		
-		% GOAL MANAGEMENT
-			% If the bot sees another bot, then stop and try to shoot him.
-			if bel( self(_, _, Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam) ) then shoot(UnrealID).
-			% If the bot percepts the enemyFlagCarrier, he should stop and shoot him so the flag will be dropped.
-			if bel( bot(enemyFlagCarrier, _, _, _, _, _) ) then shoot(enemyFlagCarrier).
+		% GOAL MANAGEMENT.
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if bel( self(_, _, Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
-			 	then adopt( takeFlag(UnrealID)).				 	
-			% If bot believes he holds any flag, adopt goal to bring this flag to our team's base.
-			if bel( self(HolderUnrealID, NickName, Team), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
-				not(Team = OtherTeam), base(Team, UnrealID) ) then adopt( bringBackFlag(UnrealID) ).
-				
-			% If bot has flag, send to everyone to alert them.
-			%if bel( self(HolderUnrealID, NickName, Team), orientation(selfPos,_,_), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), 
-			%	not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then allother.sendonce(haveFlag(selfPos)).
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, home) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			% Adopt goal to go to the other team's flagbase, if flag is being held.
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, held), not(iHaveFlag) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			% Adopt goal to go to the other team's flagbase, if flag is dropped.
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, dropped) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			
+			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
+			if not( goal( goTo(_) ) ), bel(iHaveFlag, myTeam(Team), myBase(BaseID),
+					(flagState(Team,held) ; flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<1400) then adopt( goTo(Destination) ).
 			
 			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			

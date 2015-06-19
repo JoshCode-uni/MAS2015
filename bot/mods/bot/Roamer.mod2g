@@ -2,20 +2,23 @@ module Roamer{
 	
 	program [order=linearall] {
 		%% See goals %%
+			
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			%if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
+		
+			% If our flag is gone, walk around the enemy base to make sure it doesn't get captured
+			if not( goal( goTo(_) ) ), bel(not(iHaveFlag), myTeam(Team), base(OtherTeam, BaseID), not(Team = OtherTeam),
+					(flagState(Team,held) ; flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<1400) then adopt( goTo(Destination) ).
 												
 			%% If I see pickup and I am not under effect of one, make pickup new goal. 
 			if not( goal( goTo(_) ) ), bel( item(Destination,Type,_,_), powerup(Type,Time), Time@=<1, not(at(Destination))) then adopt( goTo(Destination) ).
-			
-			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, held), flagState(Team, held) ) then adopt( goTo(UnrealID) ).
 								
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home), status(Health,_), Health > 100 ) 
-			 	then adopt( takeFlag(UnrealID)).		
-
-			%% If I have the flag, bring back to base.
-			if bel( myTeam(Team), flag(Team, HolderUnrealID, Position), 
-					flagState(Otherteam, held), not(Team = OtherTeam), self(HolderUnrealID, _, _), 
-					base(Team, Destination) ) then adopt( bringBackFlag(Destination) ).
+			if bel( myTeam(Team), base(OtherTeam, UnrealID), not(Team = OtherTeam), flagState(OtherTeam, home) ) 
+			 	then adopt( captureFlag(UnrealID)).
 	}
 	
 }

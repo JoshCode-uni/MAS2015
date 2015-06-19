@@ -3,12 +3,22 @@ module getHealthGoals {
 	program {
 	
 		%% Goal Handling %%
-			% If health is lower than 100, travel to get health.
-			if goal(not(heal(_))), bel( status(H,_), H@<100, pickup(Location, health, _), me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then adopt( heal(Location) ).
-			% If health is lower than 100 and health is closeby, get health.
-			if goal(not(heal(_))), bel( status(H,_), H@<100, item(Location, health, _, _) ) then adopt( heal(Location) ).
 			% If health is lower than 150, get super_health. (What is name of vials which also overcharge?). 
-			if goal(not(heal(_))), bel( status(H,_), H@<150, item(Location, health, super_health,_) ) then adopt( heal(Location) ).
+			if not(goal(heal(_))), bel( status(Health,_), Health@<150, item(UnrealID, health, super_health,_) ) then adopt( heal(UnrealID) ).
+			% If health is lower than 100 and health is closeby, get health.
+			if not(goal(heal(_))), bel( status(Health,_), Health@<100, item(UnrealID, health, _, _) ) then adopt( heal(UnrealID) ).
+			
+%			%% Collect near super_health.
+%			if not( goal(heal(_)) ), bel( status(Health, _), Health<150, pickup(UnrealID, health, super_health),
+%					orientation(location(X1,Y1,_), _, _), 
+%					navPoint(UnrealID,location(X2,Y2,_),_), 
+%					distance(Dist,X1,Y1,X2,Y2), Dist<1400 ) then adopt( heal(UnrealID) ).
+%					
+%			%% Collect near health if needed.
+%			if not( goal(heal(_)) ), bel( status(Health, _), Health<100, pickup(UnrealID, health, _),
+%					orientation(location(X1,Y1,_), _, _), 
+%					navPoint(UnrealID,location(X2,Y2,_),_), 
+%					distance(Dist,X1,Y1,X2,Y2), Dist<1400 ) then adopt( heal(UnrealID) ).
 			
 	}
 	
