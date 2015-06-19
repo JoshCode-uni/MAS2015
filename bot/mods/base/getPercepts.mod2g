@@ -98,23 +98,33 @@ module getPercepts{
 				forall bel( percept( fragged(Time,Killer,Victim,Weapon)) ) do insert( fragged(Time,Killer,Victim,Weapon) ).
 				
 		% GOAL HANDLING
+		
+		% If there is no path to any of the goals, drop them. 
+		if goal( captureFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( captureFlag(Destination) ).
+		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
 		if goal( returnFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( returnFlag(Destination) ).
 		if goal( follow(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( follow(UnrealID) ).
 		if goal( heal(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( heal(UnrealID) ).
 		if goal( getPowerUp(Location) ), bel( navigation(noPath, Location) ) then drop( getPowerUp(Location) ).
 		if goal( armor(Location) ), bel( navigation(noPath, Location) ) then drop( armor(Location) ).
 		if goal( getWep(Location) ), bel( navigation(noPath, Location) ) then drop( getWep(Location) ).
-		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
-		if goal( captureFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( captureFlag(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
 		
 		% If our flag is dropped, adopt goal to get it.
 		if bel(flag(Team, none, Location), flagState(Team, dropped), myTeam(Team)) then adopt( returnFlag(Location) ).
 		% If the flag of the other team is dropped, adopt goal to take it.
 		if bel( flag(Team, none, Location), not(myTeam(Team))) then adopt( captureFlag(Location) ).
-		
 		% If bot believes he holds the flag, adopt goal to bring this flag to our team's base.
 		if bel( iHaveFlag, myBase(UnrealID) ) then adopt( deliverFlag(UnrealID) ).
+		
+		% Drop goals when their preconditions are no longer valid.
+		if goal( captureFlag(Destination) ), bel( flagState(OtherTeam, dropped), not(myTeam(OtherTeam)) ) then drop( captureFlag(Destination)).
+		if goal( captureFlag(Destination) ), bel( flagState(OtherTeam, held), not(myTeam(OtherTeam)) ) then drop( captureFlag(Destination)).
+		if goal( returnFlag(Destination) ), bel( flagState(Team, home), myTeam(Team) ) then drop( returnFlag(Destination)).
+		if goal( returnFlag(Destination) ), bel( flagState(Team, held), myTeam(Team) ) then drop( returnFlag(Destination)).
+		if goal( deliverFlag(Destination) ), bel( not(iHaveFlag) ) then drop( deliverFlag(Destination)).
+		
+		if goal( heal(UnrealID) ), bel( at(UnrealID), not(item(UnrealID, _, _, _)) ) then drop( heal(UnrealID) ).	
 		
 		% MAILBOX MANAGEMENT (SEND)
 			%% Send flag holding state to Overlord
