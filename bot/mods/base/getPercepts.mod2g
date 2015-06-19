@@ -122,7 +122,9 @@ module getPercepts{
 		if goal( captureFlag(Destination) ), bel( flagState(OtherTeam, held), not(myTeam(OtherTeam)) ) then drop( captureFlag(Destination)).
 		if goal( returnFlag(Destination) ), bel( flagState(Team, home), myTeam(Team) ) then drop( returnFlag(Destination)).
 		if goal( returnFlag(Destination) ), bel( flagState(Team, held), myTeam(Team) ) then drop( returnFlag(Destination)).
-		if goal( deliverFlag(Destination) ), bel( not(iHaveFlag) ) then drop( deliverFlag(Destination)).	
+		if goal( deliverFlag(Destination) ), bel( not(iHaveFlag) ) then drop( deliverFlag(Destination)).
+		
+		if goal( heal(UnrealID) ), bel( at(UnrealID), not(item(UnrealID, _, _, _)) ) then drop( heal(UnrealID) ).	
 		
 		% MAILBOX MANAGEMENT (SEND)
 			%% Send flag holding state to Overlord
