@@ -120,6 +120,7 @@ main module [exit=never] {
 		if goal( getPowerUp(Location) ), bel( navigation(noPath, Location) ) then drop( getPowerUp(Location) ).
 		if goal( armor(Location) ), bel( navigation(noPath, Location) ) then drop( armor(Location) ).
 		if goal( getWep(Location) ), bel( navigation(noPath, Location) ) then drop( getWep(Location) ).
+		if goal( getWep(Location) ), bel( navigation(reached, Location) ) then drop( getWep(Location) ).
 		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
 		if goal( captureFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( captureFlag(Destination) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
