@@ -2,7 +2,6 @@ module dropAllGoals{
 	
 	program {
 		forall goal( returnFlag(UnrealID) ) do drop(returnFlag(UnrealID)).
-		%if goal( follow(ID) ) then drop( follow(ID) ).
 		forall goal( heal(Location) ) do drop(heal(Location)).
 		forall goal( getPowerUp(Location) ) do drop(getPowerUp(Location)).
 		forall goal( armor(Location) ) do drop(armor(Location)).
