@@ -166,7 +166,7 @@ kill(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
 % Spin around.
 % Rotate(+Location, +Angle, -LookLocation)
-%rotate(Location, Angle, LookLocation) :- ()
+rotate(Location, Angle, LookLocation) :- LookLocation is 0.
 					
 %% *************************
 %% ** END killEnemy.mod2g **
