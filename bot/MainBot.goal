@@ -26,6 +26,7 @@ init module {
 		score(0,0,0).
 		armor(0,0,0,0).
 		powerup(none, 0).
+		prefer( [weapon(link_gun, primary), weapon(stinger_minigun, primary), weapon(flak_cannon, primary)] ).
 
 		role('Shepard', carrier).
 		role('EDI', defender).
