@@ -3,7 +3,7 @@ module getArmour {
 	program {
 		%% Goal Handling %%
 			% If I want and see armor, get armor.
-			if bel( wantArmor(Armor), item(Location,_, Armor,_) ) then adopt( armor(Location) ).
+			if not(goal(armor(_))), bel( wantArmor(Armor), item(Location,_, Armor,_) ) then adopt( armor(Location) ).
 
 	}
 
