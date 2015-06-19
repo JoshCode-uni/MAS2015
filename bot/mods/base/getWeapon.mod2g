@@ -4,10 +4,10 @@ module getWeapon {
 		%% Goal Handling %%
 		
 			% If I see a weapon that is not in inventory and better then current loadout, pick it up.
-			if not( goal(getWep(_)) ), bel( item(UnrealID,weapon,Type,_), wantWep(Type), me(Me), not(role(Me, defender)) ) 
+			if not( goal(getWep(_)) ), bel( item(UnrealID,weapon,Type,_), wantWep(Type), me(Me) ) 
 				then adopt( getWep(UnrealID) ).		
 			% If I shoot with an enforcer now, get a weapon pronto.
-			if not( goal(getWep(_)) ), bel( currentWeapon(enforcer,_), pickup(Location, weapon, Type), wantWep(Type), status(Health, _), Health>80, me(Me), not(role(Me, carrier)) ) 
+			if not( goal(getWep(_)) ), bel( currentWeapon(enforcer,_), pickup(Location, weapon, Type), wantWep(Type), status(Health, _), Health>80, me(Me), role(Me, roamer) ) 
 				then adopt( getWep(Location) ).
 	
 	}

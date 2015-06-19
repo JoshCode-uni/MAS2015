@@ -2,11 +2,12 @@ module killEnemy {
 
 	program [order = linearall] {
 		%% Goal Handling %%
-			% If the bot percepts an enemy bot, adopt goal to kill him.
-			if not(goal(follow(_))), bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( follow(UnrealID) ).
-			
 			% Follow a bot if it has a flag. (if enemy to kill, if friend to support)
-			if bel( bot(ID,_,_,_,_,_), flag(_,ID,_) ), not( goal(follow(ID))) then adopt( follow(ID)).			
+			if not( goal(follow(_)) ), bel( bot(ID,_,_,_,_,_), flag(_,ID,_) ) then adopt( follow(ID) ).	
+			
+			% If the bot percepts an enemy bot, adopt goal to kill him.
+			if not( goal(follow(_)) ), bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( follow(UnrealID) ).
+					
 		%% Execution %%
 			
 			% If we reached the last known spot, and we lost the enemy, look around. 
