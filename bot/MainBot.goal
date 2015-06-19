@@ -155,7 +155,7 @@ event module {
 		% Enter modules
 		if bel(true, not(iHaveFlag) ) then killEnemy.
 		if bel(true) then getHealthGoals.
-		if bel(me(Me), not(role(Me, defender))) then getPowerUps.
+		if bel(true) then getPowerUps.
 		if bel(true, not(iHaveFlag)) then getWeapon.
 		if bel(me(Me), role(Me, roamer), not(iHaveFlag)) then getArmour.
 		if not(goal(lookAt(_))) then rotate.
