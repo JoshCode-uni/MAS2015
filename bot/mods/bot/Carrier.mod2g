@@ -23,9 +23,6 @@ module Carrier{
 					navPoint(BaseID,location(X1,Y1,_),_), 
 					navPoint(Destination,location(X2,Y2,_),_), 
 					distance(Dist,X1,Y1,X2,Y2), Dist<2000000) then adopt( goTo(Destination) ).
-				
-			% If bot has flag, send to everyone to alert them.
-			% if bel( self(HolderUnrealID, NickName, Team), orientation(selfPos,_,_), flag(OtherTeam, HolderUnrealID, Position), flagState(OtherTeam, held), not(Team = OtherTeam), base(Team, UnrealID), not(at(UnrealID)) ) then allother.sendonce(haveFlag(selfPos)).
 			
 			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			

@@ -1,6 +1,6 @@
-%% *********************
-%% ** BGN ALL MODULES **
-%% *********************
+%% ***************************
+%% ** BGN GENERAL KNOWLEDGE **
+%% ***************************
 
 % We are at a certain location if the IDs match, or ...
 at(UnrealID) :- navigation(reached, UnrealID).
@@ -9,15 +9,22 @@ at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)),
 	round(X) =:= round(X1), round(Y) =:= round(Y1), round(Z) =:= round(Z1).
 
 % myTeam(?Team).
+% Gives the string of our team, eg. 'red' or 'blue'
 myTeam(Team) :- self(_,_,Team).
-
+% theirTeam(?Team).
+% Gives the string of the enemy's team, eg. 'red' or 'blue'
 theirTeam(Team) :- myTeam(Team), base(TheirTeam, BaseID), myBase(MyBase), not(BaseID = MyBase).
+
 % myBase(?BaseID).
+% Gives the UnrealID of the our team's base
 myBase(BaseID) :- myTeam(Team), base(Team, BaseID).
+% theirBase(?BaseID).
+% Gives the UnrealID of the enemy's base
 theirBase(BaseID) :- myTeam(Team), base(TheirTeam, BaseID), not(Team = TheirTeam).
 
 % enemy(+UnrealID).
-enemy(UnrealID) :- myTeam(Team), bot(UnrealID, _, OtherTeam, _, _, _), not(Team = OtherTeam).
+% Returns true if the UnrealID is an enemy
+enemy(UnrealID) :- theirTeam(EnemyTeam), bot(UnrealID, _, EnemyTeam, _, _, _).
 
 iHaveFlag :- self(MyID, _, _), flag(Team, MyID, _), myTeam(MyTeam), not(MyTeam = Team).
 
@@ -26,9 +33,9 @@ preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(lin
 					(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
 					(Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
 
-%% *********************
-%% ** END ALL MODULES **
-%% *********************
+%% ***************************
+%% ** BGN GENERAL KNOWLEDGE **
+%% ***************************
 
 %% *************************
 %% ** BGN getWeapon.mod2g **
@@ -84,27 +91,27 @@ heal(Location) :- navigation(reached, Location).
 %% ** END getHealth.mod2g **
 %% *************************
 
-%% *************************
+%% **************************
 %% ** BGN getPowerUp.mod2g **
-%% *************************
+%% **************************
 
 % Go get powerups. We are at a certain location if the locations match.
 getPowerUp(Location) :- navigation(reached, Location).
 
-%% *************************
+%% **************************
 %% ** END getPowerUp.mod2g **
-%% *************************
+%% **************************
 
-%% *************************
+%% ***********************
 %% ** BGN getAmmo.mod2g **
-%% *************************
+%% ***********************
 
 % Get extra ammo when needed. We are at a certain location if the locations match.
 ammo(Location) :- navigation(reached, Location).
 
-%% *************************
+%% ***********************
 %% ** END getAmmo.mod2g **
-%% *************************
+%% ***********************
 
 %% ***********************
 %% ** BGN Carrier.mod2g **
