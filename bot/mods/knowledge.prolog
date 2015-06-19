@@ -166,8 +166,7 @@ kill(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
 % Spin around.
 % Rotate(+Location, +Angle, -LookLocation)
-rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + (cos(Angle + pi/2) * 10000), NewY is Y + (sin(Angle + pi/2) * 10000),
-				 LookLocation = location(NewX, NewY, Z).
+%rotate(Location, Angle, LookLocation) :- ()
 					
 %% *************************
 %% ** END killEnemy.mod2g **
