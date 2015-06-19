@@ -8,14 +8,14 @@ module Carrier{
 		% GOAL MANAGEMENT.
 		
 			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
-			if not(goal(takeFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, home) ) 
-			 	then adopt( takeFlag(UnrealID)).
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, home) ) 
+			 	then adopt( captureFlag(UnrealID)).
 			% Adopt goal to go to the other team's flagbase, if flag is being held.
-			if not(goal(takeFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, held), not(iHaveFlag) ) 
-			 	then adopt( takeFlag(UnrealID)).
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, held), not(iHaveFlag) ) 
+			 	then adopt( captureFlag(UnrealID)).
 			% Adopt goal to go to the other team's flagbase, if flag is dropped.
-			if not(goal(takeFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, dropped) ) 
-			 	then adopt( takeFlag(UnrealID)).
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, dropped) ) 
+			 	then adopt( captureFlag(UnrealID)).
 			
 			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
 			if not( goal( goTo(_) ) ), bel(iHaveFlag, myTeam(Team), myBase(BaseID),

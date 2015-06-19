@@ -53,8 +53,8 @@ init module {
 		}
 		% Stop
 		stop {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Shoot a target
 		shoot(TargetLabel) {
@@ -63,33 +63,33 @@ init module {
 		}
 		% Prefer a weapon
 		prefer(Weapon) {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Look at target
 		look(TargetLabel) {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Respawn
 		respawn {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Find a path
 		path(From, To) {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Let the bot continue with what he was doing
 		skip@int {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 		% Deploy
 		deploy {
-			pre{ true }
-			post{ true }
+			pre { true }
+			post { true }
 		}
 	}
 }

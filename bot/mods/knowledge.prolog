@@ -114,7 +114,7 @@ ammo(Location) :- navigation(reached, Location).
 calculatePath(StartID, EndID) :- path(StartID, EndID, _, _).
 
 % Take the flag from the component. True when bot holds the other team's flag.
-takeFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
+captureFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), self(HolderID, _, _).
 
 % Pick up our flag of the ground. True when bot holds our flag.
 returnFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), MyTeam = Team, self(HolderID, _, _).
