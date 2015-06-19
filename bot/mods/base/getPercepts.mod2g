@@ -97,11 +97,16 @@ module getPercepts{
 				forall bel( fragged(Time, Killer, Victim, Weapon) ) do delete ( fragged(Time, Killer, Victim, Weapon) ).
 				forall bel( percept( fragged(Time,Killer,Victim,Weapon)) ) do insert( fragged(Time,Killer,Victim,Weapon) ).
 				
+				%%% Adopting goals about looking at enemies
 				if bel(bot(UnrealID, _, Team, _, _, _), not(myTeam(Team))) then adopt(lookAt(UnrealID)).
 				if goal(follow(UnrealID)) then adopt(lookAt(UnrealID)).
 				
+				%%% Counting down rotation timer
 				if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(3)).
 				if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
+				
+				if bel(suicideCountdown(Time), Time > 0, NewTime is Time - 1) then delete(suicideCountdown(Time)) + insert(suicideCountdown(NewTime)).
+				
 				
 		% GOAL HANDLING
 		
