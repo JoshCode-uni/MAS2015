@@ -33,6 +33,8 @@ preferedWeapons(WeaponList, Range) :- (Range = "short", WeaponList = [weapon(lin
 					(Range = "mid", WeaponList = [weapon(flak_cannon, primary), weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]) ;
 					(Range = "long", WeaponList = [weapon(stinger_minigun, primary), weapon(shock_rifle, primary)]).
 
+lookAt(_) :- false.
+
 %% ***************************
 %% ** BGN GENERAL KNOWLEDGE **
 %% ***************************
@@ -166,7 +168,7 @@ follow(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
 % Spin around
 % Rotate(+Location, +Angle, -LookLocation)
-calcRotation(Location, Deg, LookLocation) :- DegCorrected is -Deg + 90, deg2rad(DegCorrected, Rad), Location = location(X, Y, Z), X2 is X + cos(Rad) + 1000, Y2 is Y + sin(Rad) + 1000,
+calcRotation(Location, Deg, LookLocation) :- DegCorrected is -Deg + 90, deg2rad(DegCorrected, Rad), Location = location(X, Y, Z), X2 is X + cos(Rad)*5000 + 1000, Y2 is Y + sin(Rad)*5000 + 1000,
 											NewX is X2 - 1000, NewY is Y2 - 1000, LookLocation = location(NewX, NewY, Z).
 
 deg2rad(Deg, Rad) :- Rad is (Deg / 360) * 2 * pi.

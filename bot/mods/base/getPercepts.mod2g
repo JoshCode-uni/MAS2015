@@ -97,6 +97,12 @@ module getPercepts{
 				forall bel( fragged(Time, Killer, Victim, Weapon) ) do delete ( fragged(Time, Killer, Victim, Weapon) ).
 				forall bel( percept( fragged(Time,Killer,Victim,Weapon)) ) do insert( fragged(Time,Killer,Victim,Weapon) ).
 				
+				if bel(bot(UnrealID, _, Team, _, _, _), not(myTeam(Team))) then adopt(lookAt(UnrealID)).
+				if goal(follow(UnrealID)) then adopt(lookAt(UnrealID)).
+				
+				if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(3)).
+				if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
+				
 		% GOAL HANDLING
 		
 		% If there is no path to any of the goals, drop them. 
@@ -104,12 +110,16 @@ module getPercepts{
 		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
 		if goal( returnFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( returnFlag(Destination) ).
 		if goal( follow(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( follow(UnrealID) ).
-		if goal( follow(UnrealID) ), bel( not(bot(UnrealID, _, _, _, _, _))) then drop(follow(UnrealID)).
 		if goal( heal(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( heal(UnrealID) ).
 		if goal( getPowerUp(Location) ), bel( navigation(noPath, Location) ) then drop( getPowerUp(Location) ).
 		if goal( armor(Location) ), bel( navigation(noPath, Location) ) then drop( armor(Location) ).
 		if goal( getWep(Location) ), bel( navigation(noPath, Location) ) then drop( getWep(Location) ).
 		if goal( goTo(Destination) ), bel( navigation(noPath, Destination) ) then drop( goTo(Destination) ).
+		
+		% Other goal drops
+		if goal( follow(UnrealID) ), bel( not(bot(UnrealID, _, _, _, _, _))) then drop(follow(UnrealID)).
+		if goal( lookAt(UnrealID) ), bel( not(bot(UnrealID, _, _, _, _, _))) then drop(lookAt(UnrealID)).
+		if goal( rotate(A, B, C), lookAt(UnrealID)) then drop(rotate(A,B,C)).
 		
 		% If our flag is dropped, adopt goal to get it.
 		if bel(flag(Team, none, Location), flagState(Team, dropped), myTeam(Team)) then adopt( returnFlag(Location) ).
@@ -125,7 +135,7 @@ module getPercepts{
 		if goal( returnFlag(Destination) ), bel( flagState(Team, held), myTeam(Team) ) then drop( returnFlag(Destination)).
 		if goal( deliverFlag(Destination) ), bel( not(iHaveFlag) ) then drop( deliverFlag(Destination)).
 		
-		if goal( heal(UnrealID) ), bel( at(UnrealID), not(item(UnrealID, _, _, _)) ) then drop( heal(UnrealID) ).	
+		if goal( heal(UnrealID) ), bel( at(UnrealID), not(item(UnrealID, _, _, _)) ) then drop( heal(UnrealID) ).
 		
 		% MAILBOX MANAGEMENT (SEND)
 			%% Send flag holding state to Overlord

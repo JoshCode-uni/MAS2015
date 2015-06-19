@@ -118,9 +118,6 @@ event module {
 	program {
 		% Percept Handling
 		if bel(true) then getPercepts.
-		
-		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(3)).
-		if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
 	}
 
 }
