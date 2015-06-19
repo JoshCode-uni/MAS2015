@@ -57,7 +57,7 @@ wantWep(Weapon) :- hardList(HARD),
                    not(weapon(Weapon,_,_)).
 
 % getWep(Type) is true if it is in inventory.
-getWep(Weapon) :- (weapon(Weapon,_,_)).
+getWep(Weapon) :- navigation(reached, Location).
 
 %% *************************
 %% ** END getWeapon.mod2g **
