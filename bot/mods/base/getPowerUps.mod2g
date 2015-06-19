@@ -2,7 +2,7 @@ module getPowerUps{
 	program{
 		%% Goal Handling %%
 			% If I see a powerup nearby, pick it up.
-			if bel( item(Location,other,Type,_) ) then adopt( getPowerUp(Location) ).
+			if not(goal(getPowerUp(_))), bel( item(Location,other,Type,_) ) then adopt( getPowerUp(Location) ).
 			
 		%% Execution %%
 		%	if goal( getPowerUp(Location) ) then navigate(Location).
