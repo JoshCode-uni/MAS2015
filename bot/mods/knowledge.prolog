@@ -13,7 +13,7 @@ at(location(X, Y, Z)) :- navigation(reached, location(X1, Y1, Z1)),
 myTeam(Team) :- self(_,_,Team).
 % theirTeam(?Team).
 % Gives the string of the enemy's team, eg. 'red' or 'blue'
-theirTeam(Team) :- myTeam(Team), base(TheirTeam, BaseID), myBase(MyBase), not(BaseID = MyBase).
+theirTeam(TheirTeam) :- myTeam(Team), base(TheirTeam, BaseID), myBase(MyBase), not(BaseID = MyBase).
 
 % myBase(?BaseID).
 % Gives the UnrealID of the our team's base
@@ -141,7 +141,7 @@ deliverFlag(_) :- flag(Team, HolderID, _), myTeam(MyTeam), not(MyTeam = Team), n
 goTo(UnrealID) :- navigation(reached, UnrealID).
 
 % Can be used to calculate the distance between (X1,Y1) and (X2,Y2), as of yet, it gives the SQUARED distance.
-distance(Dist,X1,Y1,X2,Y2) :- Dist is (X1-X2)*(X1-X2)+(Y1-Y2)*(Y1-Y2).
+distance(Dist,X1,Y1,X2,Y2) :- Distance is (X1-X2)*(X1-X2)+(Y1-Y2)*(Y1-Y2), Dist is sqrt(Distance).
 
 %% ************************
 %% ** END Defender.mod2g **
@@ -166,8 +166,8 @@ kill(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
 % Spin around.
 % Rotate(+Location, +Angle, -LookLocation)
-rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + cos(Angle + pi/2), NewZ is Z + sin(Angle + pi/2),
-				 LookLocation = location(NewX, Y, NewZ).
+rotate(Location, Angle, LookLocation) :- Location = location(X, Y, Z), NewX is X + (cos(Angle + pi/2) * 10000), NewY is Y + (sin(Angle + pi/2) * 10000),
+				 LookLocation = location(NewX, NewY, Z).
 					
 %% *************************
 %% ** END killEnemy.mod2g **

@@ -45,6 +45,9 @@ init module {
 		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
 		% Power Up Status
 		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
+		
+		if bel(orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook)) then adopt( rotate(0, NextLook) ).
+		if bel(true) then insert(rotateTimer(10)).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -99,65 +102,26 @@ main module [exit=never] {
 	
 	program [order=linear] {
 		%% NOTE: It is slow because it does the event module after every action!!!
-
-		% When the bot is stuck or there is no path, this should be taken care of.
-		if bel( navigation(stuck, Destination) ) then respawn.
 		
-		if bel(navigation(navigating, _)), goal(returnFlag(_)) then stop.
-		
-		% Go pick up our flag: priority 9.
-		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 8.
-		if a-goal( heal(Location) ) then skip + navigate(Location).
-		% Bring other team's 'flag to our base: priority 7.
-		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).
-		% If the goal is to get powerups, go to that location. Priority 6.
-		if a-goal( getPowerUp(Location) ) then navigate(Location).
-		% If the goal is to get armor, go to that location. Priority 6.
-		if a-goal( armor(Location) ) then navigate(Location).
-		% If your goal is to get a weapon, go to that location. Priority 5.
-		if a-goal( getWep(Location) ) then navigate(Location).
-		% Go get the other team's' flag: priority 4.
-		if a-goal( captureFlag(UnrealID) ) then navigate(UnrealID).
-		% Go to a destination: priority 2.
-		if a-goal( goTo(Destination) ) then navigate(Destination).
-		% If the goal is to get ammo, navigate there: priority 1.
-		if a-goal( ammo(Destination) ) then navigate(Destination).
-
-		% If we have a goal to kill someone, go to the last known spot. Priority 8.
-		%if a-goal( kill(UnrealID) ) then navigate(UnrealID).
-
-		% Calculate path, not used.
-		%if goal( calculatePath(StartID, EndID) ) then path(StartID, EndID).
-		
+		if goal(rotate(X, LookLocation)), bel(rotateTimer(0)),
+			bel(X @< 3, orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook), NewIt is X+1)
+				then look(LookLocation) + drop(rotate(X, LookLocation)) + adopt( rotate(NewIt, NextLook) ).
+		if goal(rotate(X, LookLocation)), bel(rotateTimer(0)),
+			bel(X @>= 3, orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook))
+				then look(LookLocation) + drop(rotate(X, LookLocation)) + adopt( rotate(0, NextLook) ).
+				
 	}
 	
 }
 
 event module {
 	
-	program {
-		% Enter the module of the role that the bot has.
-		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
-		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
-		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
-		
+	program {		
 		% Percept Handling	
 		if bel(true) then getPercepts.
 		
-		if bel(true, me(Me), Agent = Me, not(iHaveFlag) ) then killEnemy.
-		
-		if bel(true, me(Me), Agent = Me) then getHealthGoals.
-		
-		if bel(true) then getWeapon.
-		
-		if bel(me(Me), not(role(Me, defender))) then getPowerUps.
-		
-		if bel(me(Me), not(role(Me, defender))) then getArmour.
-		
-		%if bel( true, me(Me), Agent = Me, not(role(Agent, carrier)), not(role(Agent, defender)) ) then getAmmo.
-		
-		%if bel(not(didEvent)) then insert(didEvent).
+		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(10)).
+		if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
 	}
 		
 }
