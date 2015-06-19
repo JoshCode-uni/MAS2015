@@ -6,7 +6,7 @@ module getArmour {
 			if bel( wantArmor(Armor), item(Location,_, Armor,_) ) then adopt( armor(Location) ).
 		%% Execution %%
 			%if your goal is to the armor at an location, go to the armor.
-			if goal( armor(Location) ) then navigate(Location).
+			%if goal( armor(Location) ) then navigate(Location).
 	}
 
 }

@@ -116,6 +116,7 @@ main module [exit=never] {
 		if goal( returnFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( returnFlag(Destination) ).
 		if goal( kill(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( kill(UnrealID) ).
 		if goal( heal(UnrealID) ), bel( navigation(noPath, UnrealID) ) then drop( heal(UnrealID) ).
+		if goal( getPowerUp(Location) ), bel( navigation(noPath, Location) ) then drop( getPowerUp(Location) ).
 		if goal( armor(Location) ), bel( navigation(noPath, Location) ) then drop( armor(Location) ).
 		if goal( getWep(Location) ), bel( navigation(noPath, Location) ) then drop( getWep(Location) ).
 		if goal( deliverFlag(Destination) ), bel( navigation(noPath, Destination) ) then drop( deliverFlag(Destination) ).
@@ -125,13 +126,15 @@ main module [exit=never] {
 		% When the bot is stuck or there is no path, this should be taken care of.
 		if bel( navigation(stuck, Destination) ) then respawn.
 				
-		% Go pick up our flag: priority 8.
+		% Go pick up our flag: priority 9.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
-		% If we have a goal to kill someone, go to the last known spot. Priority 7.
+		% If we have a goal to kill someone, go to the last known spot. Priority 8.
 		if a-goal( kill(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 6.
+		% If your goal is to get a heal at an location, go to the health. Priority 7.
 		if a-goal( heal(Location) ) then navigate(Location).
-		% IF the goal is to get armor, go to that location. Priority 5.
+		% If the goal is to get powerups, go to that location. Priority 6.
+		if a-goal( getPowerUp(Location) ) then navigate(Location).
+		% If the goal is to get armor, go to that location. Priority 5.
 		if a-goal( armor(Location) ) then navigate(Location).
 		% If your goal is to get a weapon, go to that location. Priority 4.
 		if a-goal( getWep(Location) ) then navigate(Location).

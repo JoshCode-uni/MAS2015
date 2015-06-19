@@ -5,6 +5,6 @@ module getPowerUps{
 			if bel( item(Location,other,Type,_) ) then adopt( getPowerUp(Location) ).
 			
 		%% Execution %%
-			if goal( getPowerUp(Location) ) then navigate(Location).
+		%	if goal( getPowerUp(Location) ) then navigate(Location).
 	}
 }
