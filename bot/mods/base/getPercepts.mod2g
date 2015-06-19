@@ -96,6 +96,10 @@ module getPercepts{
 				%%% Update fragged percept caused by the fragging of an enemy.
 				forall bel( fragged(Time, Killer, Victim, Weapon) ) do delete ( fragged(Time, Killer, Victim, Weapon) ).
 				forall bel( percept( fragged(Time,Killer,Victim,Weapon)) ) do insert( fragged(Time,Killer,Victim,Weapon) ).
+				
+		% MAILBOX MANAGEMENT (SEND)
+			%% Send flag holding state to Overlord
+			%if bel( iHaveFlag ) then 
 	}
 	
 }

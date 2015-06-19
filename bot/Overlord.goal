@@ -30,7 +30,6 @@ main module {
 		if bel(findDefender(Agent)) then (Agent).sendonce(role(Agent, defender)) + insert(role(Agent, defender)).
 		if bel(findRoamer(Agent)) then (Agent).sendonce(role(Agent, roamer)) + insert(role(Agent, roamer)).
 		
-		%forall bel( role(Agent, roamer), self(MyID, _, _) ) do (Agent).sendonce(!follow(MyID)).
 	}
 	
 }
