@@ -21,7 +21,7 @@ module Roamer{
 			 	then adopt( captureFlag(UnrealID)).
 			
 			%Roamer should help to escort the carrier
-			%if bel( haveFlag(pos) ), then insert goTo(pos) + delete(received(haveFlag(pos)).
+			%if bel( haveFlag(pos) ), then insert(goTo(pos)) + delete(received(haveFlag(pos)).
 	}
 	
 }
