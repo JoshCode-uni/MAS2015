@@ -46,8 +46,8 @@ init module {
 		% Power Up Status
 		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
 		
-		if bel(orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook)) then adopt( rotate(0, NextLook) ).
-		if bel(true) then insert(rotateTimer(10)).
+		if bel(orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLook)) then adopt( rotate(0, NextLook, NextLD) ).
+		if bel(true) then insert(rotateTimer(2)).
 	}
 	actionspec {
 		% Make a best effort attempt to navigate to a certain location on the map.
@@ -103,25 +103,24 @@ main module [exit=never] {
 	program [order=linear] {
 		%% NOTE: It is slow because it does the event module after every action!!!
 		
-		if goal(rotate(X, LookLocation)), bel(rotateTimer(0)),
-			bel(X @< 3, orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook), NewIt is X+1)
-				then look(LookLocation) + drop(rotate(X, LookLocation)) + adopt( rotate(NewIt, NextLook) ).
-		if goal(rotate(X, LookLocation)), bel(rotateTimer(0)),
-			bel(X @>= 3, orientation(Loc, rotation(_, HorRot, _), _), rotate(Loc, HorRot - pi/2, NextLook))
-				then look(LookLocation) + drop(rotate(X, LookLocation)) + adopt( rotate(0, NextLook) ).
-				
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @< 3, orientation(Loc, _, _), NextLD is LD - 90, calcRotation(Loc, NextLD, NextLL), NewIt is X+1)
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(NewIt, NextLL, NextLD) ).
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @>= 3, orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLL))
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(0, NextLL, NextLD) ).
 	}
 	
 }
 
 event module {
 	
-	program {		
-		% Percept Handling	
+	program {
+		% Percept Handling
 		if bel(true) then getPercepts.
 		
-		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(10)).
+		if bel(rotateTimer(Time), Time = 0) then delete(rotateTimer(Time)) + insert(rotateTimer(2)).
 		if bel(rotateTimer(Time), Time > 0, NewTime is Time - 1) then delete(rotateTimer(Time)) + insert(rotateTimer(NewTime)).
 	}
-		
+
 }

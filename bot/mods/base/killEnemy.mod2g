@@ -13,7 +13,7 @@ module killEnemy {
 			% If we reached the last known spot, and we lost the enemy, look around. 
 			%if goal( follow(UnrealID)), bel(navigation(reached, UnrealID), orientation(_,Angle,_), rotate(UnrealID, Angle, B)) then adopt(rotate(0,B)).
 			% for-loop implementation to ensure full rotation.
-			if goal(rotate(X,I)), bel(X@<3, orientation(Loc ,Angle,_), rotate(Loc , Angle + pi/2, B)) then look(I) + adopt(rotate(X+1,B)).
+			if goal(rotate(X,I)), bel(X@<3, orientation(Loc ,Angle,_), calcRotation(Loc , Angle + pi/2, B)) then look(I) + adopt(rotate(X+1,B)).
 			if goal(rotate(X,I)), bel(X@>=3) then look(I).
 	}
 

@@ -162,11 +162,14 @@ wepList(List) :- weapon(X,_,_),	member(X, List).
 %% ** BGN killEnemy.mod2g **
 %% *************************
 
-follow(UnrealID) :- navigation(reached,UnrealID); fragged(_,_,UnrealID,_); not(bot(UnrealID, _, _, _, _, _)).
+follow(UnrealID) :- fragged(_,_,UnrealID,_) ; navigation(reached,UnrealID).
 
-% Spin around.
+% Spin around
 % Rotate(+Location, +Angle, -LookLocation)
-rotate(Location, Angle, LookLocation) :- LookLocation is 0.
+calcRotation(Location, Deg, LookLocation) :- DegCorrected is -Deg + 90, deg2rad(DegCorrected, Rad), Location = location(X, Y, Z), X2 is X + cos(Rad) + 1000, Y2 is Y + sin(Rad) + 1000,
+											NewX is X2 - 1000, NewY is Y2 - 1000, LookLocation = location(NewX, NewY, Z).
+
+deg2rad(Deg, Rad) :- Rad is (Deg / 360) * 2 * pi.
 					
 %% *************************
 %% ** END killEnemy.mod2g **
