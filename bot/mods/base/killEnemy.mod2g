@@ -5,7 +5,6 @@ module killEnemy {
 			% If the bot percepts an enemy bot, adopt goal to kill him.
 			if bel( bot(UnrealID, _, OtherTeam, _, _, _), enemy(UnrealID) ) then adopt( kill(UnrealID) ).
 			
-		
 		%% Execution %%
 			
 			% If we reached the last known spot, and we lost the enemy, look around. 
