@@ -1,7 +1,7 @@
 module DefenderAction{
 	program{
 		% Go pick up our flag: priority 9.
-		if goal(returnFlag(GoalDest)), bel(navigation(navigating, NavDest), not(NavDest = GoalDest)) then stop.
+		%if goal(returnFlag(GoalDest)), bel(navigation(navigating, NavDest), not(NavDest = GoalDest)) then stop.
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
 		% Bring other team's 'flag to our base: priority 8.
 		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).

@@ -4,9 +4,9 @@ module getHealthGoals {
 	
 		%% Goal Handling %%
 			% If health is lower than 150, get super_health. (What is name of vials which also overcharge?). 
-			if not(goal(heal(_))), bel( status(Health,_), Health@<150, item(UnrealID, health, super_health,_) ) then adopt( heal(UnrealID) ).
+			if not(goal(heal(_))), bel( status(Health,_), Health@<100, item(UnrealID, health, super_health,_) ) then adopt( heal(UnrealID) ).
 			% If health is lower than 100 and health is closeby, get health.
-			if not(goal(heal(_))), bel( status(Health,_), Health@<100, item(UnrealID, health, _, _) ) then adopt( heal(UnrealID) ).
+			if not(goal(heal(_))), bel( status(Health,_), Health@<70, item(UnrealID, health, _, _) ) then adopt( heal(UnrealID) ).
 			
 %			%% Collect near super_health.
 %			if not( goal(heal(_)) ), bel( status(Health, _), Health<150, pickup(UnrealID, health, super_health),
