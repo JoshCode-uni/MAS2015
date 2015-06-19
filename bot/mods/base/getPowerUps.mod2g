@@ -2,7 +2,13 @@ module getPowerUps{
 	program{
 		%% Goal Handling %%
 			% If I see a powerup nearby, pick it up.
-			if not(goal(getPowerUp(_))), bel( item(Location,other,Type,_) ) then adopt( getPowerUp(Location) ).
+			if not( goal(getPowerUp(_)) ), bel( item(Location,other,Type,_) ) then adopt( getPowerUp(Location) ).
+			
+			%% Collect near super_health.
+			if not( goal(getPowerUp(_)) ), bel( powerup(none, _), pickup(UnrealID, other, _),
+					orientation(location(X1,Y1,_), _, _), 
+					navPoint(UnrealID,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<50000 ) then adopt( getPowerUp(UnrealID) ).
 			
 	}
 }
