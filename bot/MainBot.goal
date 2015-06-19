@@ -116,19 +116,19 @@ main module [exit=never] {
 		if a-goal( returnFlag(UnrealID) ) then navigate(UnrealID).
 		% Bring other team's 'flag to our base: priority 7.
 		if a-goal( deliverFlag(UnrealID) ) then navigate(UnrealID).
-		% If your goal is to get a heal at an location, go to the health. Priority 8.
-		if a-goal( heal(Location) ) then navigate(Location).
 		% If we have a goal to kill someone, go to the last known spot. Priority 8.
 		if goal(follow(UnrealID)), bel(navigation(navigating, NavDest), not(NavDest = UnrealID)) then stop.
 		if a-goal( follow(UnrealID) ) then navigate(UnrealID).
+		% Go get the other team's' flag: priority 4.
+		if a-goal( captureFlag(UnrealID) ) then navigate(UnrealID).
+		% If your goal is to get a heal at an location, go to the health. Priority 8.
+		if a-goal( heal(Location) ) then navigate(Location).
 		% If the goal is to get powerups, go to that location. Priority 6.
 		if a-goal( getPowerUp(Location) ) then navigate(Location).
 		% If the goal is to get armor, go to that location. Priority 6.
 		if a-goal( armor(Location) ) then navigate(Location).
 		% If your goal is to get a weapon, go to that location. Priority 5.
 		if a-goal( getWep(Location) ) then navigate(Location).
-		% Go get the other team's' flag: priority 4.
-		if a-goal( captureFlag(UnrealID) ) then navigate(UnrealID).
 		% Go to a destination: priority 2.
 		if a-goal( goTo(Destination) ) then navigate(Destination).
 		% If the goal is to get ammo, navigate there: priority 1.
