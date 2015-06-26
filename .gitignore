@@ -1,5 +1,6 @@
 # If you want a cool Gource configuration for this project, contact: Joshua Slik
 /gource/**
+*/ut-environment.jar
 
 # --------------------------------------------------------
 # !!! ONLY EXCEPTIONS BELOW THIS LINE PLEASE THANK YOU !!!
