@@ -1,0 +1,151 @@
+% State of minds %
+#import "mods/base/getPercepts.mod2g".
+#import "mods/base/getWeapon.mod2g".
+#import "mods/base/getHealthGoals.mod2g".
+#import "mods/base/getArmour.mod2g".
+#import "mods/base/getAmmo.mod2g".
+#import "mods/base/getPowerUps.mod2g".
+#import "mods/base/killEnemy.mod2g".
+#import "mods/base/dropAllGoals.mod2g".
+#import "mods/base/rotate.mod2g".
+
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/CarrierAction.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/DefenderAction.mod2g".
+#import "mods/bot/Roamer.mod2g".
+#import "mods/bot/RoamerAction.mod2g".
+
+% Basics of the bot %
+
+init module {
+	#import "mods/knowledge.prolog".
+	beliefs {
+		status(100,0).
+		currentWeapon(enforcer, primary).
+		score(0,0,0).
+		armor(0,0,0,0).
+		powerup(none, 0).
+
+		role('Shepard', carrier).
+		role('EDI', defender).
+		role('Garrus', roamer).
+		role('Liara', roamer).
+	}
+	program{
+		% 'SEND ONCE' percepts inserting into the belief base.
+		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
+		
+		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
+		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
+		
+		% Insert all the pickups in the believe base.
+		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
+		
+		% 'SEND ON CHANGE' percepts initialization.
+		%% Navigation
+		if bel( percept(navigation(State, Destination)) ) then insert( navigation(State, Destination) ).
+		%% Orientation
+		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
+		% Power Up Status
+		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
+		
+		% Do initial rotation
+		if bel(orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLook)) then adopt( rotate(0, NextLook, NextLD) ).
+		if bel(true) then insert(rotateTimer(3)).
+	}
+	actionspec {
+		% Make a best effort attempt to navigate to a certain location on the map.
+		navigate(Destination) {
+			pre{ not(navigation(navigating, _)) }
+			post{ true }
+		}
+		% Stop
+		stop {
+			pre { true }
+			post { true }
+		}
+		% Shoot a target
+		shoot(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Prefer a weapon
+		prefer(Weapon) {
+			pre { true }
+			post { true }
+		}
+		% Look at target
+		look(TargetLabel) {
+			pre { true }
+			post { true }
+		}
+		% Respawn
+		respawn {
+			pre { true }
+			post { true }
+		}
+		% Find a path
+		path(From, To) {
+			pre { true }
+			post { true }
+		}
+		% Let the bot continue with what he was doing
+		skip@int {
+			pre { true }
+			post { true }
+		}
+		% Deploy
+		deploy {
+			pre { true }
+			post { true }
+		}
+	}
+}
+
+main module [exit=never] {
+	
+	program [order=linear] {
+		%% NOTE: It is slow because it does the event module after every action!!!
+
+		% When the bot is stuck or there is no path, this should be taken care of.
+		if bel( navigation(stuck, Destination), suicideCountdown(0) ) then respawn + insert(suicideCountdown(8)).
+		
+		% When the bot is killed he should drop all of his goals.
+		if bel( fragged(_, _, VictimID, _), self(VictimID, _, _) ) then dropAllGoals.
+		
+		if bel(role(Agent, roamer), me(Me), Agent = Me) then RoamerAction.
+		if bel(role(Agent, carrier), me(Me), Agent = Me) then CarrierAction.
+		if bel(role(Agent, defender), me(Me), Agent = Me) then DefenderAction.
+		
+		
+	}
+	
+}
+
+event module {
+	
+	program {
+		% Enter the module of the role that the bot has.
+		if bel(role(Agent, carrier), me(Me), Agent = Me) then Carrier.
+		if bel(role(Agent, defender), me(Me), Agent = Me) then Defender.
+		if bel(role(Agent, roamer), me(Me), Agent = Me) then Roamer.
+		
+		% Percept Handling	
+		if bel(true) then getPercepts.
+		
+		% Enter modules
+		if bel(true, not(iHaveFlag) ) then killEnemy.
+		if bel(true) then getHealthGoals.
+		if bel(true) then getPowerUps.
+		if bel(true, not(iHaveFlag)) then getWeapon.
+		if bel(me(Me), role(Me, roamer), not(iHaveFlag)) then getArmour.
+		if not(goal(lookAt(_))) then rotate.
+		%if bel( true, me(Me), role(Me, roamer) ) then getAmmo.
+
+		if goal(lookAt(UnrealID)) then look(UnrealID).
+		
+		%if bel(not(didEvent)) then insert(didEvent).
+	}
+		
+}

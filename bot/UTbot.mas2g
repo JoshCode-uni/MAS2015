@@ -7,28 +7,28 @@ environment {
 		logLevel = "WARNING", 
 		bots = [
 				[
-				 	["name", "Flag - Shepard"],
+				 	["name", "Shepard"],
 					["skill", 5],
 					["skin", "MercMaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "Def - EDI"],
+				 	["name", "EDI"],
 					["skill", 5],
 					["skin", "NightFemaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "Roam - Garrus"],
+				 	["name", "Garrus"],
 					["skill", 5],
 					["skin", "JuggMaleA"], 
 					["team", "red"],
 					["logLevel", "WARNING"]
 				],
 				[
-				 	["name", "Roam - Liara"],
+				 	["name", "Liara"],
 					["skill", 5],
 					["skin", "AlienFemaleA"], 
 					["team", "red"],
@@ -39,13 +39,17 @@ environment {
 }
 
 agentfiles {
-	"FlagCarrier.goal" [name=FlagCarrier] .
-	"FlagProtecter.goal" [name=FlagProtecter] .
-	"Roamer.goal" [name=Roamer] .
+	"Overlord.goal" [name=OL] .
+	"MainBot.goal" [name=A] .
+	"MainBot.goal" [name=B] .
+	"MainBot.goal" [name=C] .
+	"MainBot.goal" [name=D] .
 }
 
 launchpolicy {
-    when [type=bot,max=1]@env do launch *:FlagCarrier.
-    when [type=bot,max=1]@env do launch *:FlagProtecter.
-    when [type=bot,max=2]@env do launch *:Roamer.
+	when [max=1]@env do launch Overlord:OL.
+	when [type=bot,max=1]@env do launch Shepard:A.
+	when [type=bot,max=1]@env do launch EDI:B.
+	when [type=bot,max=1]@env do launch Garrus:C.
+	when [type=bot,max=1]@env do launch Liara:D.
 }

@@ -1,0 +1,10 @@
+module rotate{
+	program{
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @< 3, orientation(Loc, _, _), NextLD is LD - 90, calcRotation(Loc, NextLD, NextLL), NewIt is X+1)
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(NewIt, NextLL, NextLD) ).
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @>= 3, orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLL))
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(0, NextLL, NextLD) ).
+	}
+}

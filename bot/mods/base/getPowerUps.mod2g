@@ -1,0 +1,8 @@
+module getPowerUps{
+	program{
+		%% Goal Handling %%
+			% If I see a powerup nearby, pick it up.
+			if not( goal(getPowerUp(_)) ), bel( powerup(none, _), item(UnrealID,other,_,_) ) then adopt( getPowerUp(UnrealID) ).
+			
+	}
+}

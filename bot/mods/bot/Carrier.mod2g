@@ -1,0 +1,47 @@
+module Carrier{
+	program [order=linearall]{
+		
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		%% NO PERCEPTS IN THIS FILE %%
+		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%		
+		
+		% GOAL MANAGEMENT.
+		
+			% Adopt goal to go get the other team's flag, if bot knows the flag is in the other team's base.
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, home) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			% Adopt goal to go to the other team's flagbase, if flag is being held.
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, held), not(iHaveFlag) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			% Adopt goal to go to the other team's flagbase, if flag is dropped.
+			if not(goal(captureFlag(_))), bel( theirTeam(TheirTeam), theirBase(UnrealID), flagState(TheirTeam, dropped) ) 
+			 	then adopt( captureFlag(UnrealID)).
+			
+			% If bot believes he holds the enemy flag but our flag is gone, he should hang around our base until he can deliver the flag.
+			if not( goal( goTo(_) ) ), bel(iHaveFlag, myTeam(Team), myBase(BaseID),
+					(flagState(Team,held) ; flagState(Team,dropped)),
+					navPoint(BaseID,location(X1,Y1,_),_), 
+					navPoint(Destination,location(X2,Y2,_),_), 
+					distance(Dist,X1,Y1,X2,Y2), Dist<1400) then adopt( goTo(Destination) ).
+			
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+			
+			% Adopt goal to calculate a path to enemy
+			%if bel( self(_, _, Team), orientation(Location, Rotation, Velocity), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam) )
+			% then adopt ( calculatePath(Location, Position) ).
+			 
+			% Switch weapons when closer to or further away from enemies.
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			% 		orientation(Location, Rotation, Velocity), Length < 10, preferedWeapons(WeaponList, "short") )
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 10, Length < 30, preferedWeapons(WeaponList, "mid") ) 
+			%	then prefer(WeaponList).
+			%if bel( self(_, _, Team), path(Location, Position, Length, LocationList), bot(UnrealID, _, OtherTeam, Position, _, _), not(Team = OtherTeam),
+			%		orientation(Location, Rotation, Velocity), Length >= 30, preferedWeapons(WeaponList, "long") ) 
+			%	then prefer(WeaponList).
+			
+			%%%%%%%%%%%%%%%%%%%%%%% Calculating path for weapon switching %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%			
+	
+	}
+}

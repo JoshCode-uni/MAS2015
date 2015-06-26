@@ -1,0 +1,123 @@
+% State of minds %
+#import "mods/base/getPercepts.mod2g".
+#import "mods/base/getWeapon.mod2g".
+#import "mods/base/getHealthGoals.mod2g".
+#import "mods/base/getArmour.mod2g".
+#import "mods/base/getAmmo.mod2g".
+#import "mods/base/getPowerUps.mod2g".
+#import "mods/base/killEnemy.mod2g".
+#import "mods/base/dropAllGoals.mod2g".
+
+#import "mods/bot/Carrier.mod2g".
+#import "mods/bot/Defender.mod2g".
+#import "mods/bot/Roamer.mod2g".
+
+% Basics of the bot %
+
+init module {
+	#import "mods/knowledge.prolog".
+	beliefs {
+		status(100,0).
+		currentWeapon(enforcer, primary).
+		score(0,0,0).
+		armor(0,0,0,0).
+		powerup(none, 0).
+
+		role('Shepard', carrier).
+		role('EDI', defender).
+		role('Garrus', roamer).
+		role('Liara', roamer).
+	}
+	program{
+		% 'SEND ONCE' percepts inserting into the belief base.
+		if bel( percept(self(UnrealID, NickName, Team))) then insert (self(UnrealID, NickName, Team) ).
+		
+		forall bel( percept(navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList))) do insert (navPoint(UnrealID, location(X,Y,Z), NeighsUnrealIDList) ).
+		forall bel( percept(base(Team, UnrealID))) do insert (base(Team, UnrealID) ).
+		
+		% Insert all the pickups in the believe base.
+		forall bel( percept(pickup(UnrealID, Label, ItemType))) do insert (pickup(UnrealID, Label, ItemType) ).
+		
+		% 'SEND ON CHANGE' percepts initialization.
+		%% Navigation
+		if bel( percept(navigation(State, Destination)) ) then insert( navigation(State, Destination) ).
+		%% Orientation
+		if bel( percept(orientation(Location, Rotation, Velocity)) ) then insert(orientation(Location, Rotation, Velocity)).
+		% Power Up Status
+		if bel( percept(powerup(Type, Duration)) ) then insert( powerup(Type, Duration) ).
+		
+		if bel(orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLook)) then adopt( rotate(0, NextLook, NextLD) ).
+		if bel(true) then insert(rotateTimer(3)).
+	}
+	actionspec {
+		% Make a best effort attempt to navigate to a certain location on the map.
+		navigate(Destination) {
+			pre{ not(navigation(navigating, _)) }
+			post{ true }
+		}
+		% Stop
+		stop {
+			pre { true }
+			post { true }
+		}
+		% Shoot a target
+		shoot(TargetLabel) {
+			pre{ true }
+			post{ true }
+		}
+		% Prefer a weapon
+		prefer(Weapon) {
+			pre { true }
+			post { true }
+		}
+		% Look at target
+		look(TargetLabel) {
+			pre { true }
+			post { true }
+		}
+		% Respawn
+		respawn {
+			pre { true }
+			post { true }
+		}
+		% Find a path
+		path(From, To) {
+			pre { true }
+			post { true }
+		}
+		% Let the bot continue with what he was doing
+		skip@int {
+			pre { true }
+			post { true }
+		}
+		% Deploy
+		deploy {
+			pre { true }
+			post { true }
+		}
+	}
+}
+
+main module [exit=never] {
+	
+	program [order=linear] {
+		%% NOTE: It is slow because it does the event module after every action!!!
+		
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @< 3, orientation(Loc, _, _), NextLD is LD - 90, calcRotation(Loc, NextLD, NextLL), NewIt is X+1)
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(NewIt, NextLL, NextLD) ).
+		if goal(rotate(X, LL, LD)), bel(rotateTimer(0)),
+			bel(X @>= 3, orientation(Loc, _, _), NextLD is 0, calcRotation(Loc, NextLD, NextLL))
+				then look(LL) + drop(rotate(X, LL, LD)) + adopt( rotate(0, NextLL, NextLD) ).
+	}
+	
+}
+
+event module {
+	
+	program {
+		% Percept Handling
+		if bel(true) then getPercepts.
+	}
+
+}

@@ -1,0 +1,14 @@
+module dropAllGoals{
+	
+	program {
+		forall goal( returnFlag(UnrealID) ) do drop(returnFlag(UnrealID)).
+		forall goal( heal(Location) ) do drop(heal(Location)).
+		forall goal( getPowerUp(Location) ) do drop(getPowerUp(Location)).
+		forall goal( armor(Location) ) do drop(armor(Location)).
+		forall goal( getWep(Location) ) do drop(getWep(Location)).
+		forall goal( deliverFlag(UnrealID) ) do drop(deliverFlag(UnrealID)).
+		forall goal( captureFlag(UnrealID) ) do drop(captureFlag(UnrealID)).
+		forall goal( goTo(Destination) ) do drop(goTo(Destination)).
+	}
+	
+}
